@@ -1,0 +1,480 @@
+GAMS 24.5.4  r54492 Released Oct 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    10/31/15 12:19:43 Page 1
+KaffeeMischungen
+C o m p i l a t i o n
+
+
+   2   
+   3   
+   4    Sets
+   5      i   Kaffeebohnen    / Arabica, Robusta, Liberica, Excelsa /
+   6      j   Kaffeesorten    / Fernweh, Excellence, AfricanNight, FeuerBraziliens / ;
+   7   
+   8    Parameter
+   9      c(i)    Preis je kg Bohnen
+  10        / Arabica 2.50, Robusta 2.10, Liberica 2.90, Excelsa 3.50 /
+  11      b(i)    Verfuegbare kg von Bohne i
+  12        / Arabica 20000, Robusta 12000, Liberica 5000, Excelsa 3000 /
+  13      d(j)    Mindestabsatz Sorte j in kg
+  14        / Fernweh 10000, Excellence 1000, AfricanNight 5000, FeuerBraziliens 6000 /
+  15      p(j)    Verkaufspreis von Sorte j pro kg
+  16        / Fernweh 6.95, Excellence 12, AfricanNight 9, FeuerBraziliens 7.95 /
+  17   
+  18    Table ao(i,j)     Maximaler Anteil von Bohne i an Sorte j
+  19                  Fernweh Excellence  AfricanNight    FeuerBraziliens
+  20      Arabica     0.8     0.3         0.5             1
+  21      Robusta     0.4     0.3         1               0.6
+  22      Liberica    1       0.6         0.2             0.3
+  23      Excelsa     1       1           1               0.2
+  24   
+  25    Table au(i,j)     Minimaler Anteil von Bohne i an Sorte j
+  26                  Fernweh Excellence  AfricanNight    FeuerBraziliens
+  27      Arabica     0.5                 0.3             0.6
+  28      Robusta     0.3                 0.5
+  29      Liberica   0.1     0.3                         0.1
+  30      Excelsa             0.5         0.1                             ;
+  31   
+  32    Variables
+  33      x(i)    Soviel von Bohne i kaufen
+  34      y(j)    Soviel von Sorte j verkaufen
+  35      z(i,j)  Soviel von Bohne i fuer Sorte j verwenden
+  36      g       Der erzielte Gewinn;
+  37   
+  38    Positive Variables x,y,z ;
+  39   
+  40    Equations
+  41        Gewinn                Der erzielte Gewinn
+  42        maxBohnen(i)          Menge verfuegbarer Bohnen nicht ueberschritten
+  43        minSorte(j)           Mindestabsatz einhalten
+  44        BohnenSumme(i)        Genausoviel vermischen wie gekauft
+  45        SortenSumme(j)        Genausoviel absetzen wie gemischt
+  46        minAnteil(i,j)        Mindestanteile einhalten
+  47        maxAnteil(i,j)        maximale Anteile einhalten ;
+  48   
+  49    Gewinn ..         g =e= sum(j,p(j)*y(j)) - sum(i, c(i)*x(i));
+  50    maxBohnen(i) ..   x(i) =l= b(i);
+  51    minSorte(j) ..    y(j) =g= d(j);
+  52    BohnenSumme(i) .. sum(j, z(i,j)) =e= x(i);
+  53    SortenSumme(j) .. sum(i, z(i,j)) =e= y(j);
+  54    minAnteil(i,j) .. z(i,j) =g= au(i,j) * y(j);
+GAMS 24.5.4  r54492 Released Oct 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    10/31/15 12:19:43 Page 2
+KaffeeMischungen
+C o m p i l a t i o n
+
+
+  55    maxAnteil(i,j) .. z(i,j) =l= ao(i,j) * y(j);
+  56   
+  57    Model Kaffee / all /;
+  58    Solve Kaffee using lp maximizing g;
+  59    Display x.l, x.m;
+
+
+COMPILATION TIME     =        0.001 SECONDS      3 MB  24.5.4 r54492 DEX-DEG
+GAMS 24.5.4  r54492 Released Oct 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    10/31/15 12:19:43 Page 3
+KaffeeMischungen
+Equation Listing    SOLVE Kaffee Using LP From line 58
+
+
+---- Gewinn  =E=  Der erzielte Gewinn
+
+Gewinn..  2.5*x(Arabica) + 2.1*x(Robusta) + 2.9*x(Liberica) + 3.5*x(Excelsa) - 6.95*y(Fernweh) - 12*y(Excellence) - 9*y(AfricanNight) - 7.95*y(FeuerBraziliens) + g =E= 0 ; (LHS = 0)
+     
+
+---- maxBohnen  =L=  Menge verfuegbarer Bohnen nicht ueberschritten
+
+maxBohnen(Arabica)..  x(Arabica) =L= 20000 ; (LHS = 0)
+     
+maxBohnen(Robusta)..  x(Robusta) =L= 12000 ; (LHS = 0)
+     
+maxBohnen(Liberica)..  x(Liberica) =L= 5000 ; (LHS = 0)
+     
+REMAINING ENTRY SKIPPED
+
+
+---- minSorte  =G=  Mindestabsatz einhalten
+
+minSorte(Fernweh)..  y(Fernweh) =G= 10000 ; (LHS = 0, INFES = 10000 ****)
+     
+minSorte(Excellence)..  y(Excellence) =G= 1000 ; (LHS = 0, INFES = 1000 ****)
+     
+minSorte(AfricanNight)..  y(AfricanNight) =G= 5000 ; (LHS = 0, INFES = 5000 ****)
+     
+REMAINING ENTRY SKIPPED
+
+
+---- BohnenSumme  =E=  Genausoviel vermischen wie gekauft
+
+BohnenSumme(Arabica)..  - x(Arabica) + z(Arabica,Fernweh) + z(Arabica,Excellence) + z(Arabica,AfricanNight) + z(Arabica,FeuerBraziliens) =E= 0 ; (LHS = 0)
+     
+BohnenSumme(Robusta)..  - x(Robusta) + z(Robusta,Fernweh) + z(Robusta,Excellence) + z(Robusta,AfricanNight) + z(Robusta,FeuerBraziliens) =E= 0 ; (LHS = 0)
+     
+BohnenSumme(Liberica)..  - x(Liberica) + z(Liberica,Fernweh) + z(Liberica,Excellence) + z(Liberica,AfricanNight) + z(Liberica,FeuerBraziliens) =E= 0 ; (LHS = 0)
+     
+REMAINING ENTRY SKIPPED
+
+
+---- SortenSumme  =E=  Genausoviel absetzen wie gemischt
+
+SortenSumme(Fernweh)..  - y(Fernweh) + z(Arabica,Fernweh) + z(Robusta,Fernweh) + z(Liberica,Fernweh) + z(Excelsa,Fernweh) =E= 0 ; (LHS = 0)
+     
+SortenSumme(Excellence)..  - y(Excellence) + z(Arabica,Excellence) + z(Robusta,Excellence) + z(Liberica,Excellence) + z(Excelsa,Excellence) =E= 0 ; (LHS = 0)
+     
+SortenSumme(AfricanNight)..  - y(AfricanNight) + z(Arabica,AfricanNight) + z(Robusta,AfricanNight) + z(Liberica,AfricanNight) + z(Excelsa,AfricanNight) =E= 0 ; (LHS = 0)
+     
+REMAINING ENTRY SKIPPED
+
+GAMS 24.5.4  r54492 Released Oct 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    10/31/15 12:19:43 Page 4
+KaffeeMischungen
+Equation Listing    SOLVE Kaffee Using LP From line 58
+
+
+---- minAnteil  =G=  Mindestanteile einhalten
+
+minAnteil(Arabica,Fernweh)..  - 0.5*y(Fernweh) + z(Arabica,Fernweh) =G= 0 ; (LHS = 0)
+     
+minAnteil(Arabica,Excellence)..  z(Arabica,Excellence) =G= 0 ; (LHS = 0)
+     
+minAnteil(Arabica,AfricanNight)..  - 0.3*y(AfricanNight) + z(Arabica,AfricanNight) =G= 0 ; (LHS = 0)
+     
+REMAINING 13 ENTRIES SKIPPED
+
+
+---- maxAnteil  =L=  maximale Anteile einhalten
+
+maxAnteil(Arabica,Fernweh)..  - 0.8*y(Fernweh) + z(Arabica,Fernweh) =L= 0 ; (LHS = 0)
+     
+maxAnteil(Arabica,Excellence)..  - 0.3*y(Excellence) + z(Arabica,Excellence) =L= 0 ; (LHS = 0)
+     
+maxAnteil(Arabica,AfricanNight)..  - 0.5*y(AfricanNight) + z(Arabica,AfricanNight) =L= 0 ; (LHS = 0)
+     
+REMAINING 13 ENTRIES SKIPPED
+
+GAMS 24.5.4  r54492 Released Oct 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    10/31/15 12:19:43 Page 5
+KaffeeMischungen
+Column Listing      SOLVE Kaffee Using LP From line 58
+
+
+---- x  Soviel von Bohne i kaufen
+
+x(Arabica)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        2.5     Gewinn
+        1       maxBohnen(Arabica)
+       -1       BohnenSumme(Arabica)
+
+x(Robusta)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        2.1     Gewinn
+        1       maxBohnen(Robusta)
+       -1       BohnenSumme(Robusta)
+
+x(Liberica)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        2.9     Gewinn
+        1       maxBohnen(Liberica)
+       -1       BohnenSumme(Liberica)
+
+REMAINING ENTRY SKIPPED
+
+---- y  Soviel von Sorte j verkaufen
+
+y(Fernweh)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       -6.95    Gewinn
+        1       minSorte(Fernweh)
+       -1       SortenSumme(Fernweh)
+       -0.5     minAnteil(Arabica,Fernweh)
+       -0.3     minAnteil(Robusta,Fernweh)
+       -0.1     minAnteil(Liberica,Fernweh)
+       -0.8     maxAnteil(Arabica,Fernweh)
+       -0.4     maxAnteil(Robusta,Fernweh)
+       -1       maxAnteil(Liberica,Fernweh)
+       -1       maxAnteil(Excelsa,Fernweh)
+
+y(Excellence)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+      -12       Gewinn
+        1       minSorte(Excellence)
+       -1       SortenSumme(Excellence)
+       -0.3     minAnteil(Liberica,Excellence)
+       -0.5     minAnteil(Excelsa,Excellence)
+       -0.3     maxAnteil(Arabica,Excellence)
+       -0.3     maxAnteil(Robusta,Excellence)
+       -0.6     maxAnteil(Liberica,Excellence)
+       -1       maxAnteil(Excelsa,Excellence)
+
+y(AfricanNight)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       -9       Gewinn
+        1       minSorte(AfricanNight)
+GAMS 24.5.4  r54492 Released Oct 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    10/31/15 12:19:43 Page 6
+KaffeeMischungen
+Column Listing      SOLVE Kaffee Using LP From line 58
+
+
+     y  Soviel von Sorte j verkaufen
+
+       -1       SortenSumme(AfricanNight)
+       -0.3     minAnteil(Arabica,AfricanNight)
+       -0.5     minAnteil(Robusta,AfricanNight)
+       -0.1     minAnteil(Excelsa,AfricanNight)
+       -0.5     maxAnteil(Arabica,AfricanNight)
+       -1       maxAnteil(Robusta,AfricanNight)
+       -0.2     maxAnteil(Liberica,AfricanNight)
+       -1       maxAnteil(Excelsa,AfricanNight)
+
+REMAINING ENTRY SKIPPED
+
+---- z  Soviel von Bohne i fuer Sorte j verwenden
+
+z(Arabica,Fernweh)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        1       BohnenSumme(Arabica)
+        1       SortenSumme(Fernweh)
+        1       minAnteil(Arabica,Fernweh)
+        1       maxAnteil(Arabica,Fernweh)
+
+z(Arabica,Excellence)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        1       BohnenSumme(Arabica)
+        1       SortenSumme(Excellence)
+        1       minAnteil(Arabica,Excellence)
+        1       maxAnteil(Arabica,Excellence)
+
+z(Arabica,AfricanNight)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        1       BohnenSumme(Arabica)
+        1       SortenSumme(AfricanNight)
+        1       minAnteil(Arabica,AfricanNight)
+        1       maxAnteil(Arabica,AfricanNight)
+
+REMAINING 13 ENTRIES SKIPPED
+
+---- g  Der erzielte Gewinn
+
+g
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       Gewinn
+
+GAMS 24.5.4  r54492 Released Oct 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    10/31/15 12:19:43 Page 7
+KaffeeMischungen
+Model Statistics    SOLVE Kaffee Using LP From line 58
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS           7     SINGLE EQUATIONS           49
+BLOCKS OF VARIABLES           4     SINGLE VARIABLES           25
+NON ZERO ELEMENTS           115
+
+
+GENERATION TIME      =        0.174 SECONDS      4 MB  24.5.4 r54492 DEX-DEG
+
+
+EXECUTION TIME       =        0.174 SECONDS      4 MB  24.5.4 r54492 DEX-DEG
+GAMS 24.5.4  r54492 Released Oct 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    10/31/15 12:19:43 Page 8
+KaffeeMischungen
+Solution Report     SOLVE Kaffee Using LP From line 58
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   Kaffee              OBJECTIVE  g
+     TYPE    LP                  DIRECTION  MAXIMIZE
+     SOLVER  CPLEX               FROM LINE  58
+
+**** SOLVER STATUS     1 Normal Completion         
+**** MODEL STATUS      1 Optimal                   
+**** OBJECTIVE VALUE           236420.0000
+
+ RESOURCE USAGE, LIMIT          0.547      1000.000
+ ITERATION COUNT, LIMIT        26    2000000000
+
+IBM ILOG CPLEX   24.5.4 r54492 Released Oct 15, 2015 DEG x86 64bit/MacOS X    
+Cplex 12.6.2.0
+
+Space for names approximately 0.00 Mb
+Use option 'names no' to turn use of names off
+LP status(1): optimal
+Cplex Time: 0.08sec (det. 0.11 ticks)
+Optimal solution found.
+Objective :      236420.000000
+
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU Gewinn              .              .              .             1.0000      
+
+  Gewinn  Der erzielte Gewinn
+
+---- EQU maxBohnen  Menge verfuegbarer Bohnen nicht ueberschritten
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
+Arabica         -INF        20000.0000     20000.0000         5.4500      
+Robusta         -INF        12000.0000     12000.0000         6.3300      
+Liberica        -INF         5000.0000      5000.0000         5.0500      
+Excelsa         -INF         3000.0000      3000.0000        12.5500      
+
+---- EQU minSorte  Mindestabsatz einhalten
+
+                       LOWER          LEVEL          UPPER         MARGINAL
+
+Fernweh             10000.0000     10000.0000        +INF           -1.1440      
+Excellence           1000.0000      2400.0000        +INF             .          
+AfricanNight         5000.0000     18000.0000        +INF             .          
+FeuerBraziliens      6000.0000      9600.0000        +INF             .          
+GAMS 24.5.4  r54492 Released Oct 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    10/31/15 12:19:43 Page 9
+KaffeeMischungen
+Solution Report     SOLVE Kaffee Using LP From line 58
+
+
+---- EQU BohnenSumme  Genausoviel vermischen wie gekauft
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
+Arabica           .              .              .             7.9500      
+Robusta           .              .              .             8.4300      
+Liberica          .              .              .             7.9500      
+Excelsa           .              .              .            16.0500      
+
+---- EQU SortenSumme  Genausoviel absetzen wie gemischt
+
+                       LOWER          LEVEL          UPPER         MARGINAL
+
+Fernweh                  .              .              .            -7.9500      
+Excellence               .              .              .            -7.9500      
+AfricanNight             .              .              .            -7.9500      
+FeuerBraziliens          .              .              .            -7.9500      
+
+---- EQU minAnteil  Mindestanteile einhalten
+
+                                LOWER          LEVEL          UPPER         MARGINAL
+
+Arabica .Fernweh                  .              .            +INF            EPS         
+Arabica .Excellence               .              .            +INF             .          
+Arabica .AfricanNight             .          1800.0000        +INF             .          
+Arabica .FeuerBraziliens          .          2040.0000        +INF             .          
+Robusta .Fernweh                  .              .            +INF           -0.4800      
+Robusta .Excellence               .              .            +INF             .          
+Robusta .AfricanNight             .              .            +INF           -0.4800      
+Robusta .FeuerBraziliens          .              .            +INF             .          
+Liberica.Fernweh                  .          1000.0000        +INF             .          
+Liberica.Excellence               .           480.0000        +INF             .          
+Liberica.AfricanNight             .              .            +INF             .          
+Liberica.FeuerBraziliens          .           840.0000        +INF             .          
+Excelsa .Fernweh                  .              .            +INF             .          
+Excelsa .Excellence               .              .            +INF           -8.1000      
+Excelsa .AfricanNight             .              .            +INF           -8.1000      
+Excelsa .FeuerBraziliens          .              .            +INF             .          
+
+---- EQU maxAnteil  maximale Anteile einhalten
+
+                                LOWER          LEVEL          UPPER         MARGINAL
+
+Arabica .Fernweh                -INF        -3000.0000          .              .          
+Arabica .Excellence             -INF         -720.0000          .              .          
+Arabica .AfricanNight           -INF        -1800.0000          .              .          
+Arabica .FeuerBraziliens        -INF        -1800.0000          .              .          
+Robusta .Fernweh                -INF        -1000.0000          .              .          
+Robusta .Excellence             -INF         -720.0000          .              .          
+Robusta .AfricanNight           -INF        -9000.0000          .              .          
+Robusta .FeuerBraziliens        -INF        -5760.0000          .              .          
+Liberica.Fernweh                -INF        -8000.0000          .              .          
+Liberica.Excellence             -INF         -240.0000          .              .          
+GAMS 24.5.4  r54492 Released Oct 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   10/31/15 12:19:43 Page 10
+KaffeeMischungen
+Solution Report     SOLVE Kaffee Using LP From line 58
+
+
+     EQU maxAnteil  maximale Anteile einhalten
+
+                                LOWER          LEVEL          UPPER         MARGINAL
+
+Liberica.AfricanNight           -INF        -3600.0000          .              .          
+Liberica.FeuerBraziliens        -INF        -1080.0000          .              .          
+Excelsa .Fernweh                -INF       -10000.0000          .              .          
+Excelsa .Excellence             -INF        -1200.0000          .              .          
+Excelsa .AfricanNight           -INF       -16200.0000          .              .          
+Excelsa .FeuerBraziliens        -INF        -1920.0000          .              .          
+
+---- VAR x  Soviel von Bohne i kaufen
+
+                LOWER          LEVEL          UPPER         MARGINAL
+
+Arabica           .         20000.0000        +INF             .          
+Robusta           .         12000.0000        +INF             .          
+Liberica          .          5000.0000        +INF             .          
+Excelsa           .          3000.0000        +INF             .          
+
+---- VAR y  Soviel von Sorte j verkaufen
+
+                       LOWER          LEVEL          UPPER         MARGINAL
+
+Fernweh                  .         10000.0000        +INF             .          
+Excellence               .          2400.0000        +INF             .          
+AfricanNight             .         18000.0000        +INF             .          
+FeuerBraziliens          .          9600.0000        +INF             .          
+
+---- VAR z  Soviel von Bohne i fuer Sorte j verwenden
+
+                                LOWER          LEVEL          UPPER         MARGINAL
+
+Arabica .Fernweh                  .          5000.0000        +INF             .          
+Arabica .Excellence               .              .            +INF            EPS         
+Arabica .AfricanNight             .          7200.0000        +INF             .          
+Arabica .FeuerBraziliens          .          7800.0000        +INF             .          
+Robusta .Fernweh                  .          3000.0000        +INF             .          
+Robusta .Excellence               .              .            +INF           -0.4800      
+Robusta .AfricanNight             .          9000.0000        +INF             .          
+Robusta .FeuerBraziliens          .              .            +INF           -0.4800      
+Liberica.Fernweh                  .          2000.0000        +INF             .          
+Liberica.Excellence               .          1200.0000        +INF             .          
+Liberica.AfricanNight             .              .            +INF            EPS         
+Liberica.FeuerBraziliens          .          1800.0000        +INF             .          
+Excelsa .Fernweh                  .              .            +INF           -8.1000      
+Excelsa .Excellence               .          1200.0000        +INF             .          
+Excelsa .AfricanNight             .          1800.0000        +INF             .          
+Excelsa .FeuerBraziliens          .              .            +INF           -8.1000      
+GAMS 24.5.4  r54492 Released Oct 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   10/31/15 12:19:43 Page 11
+KaffeeMischungen
+Solution Report     SOLVE Kaffee Using LP From line 58
+
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR g                 -INF       236420.0000        +INF             .          
+
+  g  Der erzielte Gewinn
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+GAMS 24.5.4  r54492 Released Oct 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   10/31/15 12:19:43 Page 12
+KaffeeMischungen
+E x e c u t i o n
+
+
+----     59 VARIABLE x.L  Soviel von Bohne i kaufen
+
+Arabica  20000.000,    Robusta  12000.000,    Liberica  5000.000,    Excelsa   3000.000
+
+
+----     59 VARIABLE x.M  Soviel von Bohne i kaufen
+
+                      ( ALL       0.000 )
+
+
+
+EXECUTION TIME       =        0.004 SECONDS      3 MB  24.5.4 r54492 DEX-DEG
+
+
+USER: Course License                                 S150529/0001AO-GEN
+      RWTH Aachen University, Operations Research               DC10378
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      /Users/JanUthoff/Documents/Gams/Exercise_02/kaffeeErrors.gms
+Output     /Users/JanUthoff/Documents/Gams/Exercise_02/kaffeeErrors.lst

@@ -1,0 +1,207 @@
+GAMS 24.5.4  r54492 Released Oct 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    11/02/15 09:38:48 Page 1
+Zero-One-Knapsack Assignment with capacity constraints
+C o m p i l a t i o n
+
+
+   2   
+INCLUDE    /Users/JanUthoff/Documents/Gams/Exercise_02/ckp-data1.gms
+GAMS 24.5.4  r54492 Released Oct 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    11/02/15 09:38:48 Page 2
+ckp-data1
+C o m p i l a t i o n
+
+
+   5   
+   6  * obj = 25
+   7   
+   8  Set
+   9  i items / i1*i10  / ;
+  10  Scalar b / 20  / ;
+  11  Parameter p(i) profits / i1 5
+  12  i2 4
+  13  i3 4
+  14  i4 6
+  15  i5 4
+  16  i6 7
+  17  i7 4
+  18  i8 5
+  19  i9 7
+  20  i10 3
+  21  / ;
+  22  Parameter a(i) weights / i1 7
+  23  i2 4
+  24  i3 6
+  25  i4 4
+  26  i5 5
+  27  i6 4
+  28  i7 3
+  29  i8 4
+  30  i9 6
+  31  i10 7
+  32  / ;
+  33  alias(i,j);
+  34   
+  35  Scalar u upper bound on number of items / 4 / ;
+  36  Scalar l lower bound on number of items / 3 / ;
+  37   
+  38  Variables z total profit;
+  39   
+  40  ************ Fügen Sie hier die weiteren Variablen und Nebenbedingungen ein
+  41   
+  42    Binary Variables
+  43      x(i)  wahr, genau dann wenn der Gegenstand i eingepackt wird;
+  44   
+  45    Equations
+  46      Profit          Der gesamte erzielte Profit im Sack
+  47      mindestAnzahl   Die minimale Anzahl an Gegenständen im Rucksack
+  48      maxAnzahl       Die maximale Anzahl an Gegenständen im Rucksack
+  49      Capacity        Beschränkung der Inhalte auf die maximale Kapazität des Rucksacks;
+  50   
+  51      Profit ..       z=e=sum(i, x(i)*p(i));
+  52      mindestAnzahl.. l =l= sum(i, x(i));
+  53      maxAnzahl..     u =g= sum(i, x(i));
+  54      Capacity..      b =g= sum(i, x(i)*a(i));
+  55   
+  56   
+  57   
+GAMS 24.5.4  r54492 Released Oct 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    11/02/15 09:38:48 Page 3
+ckp-data1
+C o m p i l a t i o n
+
+
+  58   
+  59   
+  60   
+  61  ************ Sorgt dafuer, dass alle Nebenbedingungen in das Modell integriert wird
+  62  ************ und dann gelöst wird.
+  63   
+  64  Model knapsack /all/ ;
+  65  knapsack.limCol = 0;
+  66  knapsack.limRow = 0;
+  67  solve knapsack using mip maximizing z ;
+  68   
+  69   
+  70   
+
+**** LIST OF STRAY NAMES - CHECK DECLARATIONS FOR SPURIOUS COMMAS
+**** STRAY NAME genau OF TYPE VAR  
+GAMS 24.5.4  r54492 Released Oct 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    11/02/15 09:38:48 Page 4
+ckp-data1
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  /Users/JanUthoff/Documents/Gams/Exercise_02/CapacitatedKnapsack.gms
+     2        3 INCLUDE        1       3  ./Users/JanUthoff/Documents/Gams/Exercise_02/ckp-data1.gms
+
+
+COMPILATION TIME     =        0.018 SECONDS      3 MB  24.5.4 r54492 DEX-DEG
+GAMS 24.5.4  r54492 Released Oct 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    11/02/15 09:38:48 Page 5
+ckp-data1
+Model Statistics    SOLVE knapsack Using MIP From line 67
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS           4     SINGLE EQUATIONS            4
+BLOCKS OF VARIABLES           2     SINGLE VARIABLES           11
+NON ZERO ELEMENTS            41     DISCRETE VARIABLES         10
+
+
+GENERATION TIME      =        0.139 SECONDS      4 MB  24.5.4 r54492 DEX-DEG
+
+
+EXECUTION TIME       =        0.139 SECONDS      4 MB  24.5.4 r54492 DEX-DEG
+GAMS 24.5.4  r54492 Released Oct 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    11/02/15 09:38:48 Page 6
+ckp-data1
+Solution Report     SOLVE knapsack Using MIP From line 67
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   knapsack            OBJECTIVE  z
+     TYPE    MIP                 DIRECTION  MAXIMIZE
+     SOLVER  CPLEX               FROM LINE  67
+
+**** SOLVER STATUS     1 Normal Completion         
+**** MODEL STATUS      1 Optimal                   
+**** OBJECTIVE VALUE               25.0000
+
+ RESOURCE USAGE, LIMIT          0.518      1000.000
+ ITERATION COUNT, LIMIT         4    2000000000
+
+IBM ILOG CPLEX   24.5.4 r54492 Released Oct 15, 2015 DEG x86 64bit/MacOS X    
+Cplex 12.6.2.0
+
+Space for names approximately 0.00 Mb
+Use option 'names no' to turn use of names off
+MIP status(101): integer optimal solution
+Cplex Time: 0.15sec (det. 0.07 ticks)
+Fixing integer variables, and solving final LP...
+Fixed MIP status(1): optimal
+Cplex Time: 0.00sec (det. 0.00 ticks)
+Proven optimal solution.
+
+MIP Solution:           25.000000    (4 iterations, 0 nodes)
+Final Solve:            25.000000    (0 iterations)
+
+Best possible:          25.000000
+Absolute gap:            0.000000
+Relative gap:            0.000000
+
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU Profit              .              .              .             1.0000      
+---- EQU mindestAn~        -INF           -4.0000        -3.0000          .          
+---- EQU maxAnzahl         -4.0000        -4.0000        +INF             .          
+---- EQU Capacity         -20.0000       -18.0000        +INF             .          
+
+  Profit  Der gesamte erzielte Profit im Sack
+  mindestAnzahl  Die minimale Anzahl an Gegenständen im Rucksack
+  maxAnzahl  Die maximale Anzahl an Gegenständen im Rucksack
+  Capacity  Beschränkung der Inhalte auf die maximale Kapazität des Rucksacks
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR z                 -INF           25.0000        +INF             .          
+
+  z  total profit
+GAMS 24.5.4  r54492 Released Oct 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    11/02/15 09:38:48 Page 7
+ckp-data1
+Solution Report     SOLVE knapsack Using MIP From line 67
+
+
+---- VAR x  wahr
+
+           LOWER          LEVEL          UPPER         MARGINAL
+
+i1           .              .             1.0000         5.0000      
+i2           .              .             1.0000         4.0000      
+i3           .              .             1.0000         4.0000      
+i4           .             1.0000         1.0000         6.0000      
+i5           .              .             1.0000         4.0000      
+i6           .             1.0000         1.0000         7.0000      
+i7           .              .             1.0000         4.0000      
+i8           .             1.0000         1.0000         5.0000      
+i9           .             1.0000         1.0000         7.0000      
+i10          .              .             1.0000         3.0000      
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+
+
+EXECUTION TIME       =        0.005 SECONDS      2 MB  24.5.4 r54492 DEX-DEG
+
+
+USER: Course License                                 S150529/0001AO-GEN
+      RWTH Aachen University, Operations Research               DC10378
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      /Users/JanUthoff/Documents/Gams/Exercise_02/CapacitatedKnapsack.gms
+Output     /Users/JanUthoff/Documents/Gams/Exercise_02/CapacitatedKnapsack.lst
