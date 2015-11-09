@@ -1,0 +1,100 @@
+\documentclass[10pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\usepackage{blindtext}
+\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,shadows,positioning,shapes}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{multicol}
+\setlength{\columnsep}{1cm}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{subfiles}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{wrapfig}
+
+\title{GAMS-Programming}
+\begin{document}
+
+\maketitle
+
+
+  A casual gams extends of various section with a spacific order. In the
+  following these sections are summed up with both, syntax and semantics.
+  The \emph{GAMS}-program has one of the following styles.
+
+  \begin{enumerate}
+    \item \nameref{data}:
+    \begin{enumerate}
+      \item \nameref{data:declarations}
+      \item \nameref{data:ParaDeclaNDef}
+      \item \nameref{data:assingments}
+      \item \nameref{data:displays}
+    \end{enumerate}
+    \item \nameref{model}
+    \begin{enumerate}
+      \item \nameref{model:VarDec}
+      \item \nameref{model:EquationDec}
+      \item \nameref{model:EquationDef}
+      \item \nameref{model:ModelDefinition}
+    \end{enumerate}
+    \item \nameref{solution}
+    \begin{enumerate}
+      \item \nameref{solution:solve}
+      \item \nameref{solution:displays}
+    \end{enumerate}
+  \end{enumerate}
+  
+
+
+    \textcolor{red}{The second style of a \emph{GAMS}-program is under
+    construction}
+
+
+
+  \section{Data}
+  \label{data}
+    \subsection{Set Declarations}
+    \label{data:declarations}
+
+    \subsection{Parameter declarations and Definitions}
+    \label{data:ParaDeclaNDef}
+
+    \subsection{Assignments}
+    \label{data:assingments}
+
+    \subsection{Displays}
+    \label{data:displays}
+    
+  \section{Model}
+  \label{model}
+    \subsection{Variable Declaration}
+    \label{model:VarDec}
+
+    \subsection{Equation Declaration}
+    \label{model:EquationDec}
+    
+    \subsection{Equation Definition}
+    \label{model:EquationDef}
+
+    \subsection{Model Definition}
+    \label{model:ModelDefinition}
+
+  \section{Solution}
+  \label{solution}
+    
+    \subsection{Solve}
+    \label{solution:solve}
+    
+    \subsection{Displays}
+    \label{solution:displays}
+
+\end{document}
+
