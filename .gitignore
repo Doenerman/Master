@@ -1,1 +1,7 @@
+# mac files
 .DS_Store
+
+# latex files
+*.aux
+*.log
+*.out
