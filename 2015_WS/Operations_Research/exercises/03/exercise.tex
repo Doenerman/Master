@@ -1,0 +1,104 @@
+\documentclass[10pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\usepackage{blindtext}
+\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,shadows,positioning,shapes}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{subfiles}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{wrapfig}
+
+\begin{document}
+
+\section*{Aufgabe 8}
+  \begin{equation}
+    \begin{array}{r l l}
+      \max & \sum\limits_{i=1}^{8} \sum\limits_{j=1}^{8} x_{i,j}& \\
+      s.t.& x_{i,j}(x_{i-2,j-1} + x_{i-1,j-2} + x_{i+1,j-1} + x_{i+2,j-1} & \\
+          & x_{i-2,j+1} + x_{i-1,j+2} + x_{i+1,j+1} + x_{i+2,j+1})=0 & \forall i,
+      \forall j \\
+          & x_{i,j} \geq 0&
+    \end{array}
+  \end{equation}
+
+  Die boolche Variable $x_{i,j}$ besitz den Wert $1$ genau dann,
+  wenn an der Position $(i,j)$ auf dem Schachbrett ein Springer steht. Für alle
+  $i,j\leq 0,\,i,j\geq 8$ folgt $x_{i,j}=0$. Dies dient für eine vereinfachte
+  Darstellung des LPs.
+
+  Die erste Gleichung legt fest, dass wenn an der Stelle $(i,j)$ ein Springer steht
+  an den umliegenden Springerpositionen kein Springer steht, oder dass an der
+  Position $(i,j)$ sonst kein Springer steht. Ein Teil des Produktes muss $0$
+  sein um diese Gleichung für jedes Feld zu erfüllen.
+
+  In der Zielfunktion sollen möglichst viele Springer auf das Feld gestellt
+  werden, weshalb über alle Positionen auf dem Feld die $x_{i,j}$ summiert
+  werden.
+
+
+\section*{Aufgabe 9}
+  \begin{equation}
+    \begin{array}{r l l}
+      \min \sum_{i=0}^{n} y_{i}
+      s.t. & x_{v,j} \cdot x_{u,j} = 0 & \forall (u,v)\in E,\, \forall j\in
+            \{1,...,n\} \\
+            & x_{v,j} \leq y_{j} & \forall v\in V, \forall j\in \{0,...,n\}
+    \end{array}
+  \end{equation}
+
+  Die boolsche Variable $x_{v,j}$ ist genau dann $1$, wenn der Knoten $v$ die
+  Farbe $j$ besitzt.
+  Die boolsche Variable $y_{j}$ ist genau dann $1$, wenn es einen Knoten gibt,
+  der die Farbe $j$ besitzt.
+
+  Die erste Gleichung sorgt dafür, dass es keine zwei Knoten gibt, die die
+  gleiche Farbe besitzen.
+
+  Die zweite Gleichung garantiert, dass falls ein Knoten die Farbe $j$ besitzt
+  die Variable $y$ auch mindestens den Wert $1$ besitzt.
+
+
+\section*{Aufgabe 10}
+  \begin{equation}
+    \begin{array}{r l l}
+      \min  & 1.8\cdot y_{s1} + 2.5\cdot y_{s2} + 2.5\cdot y_{s3} &\\
+            & + 0.6\cdot x_{s1,o1} + 0.5\cdot x_{s1,o2} +3.9\cdot x_{s1,o3} 
+                + 3.6\cdot x_{s1,o4} & \\
+            & + 1.4\cdot x_{s2,o1} + 2\cdot x_{s2,o2} + 0.9\cdot x_{s2,o3}
+                + 2.8\cdot x_{s2,o4} & \\
+            & + 2.4\cdot x_{s3,o1} + 1.8\cdot x_{s3,o2} + 1.2 \cdot x_{s3,o3} 
+              + 1.1 \cdot x_{s3,o4} & \\
+      s.t. & \sum\limits_{i\in \{s1,s2,s3\}} x_{i,o} \geq 1 & \forall o \in 
+              \{o1, o2, o3\} \\
+           & \sum\limits_{o\in \{o1,o2.o3\}} x_{i,o} \leq 2 & \forall i\in
+              \{s1,s2,s3\} \\
+           & x_{i,o} \leq y_{i} & \forall i \in \{s1,s2,s3\}, \forall o\in 
+              \{o1,o2,o3\}
+
+    \end{array}
+  \end{equation}
+
+  Die boolsche Variable $x_{i,o}$, wobei $i$ die Raffinerie bezeichnet und $o$
+  das Ölfeld, ist genau dann $1$, wenn die Raffinerie $i$ gebaut ist, um das
+  Ölfeld $o$ zu nutzen.
+
+  Die boolsche Variable $y_{i}$ ist genau dann $1$, wenn die Raffinerie $i \in
+  \{s1,s2,s3\}$ gebaut wird.
+  
+  Die erste Gleichung fordert, dass jedes Ölfeld mit wenigstens einer Raffinerie
+  verbunden ist.
+  Die zweite Gleichung begrenzt die Anzahl der Ölfelder die mit einer Raffinerie
+  verbunden mit zwei begrenzt ist.
+
+\end{document}
+
