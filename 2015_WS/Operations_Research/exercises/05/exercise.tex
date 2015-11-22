@@ -56,6 +56,27 @@
     \end{enumerate}
 
 
+\section*{Aufgabe 2}
+  \subsection*{a}
+    \begin{displaymath}
+      \begin{array}{l l c r r }
+        \min & x_{k} + 12 & & &  \\
+        s.t. & x_{vi} + 4 & \leq & x_{t} & \forall i\in \{1,2\} \\
+             & x_{hi} + 8 & \leq & x_{t} & \forall i\in \{1,2\} \\
+             & x_{t} + 20 & \leq & x_{k} & \\
+             & x_{vi} + x_{hi} & \geq & 12 & \forall i\in\{1,2\}
+      \end{array}
+    \end{displaymath}
+
+    Vorder-/Hinterpfoten -> Torso -> Kopf
+
+    \begin{enumerate}
+      \item $x_{vi}\in \mathbb{N}$ Startzeitpunkt der $i$-ten Vorderpfote
+      \item $x_{hi}\in \mathbb{N}$ Startzeitpunkt der $i$-ten Hinterpfote
+      \item $x_{t}\in \mathbb{N}$ Startzeitpunkt des Torsos
+      \item $x_{k}\in \mathbb{N}$ Startzeitpunkt des Kopfes
+    \end{enumerate}
+
 
 \end{document}
 
