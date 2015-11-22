@@ -1,0 +1,61 @@
+\documentclass[10pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\usepackage{blindtext}
+\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,shadows,positioning,shapes}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{subfiles}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{wrapfig}
+
+\begin{document}
+
+\section*{Aufgabe 1}
+  \subsection*{a}
+    \begin{displaymath}
+      \begin{array}{ r r c l l}
+        \min & e & & & \\
+        s.t. & \sum\limits_{j\in J} x_{ij} & \leq & b_i & \forall i\in I \\
+             & \sum\limits_{i\in I} x_{ij} & \geq & d_i & \forall j\in J \\
+             & x_{ij} & \leq & e & \forall i\in I\, \forall j\in J
+      \end{array}
+    \end{displaymath}
+    \begin{enumerate}
+      \item $i\in I$ Zentralbanken
+      \item $j\in J$ Geschäftsbanken
+      \item $x_{ij}\in \mathbb{N}$ Geld von Zentralbank $i\in I$ 
+            an Geschäftsbank $j\in J$
+      \item $b_i\in \mathbb{N}$ maximale druckbares Geld in Zentralbank $i\in I$
+      \item $d_i\in \mathbb{N}$ minmale Menge an Geld, die Geschäftsbank $j\in J$
+            erhalten soll
+    \end{enumerate}
+
+  \subsection*{b}
+    \begin{displaymath}
+      \begin{array}{ r r c l l }
+        \min & \sum\limits_{i\in I}\sum\limits_{j\in J} b_{ij} & & & \\
+        s.t. & \sum\limits_{j\in J}b_{ij}\cdot x_{ij} & \leq & b_i & \forall i\in I \\
+             & \sum\limits_{i\in I}b_{ij}\cdot x_{ij} & \geq & d_i & \forall j\in J \\
+      \end{array}
+    \end{displaymath}
+
+    Zusätzliche Variable zu Aufgabe a
+    \begin{enumerate}
+      \item $b_{ij} \in \{0,1\}$ ist genau dann $1$, wenn Zentralbank $i\in I$
+        an Geschäftsbank $j\in J$ liefert
+    \end{enumerate}
+
+
+
+\end{document}
+
