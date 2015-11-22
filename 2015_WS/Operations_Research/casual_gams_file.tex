@@ -12,6 +12,7 @@
 \usepackage{epstopdf}
 \usepackage{hyperref}
 \usepackage{listings}
+\usepackage{ascii}
 \usepackage{subfiles}
 \usepackage[utf8]{inputenc}
 \usepackage{float}
@@ -20,7 +21,7 @@
 \usepackage{caption}
 \usepackage{wrapfig}
 
-\title{GAMS-Programming}
+\title{\text{\asciifamily GAMS-Programming}}
 \begin{document}
 
 \maketitle
@@ -28,7 +29,7 @@
 
   A casual gams extends of various section with a spacific order. In the
   following these sections are summed up with both, syntax and semantics.
-  The \emph{GAMS}-program has one of the following styles.
+  The \text{\asciifamily GAMS}-program has one of the following styles.
 
   \begin{enumerate}
     \item \nameref{data}:
@@ -54,7 +55,7 @@
   
 
 
-    \textcolor{red}{The second style of a \emph{GAMS}-program is under
+  \textcolor{red}{The second style of a \text{\asciifamily GAMS}-program is under
     construction}
 
 
@@ -63,26 +64,90 @@
   \label{data}
     \subsection{Set Declarations}
     \label{data:declarations}
+      In the \emph{set}-declaration the different sets that are needed to solve
+      the LP are declared. This means here you name all the different sets that
+      are requiered to solve the LP. 
+      \begin{lstlisting}
+        Sets
+            i   1 / 2 / 3 /
+            j   berlin / aachen / hamburg / ;
+      \end{lstlisting}
+
+      In \text{\asciifamily GAMS} there are some rules for \text{\asciifamily Sets}.
+      \begin{enumerate}
+        \item after each element of a set a / must follow
+        \item end the \text{\asciifamily {Sets}}-section with a ";"
+      \end{enumerate}
+
+      
 
     \subsection{Parameter declarations and Definitions}
     \label{data:ParaDeclaNDef}
+      In the \emph{parameter}-declaration functions of the LP are declared and
+      defined. These functions mostly depend on at least one set. For the input
+      (set elements) the \emph{parameter} are fixed values.
+
+      \begin{lstlisting}
+        Parameters
+            f(x)    some function
+              /     x1     1
+                    x2     2 / ;
+      \end{lstlisting}
+      The rules for \text{\asciifamily Parameters} are the following:
+      \begin{enumerate}
+        \item split different paramteters with /
+        \item end the \text{\asciifamily Parameters}-section with ";"
+      \end{enumerate}
 
     \subsection{Assignments}
     \label{data:assingments}
+      \textcolor{red}{Under Construction}
 
     \subsection{Displays}
     \label{data:displays}
+      \textcolor{red}{Under Construction}
     
   \section{Model}
   \label{model}
     \subsection{Variable Declaration}
     \label{model:VarDec}
+    In this part of the program \emph{variables} can be declared. The
+    \emph{variables} represent the \emph{decision variables} of the LP.
+      \begin{lstlisting}
+        Variables
+            x(i)  some function depending on i
+      \end{lstlisting}
 
     \subsection{Equation Declaration}
     \label{model:EquationDec}
+      The \emph{equations} of a \text{\asciifamily GAMS}-program represent the
+      constraints of the LP. But before defining the different constraints they
+      are named. In case all equations are named a ";" marks the point where the
+      equations are defined. 
+      \begin{lstlisting}
+        Equations
+            equationName     A short description about the equation;
+      \end{lstlisting}
     
     \subsection{Equation Definition}
     \label{model:EquationDef}
+      After a \emph{Equation} is declared it can be defined. To do so the
+      following three expressions can be used:
+      \begin{table}[h]
+        \centering
+        \begin{tabular}{ c | c }
+          $\leq$ & =l= \\
+          $=$ & =e= \\
+          $\geq$ & =g= \\
+        \end{tabular}
+      \end{table}
+      The definition of the equation are directly below the declaration of the
+      \emph{equation}. The ";" is used to seperated the different equation. In
+      order to define a equation the following syntax is used:
+      \begin{lstlisting}
+            equationName ..   z =g= 0;
+      \end{lstlisting}
+
 
     \subsection{Model Definition}
     \label{model:ModelDefinition}
