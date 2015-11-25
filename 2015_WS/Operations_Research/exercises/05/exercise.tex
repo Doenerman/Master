@@ -78,5 +78,50 @@
     \end{enumerate}
 
 
+  \subsection*{b}
+    \begin{displaymath}
+      \begin{array}{ l l c r l }
+        \min  & 44 +  d_1 + d_2& & & \\
+        s.t.  & \sum\limits_{x\in A} b_{x1} &\geq& 1 & \\
+              & \sum\limits_{x\in A} b_{x2} &\geq& 1 & \\
+              & \sum\limits_{x\in A} b_{x3} &\geq& 1 & \\
+              & \sum\limits_{x\in A} b_{x4} &=& 1 & \\
+              & \sum\limits_{x\in A} b_{x5} &\leq& 1 & \\
+              & \sum\limits_{x\in A} b_{x6} &\leq& 1 & \\
+              & \sum\limits_{1\leq i \leq 6} b_{xi} &=& 1 & \forall x\in A \\
+              & b_{xi} + b_{yi} &\leq& 1 & \forall x\in A^{'},\forall y\in A^{''},
+                \forall i\in \{1,..,6\} \\
+              & \sum\limits_{i=0}^{j-1} b_{xi} &\geq& b_{tj} & \forall x\in A^{'}\cup
+                A^{''}, j\in\{1,..,6\} \\
+              & \sum\limits_{i=0}^{j-1} b_{ti} &\geq& b_{kj} &\forall
+                j\in\{1,..,6\} \\
+              & \sum\limits_{i=i_1}^{i_2} 1 &\leq& d_1 & \forall
+                b_{xi_1},b_{x^{'}i_2} \text{ mit } x,x^{'}\in A^{'} \\
+              & \sum\limits_{i=i_1}^{i_2} 1 &\leq& d_2 & \forall
+                b_{xi_1},b_{x^{'}i_2} \text{ mit } x,x^{'}\in A^{''}
+%              & b_{xi} &\leq& e_{xi} & \forall x\in A^{'}, \forall
+%                i\in\{1,..,6\} \\
+%              & b_{xi} &\geq& f_{xi} & \forall x\in A^{'}, \forall i\in
+%                \{1,..,6\} \\
+%              & b_{xi} &\leq& e_{xi}^{'} & \forall x\in A^{''}, \forall i\in
+%                \{1,..,6\} \\
+%              & b_{xi} &\geq& f_{xi}^{'} & \forall x\in A^{''}, \forall i\in
+%                \{1,..,6\}
+      \end{array}
+    \end{displaymath}
+    
+    Zusätzliche Variablen zu Aufgabe a
+    \begin{enumerate}
+      \item $b_{xi} \in \{0,1\}$ genau dann $1$, wenn $x\in A,\,A:=
+        \{\text{Vorderpfote}_1,\text{ Vorderpfote}_2,\text{
+        Hinterpfote}_1,\\\text{ Hinterpfote}_2,\text{ Torso},\text{ Kopf}\}$ als
+        $i$-tes gebaut wird
+      \item $A^{'}\subset A,
+        A^{'}=\{\text{Vorderpfote}_1,\,\text{Vorderpfote}_2\}$
+      \item $A^{''} \subset
+        A,\,A^{''}=\{\text{Hinterpfote}_1,\,\text{Hinterpfote}_2\}$
+    \end{enumerate}
+
+
 \end{document}
 
