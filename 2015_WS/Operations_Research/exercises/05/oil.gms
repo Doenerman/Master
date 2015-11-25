@@ -1,10 +1,29 @@
 $Title oil
 
-$include oilData1.gms
+$include oilData3.gms
 
-Variables  z   Zielfunktionsvariable ;
+Variables  
+  z   Zielfunktionsvariable ;
 
-* Im Folgenden das fehlende Modell einfuegen *
+Binary Variables
+  x(s,o) liefert s an o
+  y(s)   s wird gebaut;
+
+Parameter 
+  dist(s,o)   Distanz von s nach o;
+  dist(s,o) = sqrt( sqr(xcoord(s) - xcoord(o) )  + sqr(ycoord(s) - ycoord(o)) );
+
+Equations
+  a(o)        jede Plattform muss einmal benutzt werden
+  q(s)        keine Raffiniere darf mehr als zwei mal saugen
+  bau(s,o)    muss s gebaut werden
+  ziel        Kostenfunktion;
+
+  a(o)..        sum(s,x(s,o))=e=1;
+  q(s)..        sum(o, x(s,o))=l=b;
+  bau(s,o)..    x(s,o)=l=y(s);
+  ziel..        z=e=sum(s, y(s)*f(s) +  sum(o, x(s,o)*c*dist(s,o)));
+  
 
 
 Model oil / all / ;
@@ -15,6 +34,5 @@ Solve oil using mip minimizing z;
 
 display x.l;
 display y.l;
-
   
 
