@@ -20,7 +20,7 @@
 
 \begin{document}
 
-  \section*{Aufgabe 1}
+  \section*{Aufgabe 19}
     \subsection*{a}
       \begin{displaymath}
         \begin{array}{ r r c l l }
@@ -86,6 +86,38 @@
       es ist ebenso egal, bei welcher Station begonnen werden muss.
 
       
+  \section*{Aufgabe 20}
+    \subsection*{a}
+      \begin{displaymath}
+        \begin{array}{ l l c r r }
+          \min & \sum\limits_{i\in\{1,...,n\}}\sum\limits_{j\in
+                \{1,...,m\},j\neq i} x_{ij}\cdot d_{ij} & & & \\
+          s.t. & \sum\limits_{j\in L_{k}} x_{j}& \geq & d_{k} & \forall k \in
+                  \{1,...,m\}\\
+               & \sum\limits_{i\in\{1,...,n\}} x_{1i} &=& 1 & \\
+               & \sum\limits_{i\in\{1,...,n\}} x_{i1} &=& 1 & \\
+               & \sum\limits_{i\in\{1,...,n\}} x_{ij} &=& x_{j} & \forall
+                  j\in\{1,...,n\} \\
+               & \sum\limits_{i\in\{1,...,n\}} x_{ji} &=& x_{j} & \forall
+                  j\in\{1,...,n\} \\
+        \end{array}
+      \end{displaymath}
+
+      Die boolsche Variable $x_{ij}$ ist genau dann $1$, wenn in der Stadt $i$
+      ein Konzert gespielt wird und als nächstes in der Stadt $j$, wodurch die
+      Kosten $d_{ij}$ anfallen.
+      Die boolsche Variable $x_{i}$ ist genau dann $1$, wenn während der Tour
+      in der Stadt $i$ ein Konzert gespielt wird.
+
+      In der Zielfunktion werden alle Kosten aufsummiert die tatsächlich
+      anfallen, also werden Kosten genau dann aufsummiert, wenn die Strecke
+      $d_{ij}$ tatsächlich genutzt wird.
+      Die erste Nebenbedingung sagt aus, dass die Anzahl der Konzert in einem
+      Land $k$ mindestens $d_{k}$ sein muss. Hierfür wird über alle Städte in
+      $k$ summiert und für jedes in Land $k$ stattfinde Konzert $1$ addiert.
+      Die zweite Nebenbedingung legt die Stadt $1$ als Startpunkt der Tour fest.
+      Die dritte Nebenbedingung legt die Stadt $1$ als die Stadt fest, in
+      welcher die Tour endet.
 
 \end{document}
 
