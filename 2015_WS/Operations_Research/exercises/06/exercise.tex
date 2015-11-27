@@ -1,0 +1,88 @@
+\documentclass[10pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\usepackage{blindtext}
+\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,shadows,positioning,shapes}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{subfiles}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{wrapfig}
+
+\begin{document}
+
+  \section*{Aufgabe 1}
+    \subsection*{a}
+      \begin{displaymath}
+        \begin{array}{ r r c l l }
+          \min & d_{max} & & & \\
+          s.t. & \sum\limits_{j\in \{1,...,n\}} x_{ij} & = & 1 & \forall 
+            i\in \{1,..,n\}\\
+            & x_{ji}\cdot d_{ji} &\leq& d_{max} & \forall i,j \in \{1,...,n\}, i\neq j \\
+        \end{array}
+      \end{displaymath}
+      \begin{displaymath}
+        x_{ij}\in\{0,1\}
+      \end{displaymath}
+
+      Die boolsche Variable $x_{ij}$ ist genau dann $1$, wenn ein Bus von der
+      Station $i\in \{1,...n\}$ nach $j \in \{1,...,n\}$ fährt, wobei $i\neq j$
+      gilt.
+
+      Die erste Nebenbedingung garantiert, dass jede Station genau einmal angefahren
+      wird. In der zweiten Nebenbedingung wird die längste Distanz unter den
+      verwendeten Distanzen gesucht. Welche dann, laut Zielfunktion, minimiert
+      wird.
+
+    \subsection*{b}
+      \begin{displaymath}
+        \begin{array}{ r r c l l }
+          \min & d_{max} & & & \\
+          s.t. & \sum\limits_{j\in \{1,...,n\}} x_{ij} & = & 1 & \forall 
+            i\in \{1,..,n\}\\
+            & x_{ij}\cdot + x_{jk} & \leq &1 + x_{ik}^{\prime} & \forall
+                i,j,k \in \{1,...,n\} \\
+            & x_{ij}^{\prime}\cdot d_{ij}^{\prime} + x_{jk} \cdot d_{jk}&\leq&
+              d_{max} & \forall i,j,k \in \{1,...,n\}, i\neq j \\
+        \end{array}
+      \end{displaymath}
+      \begin{displaymath}
+        x_{ij},x_{ij}^{\prime}\in\{0,1\}, d_{ij}^{\prime} \geq 0
+      \end{displaymath}
+
+      Die boolsche Variable $x_{ij}^{\prime} \in \{0,1\}$ ist genau dann $1$,
+      wenn ein Bus von der Station $i \in \{1,...,n\}$ über eine weitere Station 
+      zu der Station $j\in \{1,...,n\}$ fährt. Die Variable $d_{ij}^{\prime} \in
+      \mathbb{R}^{+}$ stellt die Distanz einer Strecke von $i \in \{1,...,n\}$
+      nach $k\in\{1,...,n\}$ mit genau einer beliebigen Station $j\in
+      \{1,...,n\}$ dazwischen. 
+
+      Die ersten Nebenbedingung ist wie im im obrigen Aufgabenteil. Die zweite
+      Nebenbedingung sucht nacht Stationen, die aufeinander folgen. Hierfür wird
+      die neue Variable $x_{ij}^{\prime}$ wie oben beschrieben verwendet.
+      Sollten sollte von $i$ über $j$ nach $k$ gefahren werden, mit
+      $i,j,k\in\{1,...,n\}$, dann gilt $x_{ij}=x_{jk}=1$, also $x_{ij}+x_{jk}=2$
+      woraus $x_{ik}^{\prime}=1$ folgt. Sollte $x_{ij} \neq x_{jk}$ oder
+      $x_{ij}=x_{jk}=0$ sein, so bilden die Stationen offensichtlich keine
+      Verbindung und $x_{ik}^{\prime}$ muss nicht auf $1$ gesetzt werden. Da es
+      sich hierbei um ein Minimierungsproblem handelt und $x_{ik}^{\prime}$
+      indirekt mit in die Zielfunktion einfließt wird dieses dann auch nicht auf
+      $1$ gesetzt.
+
+      Die Idee des LPs besteht also darin zu jeder Station eine Vorgängerstation
+      zu finden. Da es sich um eine Rundtour handelt gibt es keine Ausnahme und
+      es ist ebenso egal, bei welcher Station begonnen werden muss.
+
+      
+
+\end{document}
+
