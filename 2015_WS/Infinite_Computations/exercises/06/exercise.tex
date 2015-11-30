@@ -165,8 +165,24 @@
       \{q_0,q_1,q_2,q_4,q_5\} \\
       \}$
 
-    
-      
+\section*{29}
+  Let $F_i\in \mathcal{F}$ be the set of states that recognize the word
+  $w=a_i^{\omega}$. It is obvious that $\mathcal{A}$ recognizes $L_n$.
 
+  Assume that $\mathcal{A}^\prime$ $L_n$ with $\vert
+  \mathcal{F}\vert  < n$ also recognize $L_n$. So there must be an $i$ such
+  that the set $F_i$ recognizes both $a_i^{\omega}$ and $a_j^{\omega},j\neq i$,
+  otherwise some word $a_j^\omega \in L_n$ would not be recognized.
+  Because $\mathcal{A}$ is Staiger-Wagner recognize $L_n$, recognizing
+  $a_i^\omega$ means to find a $F\in \mathcal{F}$, with $Occ(\rho)=F$ for a
+  deterministic run $\rho$ on $a_i^\omega$. Let be $F^\prime =F_i\cup F_j$,
+  $F^\prime \in \mathcal{F}$ and $F_i,F_j\not\in \mathcal{F}$. So
+  $Occ(\rho)\overset{!}{=}F^\prime$ for the word $w=a_i^\omega$. But
+  $Occ(\rho)\neq F^\prime$ for $w=a_i^\omega$, otherwise would words of the form
+  $(a_i+a_j)^\omega$ also
+  be recognized, which are obviously not in $L_n$. So $Occ(\rho)\not\in
+  \mathcal{F}$. Contradiction!
+  
+  
 \end{document}
 
