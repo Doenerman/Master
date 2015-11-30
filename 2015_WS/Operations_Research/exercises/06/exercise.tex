@@ -125,5 +125,30 @@
       von $d_{ij}=d_{ji}$ ausgegangen worden ist, muss an dieser Stelle somit
       keine Veränderung vorgenommen werden.
 
+
+  \section*{Aufgabe 21}
+    Zur einfacherern Lösung des Problems und Erstellung des \text{
+    GAMS}-Programms wird das LP zunächst formal mathematisch aufgeschrieben.
+
+    Sets:
+    \begin{enumerate}
+        \item $t$ Zeitpunkte
+        \item $j$ Jobs
+    \end{enumerate}
+
+    \begin{displaymath}
+      \begin{array}{ r r c l l }
+        \min & f_{max} & & & \\
+        s.t. & s_{j} & \geq & r_{j} & \forall j\in J \\
+             & s_{j} & \geq & s_{prec(j)} + p_{prec(j)} & \forall j \in J \\
+             & f_{j} & = & s_{j} + p_{j} & \forall j\in J\\
+             & x_{j}(t) & = & 1 & \forall j\in J, s_{j} \leq t \leq f_{j}\\
+             & f_{j} & \leq & f_{max} & \forall j \in J \\
+             & \sum\limits_{j\in J} x_{j}(t) &=& 1 & \forall t\in T \\
+      \end{array}
+    \end{displaymath}
+    \begin{displaymath}
+      s_{j}\geq 0, f_{j}\geq 0,x_{j}(t)\in\{0,1\}
+    \end{displaymath}
 \end{document}
 
