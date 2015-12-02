@@ -25,37 +25,56 @@
       \begin{displaymath}
         \begin{array}{ r r c l l }
           \min & d_{max} & & & \\
-          s.t. & \sum\limits_{j\in \{1,...,n\}} x_{ij} & = & 1 & \forall 
+          s.t. & \sum\limits_{(i,j)\in \delta^{+}(i)} x_{ij} & = & 1 & \forall 
             i\in \{1,..,n\}\\
-            & x_{ji}\cdot d_{ji} &\leq& d_{max} & \forall i,j \in \{1,...,n\}, i\neq j \\
+               & \sum\limits_{(i,j)\in \delta^{-}(i)} x_{ji} & = & 1 & \forall 
+            i\in \{1,..,n\}\\
+            & \sum\limits_{(i,j)\in \delta^{+}(S)} x_{ij} & \geq &  1 & \forall
+            S\subsetneq V, S\neq \emptyset \\
+               & x_{ji}\cdot d_{ji} &\leq& d_{max} & \forall i,j \in
+            \{1,...,n\}, i\neq j \\
         \end{array}
       \end{displaymath}
       \begin{displaymath}
-        x_{ij}\in\{0,1\}
+        x_{ij}\in\{0,1\}, \delta^{+}(S)=\{(i,j)\in A:i\in S, j\not\in S\},
+        \delta^{-}(S)=\{(i,j)\in A:j\in S, i\not\in S\}
       \end{displaymath}
 
       Die boolsche Variable $x_{ij}$ ist genau dann $1$, wenn ein Bus von der
       Station $i\in \{1,...n\}$ nach $j \in \{1,...,n\}$ fährt, wobei $i\neq j$
       gilt.
 
-      Die erste Nebenbedingung garantiert, dass jede Station genau einmal angefahren
-      wird. In der zweiten Nebenbedingung wird die längste Distanz unter den
-      verwendeten Distanzen gesucht. Welche dann, laut Zielfunktion, minimiert
-      wird. Da diese Nebenbedingung unabhängig über für alle Kombinationen aus
-      $i,j\in \{1,...,n\}$ geprüft wird, ist es nicht notwendig eine weitere
-      Nebenbedingung für $d_{ji}$ hinzuzufügen.
+
+      Die ersten drei Nebenbedingungen stellen sicher, dass es sich um genau
+      einen Kreis in dem Graph gibt und dass sich keine Teilgraphen bilden
+      lassen zwischen denen es keine Verbindung gibt, so dass jeder Knoten genau
+      einmal angefahren wird.
+      Die letzte Nebenbedingung sucht die längste Kanten entlang des Kreises,
+      welche in der Zielfunktion minimiert wird.
+
+%      Die erste Nebenbedingung garantiert, dass jede Station genau einmal angefahren
+%      wird. In der zweiten Nebenbedingung wird die längste Distanz unter den
+%      verwendeten Distanzen gesucht. Welche dann, laut Zielfunktion, minimiert
+%      wird. Da diese Nebenbedingung unabhängig über für alle Kombinationen aus
+%      $i,j\in \{1,...,n\}$ geprüft wird, ist es nicht notwendig eine weitere
+%      Nebenbedingung für $d_{ji}$ hinzuzufügen.
 
 
     \subsection*{b}
       \begin{displaymath}
         \begin{array}{ r r c l l }
           \min & d_{max} & & & \\
-          s.t. & \sum\limits_{j\in \{1,...,n\}} x_{ij} & = & 1 & \forall 
+          s.t. & \sum\limits_{(i,j)\in \delta^{+}(i)} x_{ij} & = & 1 & \forall 
             i\in \{1,..,n\}\\
-            & x_{ij}\cdot + x_{jk} & \leq &1 + x_{ik}^{\prime} & \forall
+               & \sum\limits_{(i,j)\in \delta^{-}(i)} x_{ji} & = & 1 & \forall 
+            i\in \{1,..,n\}\\
+            & \sum\limits_{(i,j)\in \delta^{+}(S)} x_{ij} & \geq &  1 & \forall
+            S\subsetneq V, S\neq \emptyset \\
+            & x_{ij} + x_{jk} & \leq &1 + x_{ik}^{\prime} & \forall
                 i,j,k \in \{1,...,n\} \\
-            & x_{ij}^{\prime}\cdot d_{ij}^{\prime} + x_{jk} \cdot d_{jk}&\leq&
+            & x_{ij}^{\prime}\cdot d_{ij}^{\prime} &\leq&
               d_{max} & \forall i,j,k \in \{1,...,n\}, i\neq j \\
+            & d_{ij} + d_{jk} &=& d^{\prime}_{ik} & \forall i,j,k\in V
         \end{array}
       \end{displaymath}
       \begin{displaymath}
@@ -69,8 +88,9 @@
       nach $k\in\{1,...,n\}$ mit genau einer beliebigen Station $j\in
       \{1,...,n\}$ dazwischen. 
 
-      Die ersten Nebenbedingung ist wie im im obrigen Aufgabenteil. Die zweite
-      Nebenbedingung sucht nacht Stationen, die aufeinander folgen. Hierfür wird
+      Die ersten Nebenbedingung ist wie im im obrigen Aufgabenteil. 
+      Die vierte
+      Nebenbedingung sucht nach Stationen, die aufeinander folgen. Hierfür wird
       die neue Variable $x_{ij}^{\prime}$ wie oben beschrieben verwendet.
       Sollten sollte von $i$ über $j$ nach $k$ gefahren werden, mit
       $i,j,k\in\{1,...,n\}$, dann gilt $x_{ij}=x_{jk}=1$, also $x_{ij}+x_{jk}=2$
@@ -80,6 +100,8 @@
       sich hierbei um ein Minimierungsproblem handelt und $x_{ik}^{\prime}$
       indirekt mit in die Zielfunktion einfließt wird dieses dann auch nicht auf
       $1$ gesetzt.
+      Die letzte Nebenbedingung berechnet alle Strecken bei denen eine
+      Bushaltestelle übersprungen wird.
 
       Die Idee des LPs besteht also darin zu jeder Station eine Vorgängerstation
       zu finden. Da es sich um eine Rundtour handelt gibt es keine Ausnahme und
@@ -90,65 +112,96 @@
     \subsection*{a}
       \begin{displaymath}
         \begin{array}{ l l c r r }
-          \min & \sum\limits_{i\in\{1,...,n\}}\sum\limits_{j\in
-                \{1,...,m\},j\neq i} x_{ij}\cdot d_{ij} & & & \\
-          s.t. & \sum\limits_{j\in L_{k}} x_{j}& \geq & d_{k} & \forall k \in
-                  \{1,...,m\}\\
-               & \sum\limits_{i\in\{1,...,n\}} x_{1i} &=& 1 & \\
-               & \sum\limits_{i\in\{1,...,n\}} x_{i1} &=& 1 & \\
-               & \sum\limits_{i\in\{1,...,n\}} x_{ij} &=& x_{j} & \forall
-                  j\in\{1,...,n\} \\
-               & \sum\limits_{i\in\{1,...,n\}} x_{ji} &=& x_{j} & \forall
-                  j\in\{1,...,n\} \\
+          \min & \sum\limits_{(i,j)\in A} x_{ij}\cdot d_{ij} & & & \\
+          s.t. & \sum\limits_{(i,j)\in \delta(i)} x_{ij}
+          +\sum\limits_{(j,i)\in\delta(i)} x_{ji}& = & 2\cdot z_{i} & \forall 
+            i\in \{1,..,n\}\\
+            & \sum\limits_{(i,j)\in \delta^{+}(S)} x_{ij} & \geq &  1 & \forall
+            S\subsetneq V, S\neq \emptyset \\
+            & \sum\limits_{(1,i)\in\delta(i)} x_{1i} +
+            \sum\limits_{(i,1)\in\delta(i)} x_{i1} &=& 2 & \\
+            & x_{ij} & \leq & z_{j} & \forall j\in V \\
+            &\sum\limits_{i\in L_{k}} z_{i} & \geq & d_{k} & \forall k\in\{1,...,m\}
         \end{array}
       \end{displaymath}
+      \begin{displaymath}
+        z_{i}\in\{0,1\},x_{ij}\in\{0,1\}, \delta^{+}(S)=\{(i,j)\in A:i\in S, j\not\in S\}
+      \end{displaymath}
+
+      Sei das TSP auf dem Graphen $G=(V,A)$.
 
       Die boolsche Variable $x_{ij}$ ist genau dann $1$, wenn in der Stadt $i$
       ein Konzert gespielt wird und als nächstes in der Stadt $j$, wodurch die
       Kosten $d_{ij}$ anfallen.
-      Die boolsche Variable $x_{i}$ ist genau dann $1$, wenn während der Tour
+      Die boolsche Variable $z_{i}$ ist genau dann $1$, wenn während der Tour
       in der Stadt $i$ ein Konzert gespielt wird.
 
       In der Zielfunktion werden alle Kosten aufsummiert die tatsächlich
       anfallen, also werden Kosten genau dann aufsummiert, wenn die Strecke
       $d_{ij}$ tatsächlich genutzt wird.
-      Die erste Nebenbedingung sagt aus, dass die Anzahl der Konzert in einem
+      Die letzte Nebenbedingung sagt aus, dass die Anzahl der Konzert in einem
       Land $k$ mindestens $d_{k}$ sein muss. Hierfür wird über alle Städte in
       $k$ summiert und für jedes in Land $k$ stattfinde Konzert $1$ addiert.
-      Die zweite Nebenbedingung legt die Stadt $1$ als Startpunkt der Tour fest.
-      Die dritte Nebenbedingung legt die Stadt $1$ als die Stadt fest, in
-      welcher die Tour endet.
+      Die erste Nebenbedingung legt fest, dass zu jeder Stadt, in der ein
+      Konzert gespielt wird, zwei Kanten vorliegen, damit man zu dem Konzert
+      gelangen kann und die Stadt im Anschluss wieder verlassen kann. Die zweite
+      Nebenbedingung ist wie in der obrigen Aufgabe zu verstehen, dass es nur
+      einen Kreis gibt und keinen kleineren unabhängigen Kreise. Die dritte
+      Nebenbedingung legt fest, dass die Stadt $1$ definitiv besucht wird. Wann
+      diese in dem Kreis besucht wird ist egal, die Tour kann mitten im Kreis
+      starten. Der Rest der Tour kann dann aus den $x_{ij}$ hergeleitet werden.
 
     \subsection*{b}
-      In dem LP aus dem obrigen Aufgabenteil muss nur die Funktion $d_{ij}$
-      durch $d_{ij}^{\prime}$ ersetzt werden. Da im obrigen Aufgabenteil nicht
-      von $d_{ij}=d_{ji}$ ausgegangen worden ist, muss an dieser Stelle somit
-      keine Veränderung vorgenommen werden.
+      \begin{displaymath}
+        \begin{array}{ l l c r r }
+          \min & \sum\limits_{(i,j)\in A} x_{ij}\cdot d_{ij} & & & \\
+          s.t. & \sum\limits_{(i,j)\in \delta^{+}(i)} x_{ij} &=& z_{i} & \forall
+                i\in V \\
+          &\sum\limits_{(i,j)\in\delta^{-}(i)} x_{ij}& = & z_{i} & \forall 
+            i\in V\\
+            & \sum\limits_{(i,j)\in \delta^{+}(S)} x_{ji} & \geq &  1 & \forall
+            S\subsetneq V, S\neq \emptyset \\
+            & \sum\limits_{(1,i)\in\delta^{+}(i)} x_{1i} & = & 1 & \\
+            &\sum\limits_{(1,i)\in\delta^{-}(i)} x_{i1} &=& 1 & \\
+            & x_{ij} & \leq & z_{j} & \forall j\in V \\
+            &\sum\limits_{i\in L_{k}} z_{i} & \geq & d_{k} & \forall k\in\{1,...,m\}
+        \end{array}
+      \end{displaymath}
+      \begin{displaymath}
+        z_{i}\in\{0,1\},x_{ij}\in\{0,1\}, \delta^{+}(S)=\{(i,j)\in A:i\in S, j\not\in S\}
+      \end{displaymath}
+
+      Durch das Richten des Graphens, müssen die Nebenbedingungen die über
+      $\delta$ näher bezeichnet werde, ob es sich um eingehende oder ausgehende
+      Kanten handelt, somit benötigt man eine weitere Nebenbedingung um die
+      Orientierung der Kanten zu spezifizieren. Dies betrifft Nebenbedingung
+      1,2,4 und 5. Die Grundidee folgt aus dem LP aus dem vorherigen
+      Aufgabenteil.
 
 
-  \section*{Aufgabe 21}
-    Zur einfacherern Lösung des Problems und Erstellung des \text{
-    GAMS}-Programms wird das LP zunächst formal mathematisch aufgeschrieben.
-
-    Sets:
-    \begin{enumerate}
-        \item $t$ Zeitpunkte
-        \item $j$ Jobs
-    \end{enumerate}
-
-    \begin{displaymath}
-      \begin{array}{ r r c l l }
-        \min & f_{max} & & & \\
-        s.t. & s_{j} & \geq & r_{j} & \forall j\in J \\
-             & s_{j} & \geq & s_{prec(j)} + p_{prec(j)} & \forall j \in J \\
-             & f_{j} & = & s_{j} + p_{j} & \forall j\in J\\
-             & x_{j}(t) & = & 1 & \forall j\in J, s_{j} \leq t \leq f_{j}\\
-             & f_{j} & \leq & f_{max} & \forall j \in J \\
-             & \sum\limits_{j\in J} x_{j}(t) &=& 1 & \forall t\in T \\
-      \end{array}
-    \end{displaymath}
-    \begin{displaymath}
-      s_{j}\geq 0, f_{j}\geq 0,x_{j}(t)\in\{0,1\}
-    \end{displaymath}
+%  \section*{Aufgabe 21}
+%    Zur einfacherern Lösung des Problems und Erstellung des \text{
+%    GAMS}-Programms wird das LP zunächst formal mathematisch aufgeschrieben.
+%
+%    Sets:
+%    \begin{enumerate}
+%        \item $t$ Zeitpunkte
+%        \item $j$ Jobs
+%    \end{enumerate}
+%
+%    \begin{displaymath}
+%      \begin{array}{ r r c l l }
+%        \min & f_{max} & & & \\
+%        s.t. & s_{j} & \geq & r_{j} & \forall j\in J \\
+%             & s_{j} & \geq & s_{prec(j)} + p_{prec(j)} & \forall j \in J \\
+%             & f_{j} & = & s_{j} + p_{j} & \forall j\in J\\
+%             & x_{j}(t) & = & 1 & \forall j\in J, s_{j} \leq t \leq f_{j}\\
+%             & f_{j} & \leq & f_{max} & \forall j \in J \\
+%             & \sum\limits_{j\in J} x_{j}(t) &=& 1 & \forall t\in T \\
+%      \end{array}
+%    \end{displaymath}
+%    \begin{displaymath}
+%      s_{j}\geq 0, f_{j}\geq 0,x_{j}(t)\in\{0,1\}
+%    \end{displaymath}
 \end{document}
 
