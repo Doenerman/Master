@@ -7,6 +7,7 @@
 \usepackage{graphicx}
 \usepackage{amssymb}
 \usepackage{amsmath}
+\usepackage{amsthm}
 \usepackage{epstopdf}
 \usepackage{hyperref}
 \usepackage{listings}
@@ -165,7 +166,7 @@
       \{q_0,q_1,q_2,q_4,q_5\} \\
       \}$
 
-\section*{29}
+\section*{Exercise 29}
   Let $F_i\in \mathcal{F}$ be the set of states that recognize the word
   $w=a_i^{\omega}$. It is obvious that $\mathcal{A}$ recognizes $L_n$.
 
@@ -183,6 +184,30 @@
   be recognized, which are obviously not in $L_n$. So $Occ(\rho)\not\in
   \mathcal{F}$. Contradiction!
   
-  
+\section*{Exercise 30}
+  \begin{proof}
+    Let $S_1,...,S_n\subseteq Q$ be all possible non-accepting loops in
+    $\mathcal{M}$ for the determinitsic Muller automaton. For the 
+    deterministic Büchi automaton this means that all
+    states used during this loops cannot be part of $F$.
+    \begin{displaymath}
+      q\in \bigcup\limits_{i=1}^{n} S_i \Leftrightarrow q\not\in F
+    \end{displaymath}
+    If this would not hold, there would exist a non-accepting run $S_j$ on the
+    word $\alpha\not\in L(\mathcal{M})$ that
+    visits an accepting state of the deterministic Büchi automaton infently
+    often. So the Büchi automaton would accept it which is a contradiction
+    because $a\not\in L(\mathcal{M})$. It follows:
+    \begin{displaymath}
+      F = Q \backslash \bigcup\limits_{i=1}^{n} S_i
+    \end{displaymath}
+    Finding every non-accepting run can be done with the powerset $\mathcal{P}(Q)$
+    and the set of accepting loops $\mathcal{F}$ which are given by the Muller
+    automaton.
+    \begin{displaymath}
+      \mathcal{P}(Q)\backslash \mathcal{F} = \bigcup\limits_{i=1}^{n} \{S_i\}
+    \end{displaymath}
+  \end{proof}
+    
 \end{document}
 
