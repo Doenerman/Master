@@ -52,12 +52,6 @@
       Die letzte Nebenbedingung sucht die längste Kanten entlang des Kreises,
       welche in der Zielfunktion minimiert wird.
 
-%      Die erste Nebenbedingung garantiert, dass jede Station genau einmal angefahren
-%      wird. In der zweiten Nebenbedingung wird die längste Distanz unter den
-%      verwendeten Distanzen gesucht. Welche dann, laut Zielfunktion, minimiert
-%      wird. Da diese Nebenbedingung unabhängig über für alle Kombinationen aus
-%      $i,j\in \{1,...,n\}$ geprüft wird, ist es nicht notwendig eine weitere
-%      Nebenbedingung für $d_{ji}$ hinzuzufügen.
 
 
     \subsection*{b}
@@ -66,21 +60,22 @@
           \min & d_{max} & & & \\
           s.t. & \sum\limits_{(i,j)\in \delta^{+}(i)} x_{ij} & = & 1 & \forall 
             i\in \{1,..,n\}\\
-               & \sum\limits_{(i,j)\in \delta^{-}(i)} x_{ji} & = & 1 & \forall 
+               & \sum\limits_{(j,i)\in \delta^{-}(i)} x_{ji} & = & 1 & \forall 
             i\in \{1,..,n\}\\
-            & \sum\limits_{(i,j)\in \delta^{+}(S)} x_{ij} & \geq &  1 & \forall
+              & \sum\limits_{(i,j)\in \delta^{+}(S)} x_{ij} & \geq &  1 & \forall
             S\subsetneq V, S\neq \emptyset \\
             & x_{ij} + x_{jk} & \leq &1 + x_{ik}^{\prime} & \forall
                 i,j,k \in \{1,...,n\} \\
             & x_{ij}^{\prime}\cdot d_{ij}^{\prime} &\leq&
-              d_{max} & \forall i,j,k \in \{1,...,n\}, i\neq j \\
-            & d_{ij} + d_{jk} &=& d^{\prime}_{ik} & \forall i,j,k\in V
+              d_{max} & \forall i,j \in \{1,...,n\}, i\neq j \\
+            & d_{ij} + d_{jk} &=& d^{\prime}_{ik} & \forall i,j,k\in V, i\neq j
+                \neq k
         \end{array}
       \end{displaymath}
       \begin{displaymath}
         x_{ij},x_{ij}^{\prime}\in\{0,1\}, d_{ij}^{\prime} \geq 0
       \end{displaymath}
-
+      Sei das TSP ein Graph $G=(V,A)$
       Die boolsche Variable $x_{ij}^{\prime} \in \{0,1\}$ ist genau dann $1$,
       wenn ein Bus von der Station $i \in \{1,...,n\}$ über eine weitere Station 
       zu der Station $j\in \{1,...,n\}$ fährt. Die Variable $d_{ij}^{\prime} \in
@@ -88,11 +83,10 @@
       nach $k\in\{1,...,n\}$ mit genau einer beliebigen Station $j\in
       \{1,...,n\}$ dazwischen. 
 
-      Die ersten Nebenbedingung ist wie im im obrigen Aufgabenteil. 
       Die vierte
       Nebenbedingung sucht nach Stationen, die aufeinander folgen. Hierfür wird
       die neue Variable $x_{ij}^{\prime}$ wie oben beschrieben verwendet.
-      Sollten sollte von $i$ über $j$ nach $k$ gefahren werden, mit
+      Sollte von $i$ über $j$ nach $k$ gefahren werden, mit
       $i,j,k\in\{1,...,n\}$, dann gilt $x_{ij}=x_{jk}=1$, also $x_{ij}+x_{jk}=2$
       woraus $x_{ik}^{\prime}=1$ folgt. Sollte $x_{ij} \neq x_{jk}$ oder
       $x_{ij}=x_{jk}=0$ sein, so bilden die Stationen offensichtlich keine
@@ -114,13 +108,14 @@
         \begin{array}{ l l c r r }
           \min & \sum\limits_{(i,j)\in A} x_{ij}\cdot d_{ij} & & & \\
           s.t. & \sum\limits_{(i,j)\in \delta(i)} x_{ij}
-          +\sum\limits_{(j,i)\in\delta(i)} x_{ji}& = & 2\cdot z_{i} & \forall 
-            i\in \{1,..,n\}\\
-            & \sum\limits_{(i,j)\in \delta^{+}(S)} x_{ij} & \geq &  1 & \forall
-            S\subsetneq V, S\neq \emptyset \\
+          +\sum\limits_{(j,i)\in\delta(i)} x_{ji}& \geq & 2\cdot z_{i} & 
+          \forall i \in \{1,...,n\}\\
+          & \sum\limits_{(i,j)\in \delta^{+}(S)} x_{ij} & \geq &  2 (z_{h} +
+          z_{l} -1  & \forall S\subsetneq V, S\neq \emptyset, \forall h\in S,
+          \forall l\not\in S \\
             & \sum\limits_{(1,i)\in\delta(i)} x_{1i} +
-            \sum\limits_{(i,1)\in\delta(i)} x_{i1} &=& 2 & \\
-            & x_{ij} & \leq & z_{j} & \forall j\in V \\
+            \sum\limits_{(i,1)\in\delta(i)} x_{i1} &=& 2 & \forall i\in \\
+            & x_{ij} & \leq & z_{j} & \forall j,i\in V \\
             &\sum\limits_{i\in L_{k}} z_{i} & \geq & d_{k} & \forall k\in\{1,...,m\}
         \end{array}
       \end{displaymath}
@@ -141,7 +136,7 @@
       $d_{ij}$ tatsächlich genutzt wird.
       Die letzte Nebenbedingung sagt aus, dass die Anzahl der Konzert in einem
       Land $k$ mindestens $d_{k}$ sein muss. Hierfür wird über alle Städte in
-      $k$ summiert und für jedes in Land $k$ stattfinde Konzert $1$ addiert.
+      $k$ summiert und für jedes in Land $k$ statt finde Konzert $1$ addiert.
       Die erste Nebenbedingung legt fest, dass zu jeder Stadt, in der ein
       Konzert gespielt wird, zwei Kanten vorliegen, damit man zu dem Konzert
       gelangen kann und die Stadt im Anschluss wieder verlassen kann. Die zweite
@@ -157,13 +152,13 @@
           \min & \sum\limits_{(i,j)\in A} x_{ij}\cdot d_{ij} & & & \\
           s.t. & \sum\limits_{(i,j)\in \delta^{+}(i)} x_{ij} &=& z_{i} & \forall
                 i\in V \\
-          &\sum\limits_{(i,j)\in\delta^{-}(i)} x_{ij}& = & z_{i} & \forall 
+          &\sum\limits_{(j,i)\in\delta^{-}(i)} x_{ij}& = & z_{i} & \forall 
             i\in V\\
             & \sum\limits_{(i,j)\in \delta^{+}(S)} x_{ji} & \geq &  1 & \forall
             S\subsetneq V, S\neq \emptyset \\
             & \sum\limits_{(1,i)\in\delta^{+}(i)} x_{1i} & = & 1 & \\
             &\sum\limits_{(1,i)\in\delta^{-}(i)} x_{i1} &=& 1 & \\
-            & x_{ij} & \leq & z_{j} & \forall j\in V \\
+            & x_{ij} & \leq & z_{j} & \forall j,i\in V \\
             &\sum\limits_{i\in L_{k}} z_{i} & \geq & d_{k} & \forall k\in\{1,...,m\}
         \end{array}
       \end{displaymath}
@@ -171,37 +166,17 @@
         z_{i}\in\{0,1\},x_{ij}\in\{0,1\}, \delta^{+}(S)=\{(i,j)\in A:i\in S, j\not\in S\}
       \end{displaymath}
 
-      Durch das Richten des Graphens, müssen die Nebenbedingungen die über
-      $\delta$ näher bezeichnet werde, ob es sich um eingehende oder ausgehende
-      Kanten handelt, somit benötigt man eine weitere Nebenbedingung um die
-      Orientierung der Kanten zu spezifizieren. Dies betrifft Nebenbedingung
+      Die ersten Nebenbedingungen sind wie im im obigen Aufgabenteil, wobei die
+      dritte Bedingung sagt, dass Stadt $1$ definitiv mit in der Tour sein muss.
+      Es muss nicht gesagt werden, dass diese explizit als erstes angefahren
+      werden muss. Da diese auf dem Kreis liegt welcher der Tour entspricht
+      genügt es bei der Planung die Tour dort zu beginnen.
+      Durch den gerichteten Graphen müssen die Kanten, die an einem Knoten
+      anliegen näher beschrieben werden, ob es sich dabei um eine eingehende
+      koder eine ausgehnde Kante handelt. Dies betrifft Nebenbedingung
       1,2,4 und 5. Die Grundidee folgt aus dem LP aus dem vorherigen
       Aufgabenteil.
 
 
-%  \section*{Aufgabe 21}
-%    Zur einfacherern Lösung des Problems und Erstellung des \text{
-%    GAMS}-Programms wird das LP zunächst formal mathematisch aufgeschrieben.
-%
-%    Sets:
-%    \begin{enumerate}
-%        \item $t$ Zeitpunkte
-%        \item $j$ Jobs
-%    \end{enumerate}
-%
-%    \begin{displaymath}
-%      \begin{array}{ r r c l l }
-%        \min & f_{max} & & & \\
-%        s.t. & s_{j} & \geq & r_{j} & \forall j\in J \\
-%             & s_{j} & \geq & s_{prec(j)} + p_{prec(j)} & \forall j \in J \\
-%             & f_{j} & = & s_{j} + p_{j} & \forall j\in J\\
-%             & x_{j}(t) & = & 1 & \forall j\in J, s_{j} \leq t \leq f_{j}\\
-%             & f_{j} & \leq & f_{max} & \forall j \in J \\
-%             & \sum\limits_{j\in J} x_{j}(t) &=& 1 & \forall t\in T \\
-%      \end{array}
-%    \end{displaymath}
-%    \begin{displaymath}
-%      s_{j}\geq 0, f_{j}\geq 0,x_{j}(t)\in\{0,1\}
-%    \end{displaymath}
 \end{document}
 
