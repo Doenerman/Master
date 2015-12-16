@@ -1,0 +1,117 @@
+\documentclass[10pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\usepackage{blindtext}
+\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,shadows,positioning,shapes}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{subfiles}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{wrapfig}
+
+\begin{document}
+
+  \section*{Exercise 36}
+    \begin{displaymath}
+      \varphi^{\prime}(X_{1})=0\subseteq X_{1} \land \forall X \exists Y (Sing(X) \land Sing(Y) \land
+      X\subseteq X_{1} \land Succ(X,Y) \rightarrow \neg ( Y \subseteq X_{1}))
+    \end{displaymath}
+
+  \section*{Exercise 37}
+    \subsection*{a}
+      \begin{displaymath}
+        \forall s \exists x(
+          X_{3}(x) \land
+          s < x \rightarrow
+            (
+              (X_{0}(s) \rightarrow X_{1}(s+1)) 
+              \lor (X_{1}(s) \rightarrow X_{2}(s+1)) 
+              \lor (s+1<x \land X_{2}(s) \rightarrow X_{0}(s+1))
+            )
+        )
+        \land \forall x \exists y (x+1=y)
+      \end{displaymath}
+    \subsection*{b}
+      \begin{displaymath}
+        \left(
+          \begin{array}{c}
+            * \\
+            0
+          \end{array}
+        \right)^{*} \cdot
+        \left(
+          \begin{array}{c}
+            0 \\
+            0
+          \end{array}
+        \right) \cdot
+        \left(
+          \begin{array}{c}
+            * \\
+            0
+          \end{array}
+        \right)^{*} \cdot
+        \left(
+          \begin{array}{c}
+            * \\
+            1
+          \end{array}
+        \right)^{*}
+        \left(
+          \begin{array}{c}
+            1 \\
+            1
+          \end{array}
+        \right) \cdot
+        \left(
+          \begin{array}{c}
+            * \\
+            1
+          \end{array}
+        \right)^{*}
+      \end{displaymath}
+      The first row of the formula says that if there is an element in $X_{2}$
+      all successors are in $X_{2}$ as well. The second row of the formula name
+      the two elements that must occur ($
+        \left(
+          \begin{array}{c}
+            1 \\
+            1
+          \end{array}
+        \right),
+        \left(
+          \begin{array}{c}
+            0 \\
+            0
+          \end{array}
+        \right)$).
+
+  \section*{Exercise 38}
+    \subsection*{a}
+      \begin{displaymath}
+        \begin{array}{c c l}
+          \varphi(X_{1}) & = & 
+            \exists Y_{1} Y_{2} Y_{3} (
+            Partition(Y_{1},Y_{2},Y_{3}) \land Y_{1}(0)
+            \forall t ( \\
+          &  &  (Y_{1}(t) \land X_{1}(t) \land Y_{2}(t^\prime)) \lor\\ 
+          &  &  (Y_{2}(t) \land \neg X_{1}(t) \land Y_{2}(t^\prime)) \lor\\ 
+          &  &  (Y_{2}(t) \land X_{1}(t) \land Y_{3}(t^\prime)) \lor     \\ 
+          &  &  (Y_{3}(t) \land \neg X_{1}(t) \land Y_{2}(t^\prime))     \\ 
+          &  &  \forall s \exists t ( s < t \land Y_{3}(t) ))\\
+        \end{array}
+      \end{displaymath}
+
+
+\end{document}
+
