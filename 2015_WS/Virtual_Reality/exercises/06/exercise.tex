@@ -1,0 +1,100 @@
+\documentclass[10pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\usepackage{blindtext}
+\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,shadows,positioning,shapes}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{cancel}
+\usepackage{amsthm}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{subfiles}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{wrapfig}
+
+\begin{document}
+  \section*{Exercise 3}
+    \subsection*{a)}
+      \begin{displaymath}
+        \begin{array}{l c l}
+          X_{i}(f) & : & \text{Input signal} \\
+          Y_{i}(f) & : & \text{Electric signal for loudspeaker} \\
+          L(f),R(f)& : & \text{Acoustic signal produced by loudspeaker} \\
+          Z_{i}(f) & : & \text{Signal arriving at the ear} \\
+          O_{xx}   & : & \text{head related transfer function}
+        \end{array}
+      \end{displaymath}
+
+      Goal: Find $Y_{i}(f)$ such that $Z_{i}(f)\overset{!}{=} X_{i}(f)$.
+
+      At each ear a acoustic signal of each loudspeaker arrives. The signal
+      arriving from each loudspeaker is of the form $Y_{L}\cdot L\cdot
+      O_{uL}$ for each ear $u$ and the left loudspeaker, analogous for the right
+      loudspeaker. Because the frequencies of
+      the two loudspeaker (left and right) the signal arriving at the ear is the
+      sum of signal of each loudspeaker. So $Z_{i}$ is the following.
+      \begin{displaymath}
+        Z_{L}=Y_{R}\cdot L\cdot O_{LL} + Y_{L}\cdot R\cdot O_{LR}
+      \end{displaymath}
+      The formula for $Z_{R}$ is analogous. With both $Z_{R}$ and $Z_{L}$ 
+
+      \begin{eqnarray}
+          Y_{R}&=&\frac{Z_{R}-Y_{L} L\cdot O_{RL}}{R\cdot O_{RR}} \\
+          Y_{L}&=&\frac{Z_{L}-Y_{R} R\cdot O_{LR}}{L\cdot O_{LL}} \\
+           &=&
+            \frac{Z_{L}}{L\cdot O_{LL}} - \frac{Z_{R}-Y_{L} L\cdot
+            O_{RL}}{\cancel{R} \cdot O_{RR}} \frac{\cancel{R}\cdot O_{LR}}{L\cdot O_{LL}} \\
+           &=&
+            \frac{Z_{L}}{L\cdot O_{LL}}-
+            \frac{Z_{R}O_{LR}}{L\cdot O_{RR} O_{LL}}+
+            \frac{Y_{L} \cancel{L}\cdot O_{RL}O_{LR}}{\cancel{L}\cdot
+            O_{RR}O_{LL}} \\
+          Y_{L}\left( 1-\frac{O_{LR}O_{RL}}{O_{RR}O_{LL}} \right) &=&
+          L^{-1}\left( \frac{Z_{L}}{O_{LL}} -\frac{Z_{R}O_{LR}}{O_{RR}O_{LL}}\right) \\
+          Y_{L}&=&
+          L^{-1}\left( \frac{Z_{L}}{O_{LL}} -\frac{Z_{R}O_{LR}}{O_{RR}O_{LL}}\right)
+            \left( 1-\frac{O_{LR}O_{RL}}{O_{RR}O_{LL}} \right)^{-1} \\
+          &=&
+            L^{-1}\left( \frac{Z_{L}}{O_{LL}}
+            \left(\frac{1}{1-\frac{O_{LR}O_{RL}}{O_{LL}O_{RR}}}\right)
+            -\frac{Z_{R}O_{LR}}{O_{RR}O_{LL}} 
+            \left(\frac{1}{1-\frac{O_{LR}O_{RL}}{O_{LL}O_{RR}}}\right)
+            \right) \\
+          &=&
+            L^{-1}\left(
+            \frac{Z_{L}}{O_{LL}-\frac{O_{LR}O_{RL}}{\cancel{O_{LL}}O_{RR}}\cancel{O_{LL}}}
+            -\frac{Z_{R}O_{LR}}{O_{LL}O_{RR}-\frac{O_{RL}O_{LR}}{O_{LL}
+            \cancel{O_{RR}}}\cancel{O_{RR}}}
+            \right) \\
+          &=& L^{-1} \left(
+            \frac{O_{RR}}{O_{RR}O_{LL}-O_{LR}O_{RL}}Z_{L}
+            -\frac{O_{LR}}{O_{LL}}\frac{O_{LL}}{O_{LL}O_{RR}-O_{RL}O_{LR}}Z_{R}
+          \right)
+      \end{eqnarray}
+
+    \subsection*{b)}
+      The equation can be split into two parts. The part for the right ear and
+      the part for the left ear. Because the sound you can hear with your right
+      ear from the left loudspeaker should be reduced, the part for the left ear
+      has a negative sign. Because the frequencies are manipulated during the
+      time between loudspeaker and ear, the made sound is not equal to the sound
+      the ear hears. In order to reverse the manipulation the fractions of
+      considering $O$ are inserted.
+      
+
+    \subsection*{c)}
+      The analytical solution is not applicable in praxis because it is
+      numerical instable for rather low low frequencies with $O_{LL}\sim O_{LR}$
+      and $O_{RR}\sim O_{RL}$. This leads to a denominator close to $0$.
+
+
+\end{document}
+
