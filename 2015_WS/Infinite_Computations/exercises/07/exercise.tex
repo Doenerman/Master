@@ -1,0 +1,69 @@
+\documentclass[10pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\usepackage{blindtext}
+\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,shadows,positioning,shapes}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{subfiles}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{wrapfig}
+
+\begin{document}
+  \section*{Exercise 33}
+    Let $\mathfrak{A}$ be a \emph{DWBA} and $\mathfrak{A}\prime$ be a
+    deterministic Staiger-Wagner automtaton and $\alpha\in \Sigma^{\omega}$.
+    Let the $\mathcal{F}$ of the Staiger-Wagner automaton be construct as
+    follows. 
+    \begin{proof}
+      \begin{displaymath}
+        \begin{array}{r l}
+           & \mathfrak{A} \text{ accepts } \alpha \\
+          \Leftrightarrow & \text{from some point $i$ the run $\rho(i)$ on
+                            $\alpha$ stays in a SSC $S^\prime$ with accepting 
+                            states only} \\
+          \Leftrightarrow & \text{all loops in the $S^\prime$ are accepting}
+        \end{array}
+      \end{displaymath}
+    \end{proof}
+
+
+  \section*{Exercise 34}
+    Given
+    \begin{displaymath}
+      \begin{array}{ r l }
+        & \text{\emph{closed under co-reachable loops} and for all loops} S,S^\prime,
+        S\rightsquigarrow S^\prime,S\in \mathcal{F}\rightarrow S^\prime \in
+        \mathcal{F} \\
+        \Leftrightarrow & \text{All \emph{strongly connected components }}
+        U\subseteq Q\text{ are completly in } \mathcal{F} \\
+        & \text{ or there is no state } s\in U \text{ with } s\in S, S\in
+        \mathcal{F}, \text{ where $S$ is a loop}
+      \end{array}
+    \end{displaymath}
+%    \begin{proof}
+%      \begin{displaymath}
+%        \begin{array}{ r l }
+%        \end{array}
+%      \end{displaymath}
+%    \end{proof}
+    
+  
+  \section*{Exercise 35}
+
+
+
+
+
+\end{document}
+
