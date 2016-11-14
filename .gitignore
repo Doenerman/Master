@@ -5,6 +5,7 @@
 *.aux
 *.log
 *.out
+*.toc
 
 # GAMS
 *.lst
