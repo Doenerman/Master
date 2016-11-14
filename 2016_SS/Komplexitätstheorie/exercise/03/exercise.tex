@@ -1,0 +1,138 @@
+\documentclass[10pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\usepackage{blindtext}
+\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,shadows,positioning,shapes}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{subfiles}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{wrapfig}
+
+\newcommand{\nice}[1]{\textbf{#1}}
+
+\begin{document}
+
+\section*{Exercise 09}
+  \subsection*{$\nice{P}\subsetneq\nice{E}$}
+    \begin{proof}
+      It is obvious that $\nice{P}\subseteq\nice{E}$ holds. Now construct a
+      language $D\in \nice{E}$, but $D\not\in\nice{P}$.
+      \begin{displaymath}
+        D=\{\alpha \mid \text{$M_{\alpha}$ outputs $O$ after $\alpha$ steps}\}
+      \end{displaymath}
+      This is obviously decidable in \nice{E} since $M_{\alpha}$ can be
+      simulated for each \textcolor{red}{hier fehlt noch was}
+
+      Towards a contradiction assume there is a machine $M_{x}$ that decides
+      $D$ in l$n^c, c\in\mathbb{N}$. Choose a $x^\prime>x^c$ such that
+      $M_{x^\prime}=M_{x}$ this is possible since each TM can be represented by
+      infinitely many strings.
+      Now construct a TM $M_{y}$ that cleans the output, writes $x$ on the onto
+      the output tape and behave like $M$ afterwards, $y>x$.
+    \end{proof}
+
+
+\section*{Exercise 10}
+  \begin{math}
+    \begin{array}{l | c l}
+      \text{running times} & & \text{algorithm} \\ \hline
+      & & \\
+      & & \\
+      \log \log n & & \text{For }o\leq i < \log \log n \\
+      & & \\
+      \log n      & & \hspace{5mm}\text{For }0\leq j < \log n \\
+      & & \\
+      T(j)=T(\log n)
+                  & & \hspace{10mm} h=H(j) \\
+      & & \\
+      2^{\log n} = n & & \hspace{10mm}\text{For $x\in\{0,1\}^\star$ with $|x|=j$} \\
+      & & \\
+      (i|x|^i)^{1,5} < \psi < n^3 & &
+                    \text{\hspace{15mm}Run U on $i$ for $i|x|^i$ steps. Save
+                    output to $o$} \\
+      & & \\
+      H(|x|)\cdot 2^{|x|}=n
+                & & \text{\hspace{15mm}Run $M_{\nice{SAT}_{H}}$ on x save output to
+                $o^\prime$} \\
+      & \\
+      O(1)   & & \text{\hspace{15mm}if $o==O^\prime$} \\
+      & \\
+      O(1)      &\hspace{10mm} & \text{\hspace{20mm}return $i$}
+    \end{array}
+  \end{math}
+
+  Let $T(n)$ be the running to of $H(n)$. Proof by induction.
+  
+  
+  \begin{tabular}{ l l }
+    Base Case: & \\
+                     & $n\leq 2$ : The outer loop is never executed an thus
+                        $T(n)\in O(1)\subseteq O(n^3)$. \\
+    Induction Step: & \\
+                    & \begin{math}
+                        \begin{array}{l}
+                          T(n) \in O(\log \log (n) \log (n) \left(
+                          T(\log(n))+n(log(n)\cdot n + n)\right)\\
+                          \in O\left( /log^2(n)T(\log(n))+n^2\cdot
+                          \log^3(n)\right) \\
+                          \in O\left( \log^2(n) \log \log^3(n) + n^3\cdot
+                          \log^3(n)\right) \\
+                          \in O\left( n^2\cdot \log^3(n)) \right) \\
+                          \in O(n^3)
+                        \end{array}
+                      \end{math}
+  \end{tabular}
+
+  \section*{Exercise 11}
+    Since $\nice{SAT}_{H}$ is \nice{NP}-complete, there is a reduction $f$ in polynomial
+    time, say $O(n^{i})$ from \nice{SAT} to $\nice{SAT}_{H}$.
+
+    We now construct a polynomial time algorithm $A$ that decides \nice{SAT} on
+    $\varphi$ in $O(n^j)$, $j\geq i$:
+    
+    Let $N\in \mathbb{N}$ be the number such that $H(n)>i$ for $n>N$. 
+    If $|\varphi| \leq N$ solve $\nice{SAT}(\varphi)$ using a brute force
+    assignment. This can be done in constant time since the length of $\varphi$
+    is bounded. 
+    If $|\varphi|>N$, compute $\eta=f(\varphi)$. By construction of
+    $f,\eta \in \nice{SAT}_{H} \Leftrightarrow \varphi \in \nice{SAT}$. If $\eta$
+    is not of the form $\psi01^{n^{H(n)}}$ $\eta \neg\in \nice{SAT}_{H}$ and
+    thus $\varphi\neg\in\nice{SAT}$, so return false. This check can be done in
+    polynomial time since the length of $\varphi$ up to the marker can be
+    counted in polynomial time an $H$ can be computed in polynomial time by
+    definition.  
+
+    Otherwise run $A(\psi)$ and forward its output. Proof by induction.
+
+      \begin{tabular}{l l}
+        Base Case: & \\
+                  & As described above. \\
+        Induction Step: & \\
+                  & $f$ runs in polynomial time of $|\varphi|$ so $eta$ has to
+                  be in $O(n^j)$. So $|\psi|<|\varphi|$ must be\\ &
+                  sub linear in size of $|\varphi|$. Otherwise \\ & 
+                  $|\psi|^{H(|\psi|)}\geq
+                  |\varphi|^{H(|\varphi|)}>|\varphi|^j<|\varphi|^i$
+                  and $f$ hasn't got enough time to print \\ &
+                  sufficiently man $1$'s. On input $\psi$
+                  $A$ runs at most $O(|\psi|)$ steps by the \\ &
+                  induction step. The reduction can be performed in 
+                  $O(|\varphi|^i)$ steps and \\ &
+                  since $i\leq j$ $A$ terminates on $\varpi$ in
+                  $O(|\psi|^j+|\varphi|^j)\in O(|\varphi|^j+|\varphi|^j) \in
+                  O(|\varphi|^j)$
+      \end{tabular}
+
+\end{document}
+

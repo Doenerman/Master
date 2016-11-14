@@ -1,0 +1,121 @@
+\documentclass[10pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\usepackage{blindtext}
+\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,shadows,positioning,shapes}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{subfiles}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{wrapfig}
+\newcommand{\Oh}{\mathcal{O}}
+\newcommand{\SPACE}{\text{SPACE}}
+\newcommand{\AP}{\text{AP}}
+\newcommand{\PSPACE}{\text{PSPACE}}
+\newcommand{\NT}{\text{NTIME}}
+\newcommand{\DT}{\text{DTIME}}
+\newcommand{\SAT}{\text{SAT}}
+\newcommand{\NL}{\textsf{NL}}
+\newcommand{\cP}{\textsf{P}}
+\newcommand{\NP}{\textsf{NP}}
+\newcommand{\coNP}{\textsf{co-NP}}
+\newcommand{\Ll}{\mathcal{L}}
+\newcommand{\Mm}{\mathcal{M}}
+\newtheorem{pad}{Theorem}
+
+\title{Computational Complexity Theory - Assignment 7}
+\author{Alex Hoppen (334784), Jan Uthoff (310336)}
+
+\begin{document}
+\maketitle
+
+\section*{Exercise 25}
+  
+
+\section*{Exercise 26}
+Most current results of the time/space tradeoff focus on \SAT.
+  \begin{enumerate}
+    \item $\overline{\SAT}$ cannot be solved in $n^{1+o(1)}$ time and
+    $n^{1-\epsilon}$ space for any $\epsilon > 0$ general random-access
+    non-deterministic Turing machines \cite{CaSS}.
+    \item A Turing machine that run in super-linear time an sublinear space can
+    be simulated in alternating linear time \cite{CaSS}.
+    \item \SAT cannot be solved on general purpose random-access Turing
+    machines in time $n^{1.618}$ and space $n^{O(1)}$.' \SAT cannot be solved
+    for any constant $b$ less than the golden ratio in time $n^{a}$ and space
+    $n^{b}$\cite{CC}. The value of $1.618$ is nearly equal to the value named
+    in the book.
+  \end{enumerate}
+
+\section*{Exercise 27}
+In the following the $i$-th enumeration represents the $i$-th
+paragraph in the proof description.
+  \begin{enumerate}
+    \item $\NP=\Sigma_{1}^{p}$ and $\coNP=\Pi_{1}^{p}$. Known from theorem 5.4:
+    If $\Sigma_{i}^{p}=\Pi_{i}^{p}$ the polynomial hierarchy collapses to the
+    $i$-th level. In this case $i=1$ so it collapses not to the second level but
+    first level. Furthermore $\NP = \coNP$ does not follow by $\NP=\NP^{\NP}$.
+    Because $\NP \subseteq \cP^{\NP} \subseteq \NP^{\NP}$(trivial) and $\coNP\subseteq
+    \cP^{\NP}$(trivial), $\coNP \subseteq \NP$ follows.
+
+    \item This paragraph wants to show that $\NP \subseteq \NP^{\NP}$ holds.
+    Therefore they name for every $\Ll \in \NP$ and non-deterministic polynomial
+    time TM $\Mm$ that recognizes $\Ll$. In case a non-deterministic polynomial
+    time oracle TM $\Mm'$ behaves exactly like $\Mm$ and so ignoring its oracle
+    $\Mm'$ recognizes $\Ll$ too. So $\NP \subseteq\NP^{\NP}$.
+
+    \item This paragraphs wants to show that $\NP^{\NP}\subseteq \NP$. So assume
+    $\Ll \in \NP^{\NP}$. Because $\Ll \in \NP^{\NP}$ there exists a
+    non-deterministic polynomial time oracle TM $\Mm'$ that recognizes $\Ll$.
+    Because the oracle, $\Mm'$ uses, decides problems in $\NP$ there exists a
+    non-deterministic polynomial time TM $\Mm''$ that can decide the same
+    problems as the oracle. Because the running time of both TMs $\Mm'$ and
+    $\Mm''$ are polynomial, a new non-deterministic polynomial time TM
+    $\Mm^\star$ can be constructed that calculates the result of the oracle with
+    the TM $\Mm''$ and uses that result and continues running like $\Mm'$, after
+    $\Mm'$ uses its oracle. So $\Ll \in \NP$. In the last sentence it is
+    mentioned that $\NP = \coNP = \cP^{\NP} = \NP^{\NP}$ holds. But $\coNP
+    =\cP^{\NP}$ still must be shown. $\coNP\subseteq \cP^{\NP}$ is easy to show.
+    
+    \textbf{Proof $\coNP \subseteq \cP^{\NP}$}
+    Let be $\Ll'\in \coNP$. So $\overline{\Ll'}\in \NP$. Thus there is a
+    non-deterministic polynomial time TM $\Mm$ that can recognize
+    $\overline{\Ll'}$. By calculating the result of $\Mm$ and invert it, which
+    can obviously be done deterministically, a deterministic polynomial time
+    oracle TM can recognize $\Ll'$ as well. 
+
+    $\cP^{\NP} \subseteq \coNP$ is non trivial and still to show. So the proof is
+    incomplete.
+
+  \end{enumerate}
+
+\section*{Exercise 28}
+
+\textbf{Definition: Padding}
+Padding is the technique that fills a given word $x$ and generates a new one
+$v=<x,1^{u(|x|)}>$. With the new word the TM that is running on it has additional
+time for the calculation.
+
+\begin{pad}
+  If there is a language $\Ll \in \NT(f(n))$ than there exists a padding $u(|x|)$
+  such that $<x,1^{u(|x|)}> \in \Ll_{pad}$ and $\Ll_{pad}\in \DT(g(n))$ and
+  \begin{displaymath}
+    x\in \Ll \Leftrightarrow <x,1^{u(|x|}>\in \Ll_{pad}
+  \end{displaymath}
+  for some $f,g,u$ with $f(n)\in O(g(n))$.
+\end{pad}
+
+\bibliographystyle{alpha} 
+\bibliography{./sources.bib}
+\end{document}
+

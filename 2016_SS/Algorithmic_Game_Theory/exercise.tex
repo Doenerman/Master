@@ -1,0 +1,120 @@
+\documentclass[10pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\usepackage{blindtext}
+\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,shadows,positioning,shapes}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{subfiles}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{wrapfig}
+
+\title{Algorithmic Game Theory - Assignment 4}
+\author{Tobias Schumacher (308037), Jan Uthoff (310336)}
+
+\begin{document}
+
+\maketitle
+
+\section*{Exercise 12}
+The total amount of seats in the Bundestag is $631$. So in case a coalition wants
+to form a regime it needs $316$ seats. With the given table the statements below
+follow:
+\begin{enumerate}
+  \item In case CDU/CSU is not part of the Bundestag all other parties are part
+  of the Bundestag beacuse the CDU/CSU has $311$ seats. For the permutation table
+  this means that all rows where
+  CDU/CSU is in the beginning or at the end lead to $0$ entry. Because there are
+  $4$ parties in total there are $3!$ possible permutations with CDU/CSU in the
+  beginning and $3!$ permutations with CDU/CSU in the ending. So there are
+  $2\cdot 3!$ permutation that lead tu a $0$ entry for the CDU/CSU.
+  \item For each party of the set $\{$SPD$,$Linke$,$Grüne$\}$ there exists four
+  possible combinations so they are part of the regime, three where CDU/CSU is
+  part of the regime and one without CDU/CSU.
+\end{enumerate}
+The calculation could be done with a permutation table, but that would be a
+waste of space.
+
+\begin{displaymath}
+  \Phi_{i}=\frac{1}{n!}\Sigma\{x^{\pi}_{i}|\pi \text{ permutation of
+  }N\}\;\forall i\in N
+\end{displaymath}
+With the given information above this leads to
+\begin{displaymath}
+  \Phi=\frac{1}{24}(2\cdot 3!, 4, 4, 4)^{T}=\frac{1}{24}(12, 4, 4, 4)^{T}
+\end{displaymath}
+as Shapley value.
+
+
+\section*{Exercise 13}
+
+$1)$
+\begin{displaymath}
+  \begin{array}{c l}
+    & f(S\cup \{p_1,p_2\}) - f(S) \\
+    = & f(S \cup \{p_1,p_2\} + f(S\cup \{p_1\}) - f(S\cup \{p_1\} f(S) \\
+    \overset{a)}{\geq} & f(T\cup \{p_1,p_2\} - f(T\cup \{p_1\}) + f(T\cup
+    \{p_1\}) - f(T)
+  \end{array}
+\end{displaymath}
+%Apply $a)$ on $f(S\cup\{p_1,p_2\}) -f(S\cup \{p_1\})$ and $f(S\cup
+%\{p_1\})-f(S)$. This way set $\{q_1,q_2\}$ can be expanded.
+
+$b) \rightarrow a)$:
+Let be $S'=S\cup \{p\}$.
+\begin{displaymath}
+  \begin{array}{c l }
+    & f(S') + f(T)  \\
+    = & f(S\cup \{p\}) + f(T) \\
+    \overset{(b)}{\geq} & f((S\cup\{p\}) \cap T) + f((S\cup \{p\}) \cup T) \\
+    = & f(S) + f(T\cup \{p\}) \\
+  \end{array}
+\end{displaymath}
+
+$a) \rightarrow b)$
+Let $S'=S\cap T, P=S\setminus T$.
+\begin{displaymath}
+  \begin{array}{c l}
+    & f(S)-f(S\cup T) \\
+    = & f(P\cup S') - f(S') \\
+    \overset{1), S'\subseteq T'}{\geq} & f(T'\cup P) - f(T') \\
+    = & f(T\cup S)-f(T)
+  \end{array}
+\end{displaymath}
+
+
+\section*{Exercise 14}
+The dual linear program
+\begin{displaymath}
+  \begin{array}{l l c r }
+    \min_{y\geq0}&  (10 \cdot x'_1 + 4\cdot x'_3 + 2\cdot x'_4 + 3\cdot
+    x'_5)\cdot y_1  && \\
+    &+(1 \cdot x'_1 + 7\cdot x'_3 +  2\cdot x'_5)y_2  && \\
+    &+(2 \cdot x'_1 + 6\cdot x'_2 + 5\cdot x'_4 + 1\cdot x'_5)\cdot y_3 && \\
+    &+(6 \cdot x'_1 + 4\cdot x'_2 + 8\cdot x'_3 + 1\cdot x'_4)\cdot y_4 && \\
+    s.t.& && \\
+    & x'_1 y_1 + 2\cdot x'_3 y_3 &\geq& 5  \\
+    & x'_1 y_1 + x'_2 y_2 + x'_3 y_3 &\geq& 6 \\
+    & x'_1 y_1 + 2\cdot x'_2 y_2 & \geq & 3 \\
+    & x'_1 y_1                   & \geq & 1 \\
+    & x'_1 y_1 + x'_2 y_2        & \geq & 5 \\
+    & x'_1 y_1 + x'_4 y_4        & \geq & 4 \\
+    & x'_i \in\{0,1\}, i \in \{1,...,5\} &&
+  \end{array}
+\end{displaymath}
+
+
+
+
+\end{document}
+

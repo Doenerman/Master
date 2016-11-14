@@ -1,0 +1,14 @@
+\begin{thebibliography}{FvM00}
+
+\bibitem[For00]{CaSS}
+Lance Fortnow.
+\newblock Time-space tradeoffs for satisfiability.
+\newblock {\em Journal of Computer and System Sciences}, 60:337--353, 2000.
+
+\bibitem[FvM00]{CC}
+L.~Fortnow and D.~van Melkebeek.
+\newblock Time-space tradeoffs for nondeterministic computation.
+\newblock In {\em Computational Complexity, 2000. Proceedings. 15th Annual IEEE
+  Conference on}, pages 2--13, 2000.
+
+\end{thebibliography}

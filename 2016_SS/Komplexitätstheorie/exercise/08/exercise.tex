@@ -1,0 +1,92 @@
+\documentclass[10pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\usepackage{blindtext}
+\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,shadows,positioning,shapes}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{subfiles}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{wrapfig}
+
+\newcommand{\NC}{\mathcal{NC}}
+\newcommand{\Ll}{\mathcal{L}}
+\newcommand{\Par}{\textsf{PARITY}}
+
+\begin{document}
+
+\section*{Exercise 30}
+  The idea is to use a language $\Ll$ that is difficult to compute. Therefore
+  let $\Ll$ not be in
+  $E=\bigcup_{c=1}^{\infty} \textsf{TIME}(2^{cn})$. Furthermore let be
+  $\Ll'=\{1^{m}:m\in\Ll\}$. Obviously $\Ll\in \mathsf{P_{/poly}}$, but $\Ll'\not
+  \in \mathsf{P}$. If $\Ll'\in \mathsf{P}$ a TM
+  $\mathcal{M}$ would compute $\Ll'$ in $O(m^{k})$. So $\mathcal{M}$ could
+  decide $\Ll$ in $O((2^n)^k)$ and thus $\Ll \in E$.
+  
+  Show that $\Ll'\in \mathsf{P_{/poly}}$. Let $\mathcal{M}'$ be a TM with the
+  advice $a(n)$. $a(n)=1$ if and only if $n\in\Ll$, so for every input length
+  exists exactly one advice. Thus $\mathcal{M}'$ can
+  recognize $\Ll'$.
+
+  Therefore $\mathcal{M}'$ rejects if the input has not the form $1^m$ or it has
+  the form but $n\in\Ll$, otherwise accepts. If $\Ll$ is decidable $\Ll'$ is 
+  trivially decidable too. Because of the time hierarchy theorem such an $\Ll$
+  must exist.
+
+  
+
+%  Take a language $L$ which is not in $\mathsf{E} = \bigcup_{c=1}^\infty
+%  \mathsf{TIME}(2^{cn})$. Now consider the language $L' = \{1^m : m \in L\}$.
+%  Then $L'$ is clearly in $\mathsf{P/poly}$, but it's not in $\mathsf{P}$: if it
+%  were decidable in time $O(m^k)$, then we could decide $L$ in time
+%  $O((2^n)^k)$, and so $L$ would be in $\mathsf{E}$. Our decision procedure
+%  works as follows: on input $m$ of length $n = \log m$, we run the algorithm
+%  for $L'$ on the input $1^m$. This runs in time $O(m^k) = O((2^n)^k)$.
+%
+%  It remains to ensure that $L'$ is decidable. To that end, all we need to do
+%  is to choose some $L \notin \mathsf{E}$ which is decidable, for that makes
+%  $L'$ trivially decidable: given an input, if it's not of the form $1^m$,
+%  reject; otherwise, answer according to whether $m \in L$.
+%
+%  The existence of a decidable language $L \notin \mathsf{E}$ is guaranteed by
+%  the time hierarchy theorem.
+
+
+\section*{Exercise 31}
+    A language $\Ll$ is in $\NC^{d}$ if $\Ll$ can be decided by a family of circuits
+    $\{C_{n}\}$, where $C_{n}$ has poly$(n$) size and depth $O(\log^{d} n)$. So
+    $\NC^{0}$ has a depth of $\log^{0} n = 1$. 
+  \subsection*{a)}
+%    Unary languages $\Ll_u$ can be recognized by boolean circuits. The graph of the
+%    circuit has depth $1$, so one of the following operations can be done:
+%    $\land, \lor$ or $\neg$. For these operations there is only a finite set of
+%    possible input words either $x=x_1 x_2$ or $x=x_1$. So there are only a
+%    finite number of words in $\Ll_u$.
+
+  \subsection*{b)}
+
+  \subsection*{c)}
+    Because of the depth of the graph the languages $\Ll \in \NC^{0}$
+    work on inputs of the form $x=x_1 x_2$ or $x=x_1$. In case an input has the form
+    $x=x_1 x_2 x_3...$ there exists a path from $x_i$ to the output node that is
+    longer then $1$. All languages that can be constructed by a single $\land, \lor$
+    or $\neg$ are not infinite, so the union of them is not infinite, so $\NC^{0}$
+    does not contain any infinite language.
+
+    $|\Par|$ obviously is infinite, so $\Par \not \in \NC^{0}$.
+  
+
+
+\end{document}
+

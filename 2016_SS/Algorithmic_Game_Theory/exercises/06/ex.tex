@@ -1,0 +1,46 @@
+\documentclass[10pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\usepackage{blindtext}
+\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,shadows,positioning,shapes}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{subfiles}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{wrapfig}
+
+\title{Algorithmic Game Theory - Assignment 6}
+\author{Jan Uthoff (310336)}
+%\author{Tobias Schumacher (308037), Jan Uthoff (310336)}
+
+\begin{document}
+\section*{Exercise 19}
+  \begin{displaymath}
+    \begin{array}{c r c l }
+     & C(S) & \leq & \sum\limits^{n}_{i=1} C^{(i)}(S) \\
+     &      & \leq & (1+\epsilon)\sum\limits^{n}_{i=1}
+                  C^{(i)}(S^{\star}_{i},S_{-i}) \\
+     &      & \leq & (1+\epsilon)\lambda C(S^{\star})+(1+\epsilon)\mu C(S) \\
+     \Leftrightarrow& C(S)-(1+\epsilon)\mu C(S) & \leq & (1+\epsilon)\lambda
+                    C(S^{\star}) \\
+     \Leftrightarrow& C(S)(1+(1-\epsilon)\mu) &\leq& (1+\epsilon)\lambda
+                    C(S^{\star}) \\
+     \overset{\epsilon < \frac{1}{\mu} - 1}{\Leftrightarrow}
+     &\frac{C(S)}{C(S^{\star}}&\leq&
+     \frac{(1+\epsilon)\lambda}{1-(1+\epsilon)\mu}
+    \end{array}
+  \end{displaymath}
+
+
+\end{document}
+

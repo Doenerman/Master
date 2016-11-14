@@ -1,0 +1,66 @@
+\documentclass[10pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\usepackage{blindtext}
+\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,shadows,positioning,shapes}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{subfiles}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{wrapfig}
+
+\begin{document}
+
+\section*{Exercise 20}
+  Given Information:
+    \begin{enumerate}
+      \item no draws
+      \begin{enumerate}
+        \item no loops where the loosing player can go in, in order to prevent
+        the loose and loops the winning player can go in can be ignored (why go
+        in a loop in case you can win the game?).
+        \item the game structure can be represented by a graph which has the
+        form of a tree
+      \end{enumerate}
+      \item finite
+      \begin{enumerate}
+        \item the graph structure is finite
+      \end{enumerate}
+      \item perfect information
+      \begin{enumerate}
+        \item both player know the graph
+      \end{enumerate}
+    \end{enumerate}
+
+    Let $V$ be the set of different game position in the graph $G=(V,E)$,
+    $V_0\subseteq V$ the positions where player 0 has to move, analogous $V_1$
+    and $V_1 = V\setminus V_0$. Let $T_\sigma$ be all the leaves of the tree where
+    $T_{\sigma_0}\subseteq T_\sigma$ are the game positions player $0$ wins and
+    $T_{\sigma_1}= T_\sigma\setminus T_{\sigma_0}$ are the game positions player $1$ wins,
+
+    \textbf{Base Case}: 
+
+    $\forall v \in T_{\sigma}$ a player has a winning strategy. So for
+    every leave there exists a winning strategy for a player.
+    
+    \textbf{Induction Step}:
+
+    $ \circ,\star \in \{\Box , \bigcirc\}$, where $\Box$ means that player 0 has a winning
+    strategy and $\bigcirc$ means that player 1 has a winning strategy. If $
+    \circ = \Box$, player 0 has a winning strategy in $\star$, if $\circ =
+    \bigcirc$ the choosing player has a winning strategy in $\star$.
+
+    By induction every node $v\in V$ has a winning strategy for one player. 
+
+\end{document}
+
