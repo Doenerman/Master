@@ -27,16 +27,16 @@
       \node[state,rectangle]  (initIDUser)                            {$Box0$};
       \node[state,rectangle]  (initIDCard)  [below of=initIDUser]     {$Box1$};
       \node[state,rectangle]  (iterBox)     [below of=initIDCard]     {$CBox0$};
-      \node[state,rectangle]  (statusLight)
-                        [right of=iterBox, node distance = 3cm]       {$Light0$};
-      \node[state,rectangle]  (output)      [below of=statusLight]     {$OBox0$};
-      \node[state,rectangle]  (checksum1)   [below of=iterBox]        {$OBox1$};
+      \node[state,rectangle]  (output)      
+                    [right of=iterBox, node distance = 3cm]     {$OBox0$};
+      \node[state,rectangle]  (checksum1)   
+                    [below of=iterBox, node distance = 2cm]        {$OBox1$};
       \node[state,rectangle]  (checksum2)   [below of=checksum1]      {$OBox2$};
       \node[state,rectangle]  (start)       
                       [below right of=checksum2, node distance=2cm]{$Button0$};
 
       \node (window) [draw=red, fit=(initIDUser) (initIDCard) (iterBox)
-                                    (statusLight) (output) (checksum1)
+                                    (output) (checksum1)
                                     (checksum2) (start), inner sep=1cm] {};
     \end{tikzpicture}
     \label{sketch of the main windows of the GUI.}
