@@ -21,6 +21,37 @@ private:
     void readCardID();
     void readUserID();
 
+    // ################ //
+    // ##  CheckBox  ## //
+    // ################ //
+    /**
+      * @var cbIterate
+      * The checkbox for the option to write a specific amount of cards
+      */
+    QCheckBox* cbIterate = new QCheckBox(this);
+
+
+    // ############ //
+    // ##  Label ## //
+    // ############ //
+    /**
+     * @var lPBConsole
+     * The label for the plain text edit representing the console
+     */
+    QLabel* lPBConsole = new QLabel(this);
+    /**
+      * @var lPBChecksumAdded
+      * The label for the plain text edit representing the calculated
+      * added checksum
+      */
+    QLabel* lPBChecksumAdded = new QLabel(this);
+    /**
+      * @var lPBChecksumIBM
+      * The label for the plain text edit representing the calculated
+      * ibm checksum
+      */
+    QLabel* lPBChecksumIBM = new QLabel(this);
+
 
     // ####################### //
     // ##   PlainTextEdit   ## //
@@ -41,6 +72,16 @@ private:
       * should be written
       */
     QPlainTextEdit* pteCardAmount = new QPlainTextEdit(this);
+
+
+    // ################# //
+    // ##  PushBotton ## //
+    // ################# //
+    /**
+     * @var pbStart
+     * The button for starting the writting process
+     */
+    QPushButton* pbStart = new QPushButton(this);
 
 
     // ################### //
@@ -64,46 +105,6 @@ private:
       * information or the ibm checksum of the given card.
       */
     QTextBrowser* tbChecksumIBM = new QTextBrowser(this);
-
-
-    // ################ //
-    // ##  CheckBox  ## //
-    // ################ //
-    /**
-      * @var cbIterate
-      * The checkbox for the option to write a specific amount of cards
-      */
-    QCheckBox* cbIterate = new QCheckBox(this);
-
-    // ################# //
-    // ##  PushBotton ## //
-    // ################# //
-    /**
-     * @var pbStart
-     * The button for starting the writting process
-     */
-    QPushButton* pbStart = new QPushButton(this);
-
-    // ############ //
-    // ##  Label ## //
-    // ############ //
-    /**
-     * @var lPBConsole
-     * The label for the plain text edit representing the console
-     */
-    QLabel* lPBConsole = new QLabel(this);
-    /**
-      * @var lPBChecksumAdded
-      * The label for the plain text edit representing the calculated
-      * added checksum
-      */
-    QLabel* lPBChecksumAdded = new QLabel(this);
-    /**
-      * @var lPBChecksumIBM
-      * The label for the plain text edit representing the calculated
-      * ibm checksum
-      */
-    QLabel* lPBChecksumIBM = new QLabel(this);
 
 };
 

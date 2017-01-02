@@ -3,6 +3,29 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+
+    // ############## //
+    // ## Checkbox ## //
+    // ############## //
+    cbIterate->setObjectName(QString::fromUtf8("iterate_enable"));
+    cbIterate->setGeometry(QRect(30,150,100,30));
+    cbIterate->setText(QString::fromUtf8("Iterieren"));
+
+    // ########### //
+    // ## Label ## //
+    // ########### //
+    lPBConsole->setObjectName(QString::fromUtf8("label_console"));
+    lPBConsole->setGeometry(QRect(250,70,150,30));
+    lPBConsole->setText(QString::fromUtf8("Output"));
+
+    lPBChecksumAdded->setObjectName(QString::fromUtf8("label_checksumAdded"));
+    lPBChecksumAdded->setGeometry(QRect(30,325,150,30));
+    lPBChecksumAdded->setText(QString::fromUtf8("addierte Prüfsumme"));
+
+    lPBChecksumIBM->setObjectName(QString::fromUtf8("label_checksumIBM"));
+    lPBChecksumIBM->setGeometry(QRect(30,375,150,30));
+    lPBChecksumIBM->setText(QString::fromUtf8("IBM Prüfsumme"));
+
     // ##################### //
     // ## PlainTextFields ## //
     // ##################### //
@@ -21,6 +44,13 @@ MainWindow::MainWindow(QWidget *parent)
     pteCardAmount->setGeometry(QRect(50,175,120,30));
     pteCardAmount->setReadOnly(true);
 
+    // ################ //
+    // ## PushButton ## //
+    // ################ //
+    pbStart->setObjectName(QString::fromUtf8("start_button"));
+    pbStart->setGeometry(QRect(150,470,200,50));
+    pbStart->setText(QString::fromUtf8("Beschreiben Starten"));
+
     // ################# //
     // ## TextBrowser ## //
     // ################# //
@@ -32,35 +62,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     tbChecksumIBM->setObjectName(QString::fromUtf8("checksumIBM_out"));
     tbChecksumIBM->setGeometry(QRect(30,400,150,30));
-
-    // ############## //
-    // ## Checkbox ## //
-    // ############## //
-    cbIterate->setObjectName(QString::fromUtf8("iterate_enable"));
-    cbIterate->setGeometry(QRect(30,150,100,30));
-    cbIterate->setText(QString::fromUtf8("Iterieren"));
-
-    // ################ //
-    // ## PushButton ## //
-    // ################ //
-    pbStart->setObjectName(QString::fromUtf8("start_button"));
-    pbStart->setGeometry(QRect(150,470,200,50));
-    pbStart->setText(QString::fromUtf8("Beschreiben Starten"));
-
-    // ########### //
-    // ## Label ## //
-    // ########### //
-    lPBConsole->setObjectName(QString::fromUtf8("label_console"));
-    lPBConsole->setGeometry(QRect(250,70,150,30));
-    lPBConsole->setText(QString::fromUtf8("Output"));
-
-    lPBChecksumAdded->setObjectName(QString::fromUtf8("label_checksumAdded"));
-    lPBChecksumAdded->setGeometry(QRect(30,325,150,30));
-    lPBChecksumAdded->setText(QString::fromUtf8("added Prüfsumme"));
-
-    lPBChecksumIBM->setObjectName(QString::fromUtf8("label_checksumIBM"));
-    lPBChecksumIBM->setGeometry(QRect(30,375,150,30));
-    lPBChecksumIBM->setText(QString::fromUtf8("IBM Prüfsumme"));
 }
 
 MainWindow::~MainWindow()
