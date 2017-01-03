@@ -8,7 +8,9 @@
 #include <QTextBrowser>
 #include <QCheckBox>
 #include <QLabel>
-#include "gui_input_output.h"
+#include <QLayout>
+
+#include "eventhandler.h"
 
 class MainWindow : public QMainWindow
 {
@@ -18,18 +20,10 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    // ################# //
-    // ##  PushBotton ## //
-    // ################# //
-    /**
-     * @var pbStart
-     * The button for starting the writting process
-     */
-    QPushButton* pbStart = new QPushButton(this);
+
 
     int readCardID();
     int readUserID();
-    int writeOnConsole();
 
 
 private:
@@ -100,6 +94,19 @@ private:
       */
     QPlainTextEdit* pteChecksumIBM = new QPlainTextEdit(this);
 
+    // ################# //
+    // ##  PushBotton ## //
+    // ################# //
+    /**
+     * @var pbStart
+     * The button for starting the writting process
+     */
+    QPushButton* pbStart = new QPushButton(this);
+
+private slots:
+    void pushStartButton();
+    void userIDgiven();
+    void enable_disable_iterativeWrittingInput();
 
 };
 
