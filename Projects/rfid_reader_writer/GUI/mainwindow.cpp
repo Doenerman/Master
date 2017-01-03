@@ -26,23 +26,39 @@ MainWindow::MainWindow(QWidget *parent)
     lPBChecksumIBM->setGeometry(QRect(30,375,150,30));
     lPBChecksumIBM->setText(QString::fromUtf8("IBM Prüfsumme"));
 
-    // ##################### //
-    // ## PlainTextFields ## //
-    // ##################### //
+    // ################### //
+    // ## PlainTextEdit ## //
+    // ################### //
     pteUserID->setObjectName(QString::fromUtf8("userID_input"));
     pteUserID->setPlaceholderText(QString::fromUtf8("Kunden Nummer"));
+    pteUserID->setTabChangesFocus(true);
     pteUserID->setGeometry(QRect(20,30,150,30));
-    pteUserID->setReadOnly(true);
 
     pteCardID->setObjectName(QString::fromUtf8("cardID_input"));
     pteCardID->setPlaceholderText(QString::fromUtf8("Karten Nummer"));
+    pteCardID->setTabChangesFocus(true);
     pteCardID->setGeometry(QRect(20,70,150,30));
-    pteUserID->setReadOnly(true);
 
     pteCardAmount->setObjectName(QString::fromUtf8("cardAmount_input"));
     pteCardAmount->setPlaceholderText(QString::fromUtf8("Kartenanzahl"));
+    pteCardAmount->setTabChangesFocus(true);
     pteCardAmount->setGeometry(QRect(50,175,120,30));
-    pteCardAmount->setReadOnly(true);
+
+
+    pteConsole->setObjectName(QString::fromUtf8("console_output"));
+    pteConsole->setOverwriteMode(true);
+    pteConsole->setReadOnly(true);
+    pteConsole->setGeometry(QRect(250,100,200,300));
+
+    pteChecksumAdded->setObjectName(QString::fromUtf8("checksumAdded_output"));
+    pteChecksumAdded->setReadOnly(true);
+    pteChecksumAdded->setTabChangesFocus(true);
+    pteChecksumAdded->setGeometry(QRect(30,350,150,30));
+
+    pteChecksumIBM->setObjectName(QString::fromUtf8("checksumIBM_out"));
+    pteChecksumIBM->setReadOnly(true);
+    pteChecksumIBM->setTabChangesFocus(true);
+    pteChecksumIBM->setGeometry(QRect(30,400,150,30));
 
     // ################ //
     // ## PushButton ## //
@@ -50,18 +66,6 @@ MainWindow::MainWindow(QWidget *parent)
     pbStart->setObjectName(QString::fromUtf8("start_button"));
     pbStart->setGeometry(QRect(150,470,200,50));
     pbStart->setText(QString::fromUtf8("Beschreiben Starten"));
-
-    // ################# //
-    // ## TextBrowser ## //
-    // ################# //
-    tbConsole->setObjectName(QString::fromUtf8("console_output"));
-    tbConsole->setGeometry(QRect(250,100,200,300));
-
-    tbChecksumAdded->setObjectName(QString::fromUtf8("checksumAdded_output"));
-    tbChecksumAdded->setGeometry(QRect(30,350,150,30));
-
-    tbChecksumIBM->setObjectName(QString::fromUtf8("checksumIBM_out"));
-    tbChecksumIBM->setGeometry(QRect(30,400,150,30));
 }
 
 MainWindow::~MainWindow()

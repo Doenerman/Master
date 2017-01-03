@@ -8,6 +8,7 @@
 #include <QTextBrowser>
 #include <QCheckBox>
 #include <QLabel>
+#include "gui_input_output.h"
 
 class MainWindow : public QMainWindow
 {
@@ -17,10 +18,21 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-private:
-    void readCardID();
-    void readUserID();
+    // ################# //
+    // ##  PushBotton ## //
+    // ################# //
+    /**
+     * @var pbStart
+     * The button for starting the writting process
+     */
+    QPushButton* pbStart = new QPushButton(this);
 
+    int readCardID();
+    int readUserID();
+    int writeOnConsole();
+
+
+private:
     // ################ //
     // ##  CheckBox  ## //
     // ################ //
@@ -72,39 +84,22 @@ private:
       * should be written
       */
     QPlainTextEdit* pteCardAmount = new QPlainTextEdit(this);
-
-
-    // ################# //
-    // ##  PushBotton ## //
-    // ################# //
     /**
-     * @var pbStart
-     * The button for starting the writting process
-     */
-    QPushButton* pbStart = new QPushButton(this);
-
-
-    // ################### //
-    // ##  TextBrowser  ## //
-    // ################### //
-    /**
-      * @var tbConsole
-      * The text browser for information that are given during the
-      * process
+      * @var pteConsole
+      * The plain text edit field for possible output of the programm
       */
-    QTextBrowser* tbConsole = new QTextBrowser(this);
+    QPlainTextEdit* pteConsole = new QPlainTextEdit(this);
     /**
-      * @var tbChecksumAdded
-      * The text browser for the added checksum of the above given
-      * information or the added checksum of the given card.
+      * @var pteChecksumAdded
+      * The plain text edit field for the calculated added checksum
       */
-    QTextBrowser* tbChecksumAdded = new QTextBrowser(this);
+    QPlainTextEdit* pteChecksumAdded = new QPlainTextEdit(this);
     /**
-      * @var tbChecksumIBM
-      * The text browser for the added checksum of the above given
-      * information or the ibm checksum of the given card.
+      * @var pteChecksumIBM
+      * The plain text edit field for the calculated IBM checksum
       */
-    QTextBrowser* tbChecksumIBM = new QTextBrowser(this);
+    QPlainTextEdit* pteChecksumIBM = new QPlainTextEdit(this);
+
 
 };
 
