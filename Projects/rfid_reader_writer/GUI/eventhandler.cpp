@@ -16,9 +16,7 @@ void EventHandler::startWrittingProcess(QPlainTextEdit* const pte,
                                         QString cardAmount) {
     bool cardConversion, userConversion, cardAmountConversion;
     const int cardID = initCardID.toInt(&cardConversion, 10);
-    std::cout << cardID << " " << cardConversion << std::endl;
     const int userID = initUserID.toInt(&userConversion);
-    std::cout << userID << std::endl;
     int cards = 0;
     int conversionCheckPassed = CONVERSIONCHECK_PASSED;
     if(iterate) {
@@ -39,8 +37,6 @@ void EventHandler::startWrittingProcess(QPlainTextEdit* const pte,
     if(0 != (iterate) && (!cardAmountConversion)) {
         conversionCheckPassed = CONVERSIONCHECK_FAILED_CARDAMOUNT;
     }
-
-    std::cout << conversionCheckPassed << std::endl;
 
 
 
