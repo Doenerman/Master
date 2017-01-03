@@ -44,6 +44,7 @@ void EventHandler::startWrittingProcess(QPlainTextEdit* const pte,
 
 
 
+    // Output if conversion passed succesfull
     if(conversionCheckPassed == CONVERSIONCHECK_PASSED) {
         // Output for the inital user ID
         pte->appendPlainText(QString::fromUtf8("Initiale Kunden Nummer: "));
@@ -63,6 +64,7 @@ void EventHandler::startWrittingProcess(QPlainTextEdit* const pte,
         pte->insertPlainText(QString::number(cards));
         pte->moveCursor(QTextCursor::End);
     }
+    // Output if conversion failedg
     else {
         switch(conversionCheckPassed) {
         case CONVERSIONCHECK_FAILED_CARDID:
