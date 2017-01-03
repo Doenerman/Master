@@ -26,26 +26,25 @@ MainWindow::MainWindow(QWidget *parent)
     lPBChecksumIBM->setGeometry(QRect(30,375,150,30));
     lPBChecksumIBM->setText(QString::fromUtf8("IBM Prüfsumme"));
 
+    // ############## //
+    // ## LineEdit ## //
+    // ############## //
+    leCardID->setObjectName(QString::fromUtf8("cardID_input"));
+    leCardID->setPlaceholderText(QString::fromUtf8("Kartennummer"));
+    leCardID->setGeometry(20,30,150,30);
+
+    leUserID->setObjectName(QString::fromUtf8("userID_input"));
+    leUserID->setPlaceholderText(QString::fromUtf8("Kundennummer"));
+    leUserID->setGeometry(20,70,150,30);
+
+    leCardAmount->setObjectName(QString::fromUtf8("cardAmount_input"));
+    leCardAmount->setPlaceholderText(QString::fromUtf8("Kartenanzahl"));
+    leCardAmount->setEnabled(false);
+    leCardAmount->setGeometry(QRect(50,175,120,30));
+
     // ################### //
     // ## PlainTextEdit ## //
     // ################### //
-    pteUserID->setObjectName(QString::fromUtf8("userID_input"));
-    pteUserID->setPlaceholderText(QString::fromUtf8("Kunden Nummer"));
-    pteUserID->setTabChangesFocus(true);
-    pteUserID->setGeometry(QRect(20,30,150,30));
-
-    pteCardID->setObjectName(QString::fromUtf8("cardID_input"));
-    pteCardID->setPlaceholderText(QString::fromUtf8("Karten Nummer"));
-    pteCardID->setTabChangesFocus(true);
-    pteCardID->setGeometry(QRect(20,70,150,30));
-
-    pteCardAmount->setObjectName(QString::fromUtf8("cardAmount_input"));
-    pteCardAmount->setPlaceholderText(QString::fromUtf8("Kartenanzahl"));
-    pteCardAmount->setTabChangesFocus(true);
-    pteCardAmount->setEnabled(false);
-    pteCardAmount->setGeometry(QRect(50,175,120,30));
-
-
     pteConsole->setObjectName(QString::fromUtf8("console_output"));
     pteConsole->setOverwriteMode(true);
     pteConsole->setReadOnly(true);
@@ -73,8 +72,8 @@ MainWindow::MainWindow(QWidget *parent)
     // ######################### //
     // ## Set the focus order ## //
     // ######################### //
-    this->setTabOrder(pteUserID, pteCardID);
-    this->setTabOrder(pteCardID, cbIterate);
+    this->setTabOrder(leCardID, leUserID);
+    this->setTabOrder(leUserID, cbIterate);
 
 
     // ########################################### //
@@ -93,10 +92,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::pushStartButton() {
     EventHandler::startWrittingProcess(this->pteConsole,
-                                       this->pteCardID->toPlainText(),
-                                       this->pteUserID->toPlainText(),
+                                       this->leCardID->displayText(),
+                                       this->leUserID->displayText(),
                                        this->cbIterate->isChecked(),
-                                       this->pteCardAmount->toPlainText());
+                                       this->leCardAmount->displayText());
 }
 
 
@@ -104,10 +103,10 @@ void MainWindow::pushStartButton() {
 void MainWindow::enable_disable_iterativeWrittingInput() {
     // if iterative card writting is activated
     if(this->cbIterate->isChecked()) {
-        this->pteCardAmount->setEnabled(true);
+        this->leCardAmount->setEnabled(true);
     }
     // if iterative card writting is deactivated
     if(!this->cbIterate->isChecked()) {
-        this->pteCardAmount->setEnabled(false);
+        this->leCardAmount->setEnabled(false);
     }
 }

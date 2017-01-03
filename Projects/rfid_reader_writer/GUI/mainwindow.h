@@ -8,6 +8,7 @@
 #include <QTextBrowser>
 #include <QCheckBox>
 #include <QLabel>
+#include <QLineEdit>
 #include <QLayout>
 
 #include "eventhandler.h"
@@ -58,26 +59,31 @@ private:
       */
     QLabel* lPBChecksumIBM = new QLabel(this);
 
+    // ############## //
+    // ## LineEdit ## //
+    // ############## //
+    /**
+      * @var leCardID
+      * The line edit field for the user id as input
+      */
+    QLineEdit* leCardID = new QLineEdit(this);
+    /**
+      * @var leUserID
+      * The line edit field for the user id as input
+      */
+    QLineEdit* leUserID = new QLineEdit(this);
+    /**
+      * @var leCardAmount
+      * The line edit field for the amount of cards that
+      * should be written
+      */
+    QLineEdit* leCardAmount = new QLineEdit(this);
+
+
 
     // ####################### //
     // ##   PlainTextEdit   ## //
     // ####################### //
-    /**
-      * @var pteUserID
-      * The plain text edit field for the user id
-      */
-    QPlainTextEdit* pteUserID = new QPlainTextEdit(this);
-    /**
-      * @var pteCardID
-      * The plain text edit field for the card id
-      */
-    QPlainTextEdit* pteCardID = new QPlainTextEdit(this);
-    /**
-      * @var pteCardAmount
-      * The plain text edit field for the amount of cards that
-      * should be written
-      */
-    QPlainTextEdit* pteCardAmount = new QPlainTextEdit(this);
     /**
       * @var pteConsole
       * The plain text edit field for possible output of the programm
