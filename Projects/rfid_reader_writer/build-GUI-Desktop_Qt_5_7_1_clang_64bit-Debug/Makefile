@@ -49,9 +49,11 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../GUI/main.cpp \
-		../GUI/mainwindow.cpp moc_mainwindow.cpp
+		../GUI/mainwindow.cpp \
+		../GUI/eventhandler.cpp moc_mainwindow.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
+		eventhandler.o \
 		moc_mainwindow.o
 DIST          = /Users/JanUthoff/Qt/5.7/clang_64/mkspecs/features/spec_pre.prf \
 		/Users/JanUthoff/Qt/5.7/clang_64/mkspecs/qdevice.pri \
@@ -211,8 +213,10 @@ DIST          = /Users/JanUthoff/Qt/5.7/clang_64/mkspecs/features/spec_pre.prf \
 		/Users/JanUthoff/Qt/5.7/clang_64/mkspecs/features/exceptions.prf \
 		/Users/JanUthoff/Qt/5.7/clang_64/mkspecs/features/yacc.prf \
 		/Users/JanUthoff/Qt/5.7/clang_64/mkspecs/features/lex.prf \
-		../GUI/GUI.pro ../GUI/mainwindow.h ../GUI/main.cpp \
-		../GUI/mainwindow.cpp
+		../GUI/GUI.pro ../GUI/mainwindow.h \
+		../GUI/eventhandler.h ../GUI/main.cpp \
+		../GUI/mainwindow.cpp \
+		../GUI/eventhandler.cpp
 QMAKE_TARGET  = GUI
 DESTDIR       = 
 TARGET        = GUI.app/Contents/MacOS/GUI
@@ -579,8 +583,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../GUI/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../GUI/main.cpp ../GUI/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../GUI/mainwindow.h ../GUI/eventhandler.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../GUI/main.cpp ../GUI/mainwindow.cpp ../GUI/eventhandler.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -623,6 +627,7 @@ moc_mainwindow.cpp: /Users/JanUthoff/Qt/5.7/clang_64/lib/QtWidgets.framework/Hea
 		/Users/JanUthoff/Qt/5.7/clang_64/lib/QtWidgets.framework/Headers/qcheckbox.h \
 		/Users/JanUthoff/Qt/5.7/clang_64/lib/QtWidgets.framework/Headers/QLabel \
 		/Users/JanUthoff/Qt/5.7/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		../GUI/eventhandler.h \
 		../GUI/mainwindow.h \
 		/Users/JanUthoff/Qt/5.7/clang_64/bin/moc
 	/Users/JanUthoff/Qt/5.7/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -I/Users/JanUthoff/Qt/5.7/clang_64/mkspecs/macx-clang -I/Users/JanUthoff/git/Master/Projects/rfid_reader_writer/GUI -I/Users/JanUthoff/Qt/5.7/clang_64/lib/QtWidgets.framework/Headers -I/Users/JanUthoff/Qt/5.7/clang_64/lib/QtGui.framework/Headers -I/Users/JanUthoff/Qt/5.7/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/7.0.2/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include -F/Users/JanUthoff/Qt/5.7/clang_64/lib ../GUI/mainwindow.h -o moc_mainwindow.cpp
@@ -658,6 +663,7 @@ main.o: ../GUI/main.cpp ../GUI/mainwindow.h \
 		/Users/JanUthoff/Qt/5.7/clang_64/lib/QtWidgets.framework/Headers/qcheckbox.h \
 		/Users/JanUthoff/Qt/5.7/clang_64/lib/QtWidgets.framework/Headers/QLabel \
 		/Users/JanUthoff/Qt/5.7/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		../GUI/eventhandler.h \
 		/Users/JanUthoff/Qt/5.7/clang_64/lib/QtWidgets.framework/Headers/QApplication \
 		/Users/JanUthoff/Qt/5.7/clang_64/lib/QtWidgets.framework/Headers/qapplication.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../GUI/main.cpp
@@ -676,8 +682,15 @@ mainwindow.o: ../GUI/mainwindow.cpp ../GUI/mainwindow.h \
 		/Users/JanUthoff/Qt/5.7/clang_64/lib/QtWidgets.framework/Headers/QCheckBox \
 		/Users/JanUthoff/Qt/5.7/clang_64/lib/QtWidgets.framework/Headers/qcheckbox.h \
 		/Users/JanUthoff/Qt/5.7/clang_64/lib/QtWidgets.framework/Headers/QLabel \
-		/Users/JanUthoff/Qt/5.7/clang_64/lib/QtWidgets.framework/Headers/qlabel.h
+		/Users/JanUthoff/Qt/5.7/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		../GUI/eventhandler.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../GUI/mainwindow.cpp
+
+
+eventhandler.o: ../GUI/eventhandler.cpp ../GUI/eventhandler.h \
+		/Users/JanUthoff/Qt/5.7/clang_64/lib/QtWidgets.framework/Headers/QPlainTextEdit \
+		/Users/JanUthoff/Qt/5.7/clang_64/lib/QtWidgets.framework/Headers/qplaintextedit.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o eventhandler.o ../GUI/eventhandler.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
