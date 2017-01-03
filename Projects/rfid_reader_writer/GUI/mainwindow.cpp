@@ -42,22 +42,24 @@ MainWindow::MainWindow(QWidget *parent)
     pteCardAmount->setObjectName(QString::fromUtf8("cardAmount_input"));
     pteCardAmount->setPlaceholderText(QString::fromUtf8("Kartenanzahl"));
     pteCardAmount->setTabChangesFocus(true);
+    pteCardAmount->setEnabled(false);
     pteCardAmount->setGeometry(QRect(50,175,120,30));
 
 
     pteConsole->setObjectName(QString::fromUtf8("console_output"));
     pteConsole->setOverwriteMode(true);
     pteConsole->setReadOnly(true);
+    pteConsole->setEnabled(false);
     pteConsole->setGeometry(QRect(250,100,200,300));
 
     pteChecksumAdded->setObjectName(QString::fromUtf8("checksumAdded_output"));
     pteChecksumAdded->setReadOnly(true);
-    pteChecksumAdded->setTabChangesFocus(true);
+    pteChecksumAdded->setEnabled(false);
     pteChecksumAdded->setGeometry(QRect(30,350,150,30));
 
     pteChecksumIBM->setObjectName(QString::fromUtf8("checksumIBM_out"));
     pteChecksumIBM->setReadOnly(true);
-    pteChecksumIBM->setTabChangesFocus(true);
+    pteChecksumIBM->setEnabled(false);
     pteChecksumIBM->setGeometry(QRect(30,400,150,30));
 
     // ################ //
@@ -66,9 +68,50 @@ MainWindow::MainWindow(QWidget *parent)
     pbStart->setObjectName(QString::fromUtf8("start_button"));
     pbStart->setGeometry(QRect(150,470,200,50));
     pbStart->setText(QString::fromUtf8("Beschreiben Starten"));
+
+
+    // ######################### //
+    // ## Set the focus order ## //
+    // ######################### //
+    this->setTabOrder(pteUserID, pteCardID);
+    this->setTabOrder(pteCardID, cbIterate);
+
+
+    // ########################################### //
+    // ## Connections between SIGNALS and SLOTS ## //
+    // ########################################### //
+    connect(this->pbStart,SIGNAL(clicked(bool)), this, SLOT(pushStartButton()));
+    connect(this->cbIterate,SIGNAL(stateChanged(int)),
+            this, SLOT(enable_disable_iterativeWrittingInput()));
+
 }
 
 MainWindow::~MainWindow()
 {
 
+}
+
+void MainWindow::pushStartButton() {
+    EventHandler::startWrittingProcess(this->pteConsole);
+}
+
+/**
+ * @brief Reads the userID from the depending QTextEditField.
+ *
+ * @todo store the ID
+ */
+void MainWindow::userIDgiven() {
+    pteConsole->appendPlainText(pteUserID->toPlainText());
+}
+
+
+void MainWindow::enable_disable_iterativeWrittingInput() {
+    // if iterative card writting is activated
+    if(this->cbIterate->isChecked()) {
+        this->pteCardAmount->setEnabled(true);
+    }
+    // if iterative card writting is deactivated
+    if(!this->cbIterate->isChecked()) {
+        this->pteCardAmount->setEnabled(false);
+    }
 }
