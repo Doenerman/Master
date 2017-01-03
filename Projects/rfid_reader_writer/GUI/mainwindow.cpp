@@ -92,17 +92,13 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::pushStartButton() {
-    EventHandler::startWrittingProcess(this->pteConsole);
+    EventHandler::startWrittingProcess(this->pteConsole,
+                                       this->pteCardID->toPlainText(),
+                                       this->pteUserID->toPlainText(),
+                                       this->cbIterate->isChecked(),
+                                       this->pteCardAmount->toPlainText());
 }
 
-/**
- * @brief Reads the userID from the depending QTextEditField.
- *
- * @todo store the ID
- */
-void MainWindow::userIDgiven() {
-    pteConsole->appendPlainText(pteUserID->toPlainText());
-}
 
 
 void MainWindow::enable_disable_iterativeWrittingInput() {

@@ -105,7 +105,6 @@ private:
 
 private slots:
     void pushStartButton();
-    void userIDgiven();
     void enable_disable_iterativeWrittingInput();
 
 };
