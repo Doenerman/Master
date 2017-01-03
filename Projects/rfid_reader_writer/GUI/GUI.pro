@@ -24,6 +24,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    gui_input_output.cpp \
+    eventhandler.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    gui_input_output.h \
+    eventhandler.h
