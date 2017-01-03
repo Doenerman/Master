@@ -12,3 +12,5 @@
 
 # QT Creator
 *.user
+*.o
+./Projects/rfid_reader_writer/build-GUI-Desktop_Qt_5_7_1_clang_64bit-Debug/*
