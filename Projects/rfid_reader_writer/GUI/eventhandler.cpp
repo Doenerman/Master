@@ -1,6 +1,4 @@
 #include "eventhandler.h"
-#include <stdlib.h>
-#include <iostream>
 
 /**
  * @brief This method starts the writting process.
