@@ -86,12 +86,25 @@ MainWindow::MainWindow(QWidget *parent)
     // ## PushButton ## //
     // ################ //
     pbStart->setObjectName(QString::fromUtf8("start_button"));
-    pbStart->setGeometry(QRect(150,470,200,50));
+    pbStart->setGeometry(QRect(PUSHBUTTON_MAINWINDOW_X_START,
+                               PUSHBUTTON_Y_FIRST_ROW,
+                               PUSHBUTTON_MAINWINDOW_WIDTH,
+                               PUSHBUTTON_MAINWINDOW_HEIGHT));
     pbStart->setText(QString::fromUtf8("Beschreiben Starten"));
 
     pbRead->setObjectName(QString::fromUtf8("read_button"));
-    pbRead->setGeometry(QRect(400,470,100,50));
+    pbRead->setGeometry(QRect(PUSHBUTTON_MAINWINDOW_X_READ,
+                              PUSHBUTTON_Y_FIRST_ROW,
+                              PUSHBUTTON_MAINWINDOW_WIDTH,
+                              PUSHBUTTON_MAINWINDOW_HEIGHT));
     pbRead->setText(QString::fromUtf8("Karte lesen"));
+
+    pbClose->setObjectName(QString::fromUtf8("close_button"));
+    pbClose->setGeometry(QRect(PUSHBUTTON_MAINWINDOW_X_CLOSE,
+                               PUSHBUTTON_Y_SECOND_ROW,
+                               PUSHBUTTON_MAINWINDOW_WIDTH,
+                               PUSHBUTTON_MAINWINDOW_HEIGHT));
+    pbClose->setText(QString::fromUtf8("Beenden"));
 
 
 
@@ -102,6 +115,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->setTabOrder(leCardID, leUserID);
     this->setTabOrder(leUserID, cbIterate);
     this->setTabOrder(pbStart,pbRead);
+    this->setTabOrder(pbRead,pbClose);
 
 
     // ########################################### //
@@ -111,6 +125,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this->pbRead,SIGNAL(clicked(bool)),this,SLOT(pushReadButton()));
     connect(this->cbIterate,SIGNAL(stateChanged(int)),
             this, SLOT(enable_disable_iterativeWrittingInput()));
+    connect(this->pbClose,SIGNAL(clicked(bool)),this,SLOT(close()));
 
 }
 
