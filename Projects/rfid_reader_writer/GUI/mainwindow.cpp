@@ -3,7 +3,16 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    // Set the properties of the different objects //
+    // Properties:  - geometry (including the placement)
+    //              - object name
+    //              - possible text
+    //              - possible placeholder if no entry is given
+    //              - whether the object is enabled
+    //              - whether the user can overwrite given text
 
+
+    //
     // ############## //
     // ## Checkbox ## //
     // ############## //
@@ -46,7 +55,6 @@ MainWindow::MainWindow(QWidget *parent)
     // ## PlainTextEdit ## //
     // ################### //
     pteConsole->setObjectName(QString::fromUtf8("console_output"));
-    pteConsole->setOverwriteMode(true);
     pteConsole->setReadOnly(true);
     pteConsole->setEnabled(false);
     pteConsole->setGeometry(QRect(250,100,200,300));
@@ -67,6 +75,9 @@ MainWindow::MainWindow(QWidget *parent)
     pbStart->setObjectName(QString::fromUtf8("start_button"));
     pbStart->setGeometry(QRect(150,470,200,50));
     pbStart->setText(QString::fromUtf8("Beschreiben Starten"));
+
+
+
 
 
     // ######################### //
@@ -90,6 +101,13 @@ MainWindow::~MainWindow()
 
 }
 
+/**
+ * @brief Initiate the writting process.
+ *
+ * This method calls \link EventHandler::startWrittingProcess(QPlainTextEdit,
+ * QString,QString,bool,QString) \endlink. This method works as SLOT method and
+ * ist connected in \link MainWindow::MainWindow() \endlink
+ */
 void MainWindow::pushStartButton() {
     EventHandler::startWrittingProcess(this->pteConsole,
                                        this->leCardID->displayText(),
@@ -100,6 +118,14 @@ void MainWindow::pushStartButton() {
 
 
 
+/**
+ * @brief   Enables and disables the QLineEdit field for the input for the amount of
+ *          cards.
+ *
+ * The QLinEdit field for the input for the amount of cards is enabled if and
+ * only if the QCheckbox \link cbIterate \endlink is checked. This method works
+ * as SLOT method and is connected in \link MainWindow::MainWindow() \endlink
+ */
 void MainWindow::enable_disable_iterativeWrittingInput() {
     // if iterative card writting is activated
     if(this->cbIterate->isChecked()) {
