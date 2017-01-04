@@ -14,6 +14,20 @@
 #include "eventhandler.h"
 #include "cardinformationwindow.h"
 
+// ############################## //
+// ## Layout depending defines ## //
+// ############################## //
+#define MAINWINDOW_HEIGHT 650
+#define MAINWINDOW_WIDTH 600
+#define PUSHBUTTON_MAINWINDOW_WIDTH 200
+#define PUSHBUTTON_MAINWINDOW_HEIGHT 50
+#define PUSHBUTTON_MAINWINDOW_X_GAP ((MAINWINDOW_WIDTH-2*PUSHBUTTON_MAINWINDOW_WIDTH)/3)
+#define PUSHBUTTON_MAINWINDOW_X_START PUSHBUTTON_MAINWINDOW_X_GAP
+#define PUSHBUTTON_MAINWINDOW_X_READ (PUSHBUTTON_MAINWINDOW_X_START+PUSHBUTTON_MAINWINDOW_WIDTH+PUSHBUTTON_MAINWINDOW_X_GAP)
+#define PUSHBUTTON_MAINWINDOW_X_CLOSE (((MAINWINDOW_WIDTH-PUSHBUTTON_MAINWINDOW_WIDTH)/2))
+#define PUSHBUTTON_Y_FIRST_ROW 470
+#define PUSHBUTTON_Y_SECOND_ROW 550
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -114,6 +128,11 @@ private:
       * The button for opening a new window that shows the card information
       */
     QPushButton* pbRead = new QPushButton(this);
+    /**
+      * @var pbClose
+      * The button that closes the programm
+      */
+    QPushButton* pbClose = new QPushButton(this);
 
 private slots:
     void pushStartButton();
