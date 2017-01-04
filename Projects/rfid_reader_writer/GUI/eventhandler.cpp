@@ -37,7 +37,10 @@ void EventHandler::startWrittingProcess(QPlainTextEdit* const pte,
     }
 
 
-
+    // ############ //
+    // ## Output ## //
+    // ############ //
+    pte->clear();
     // Output if conversion passed succesfull
     if(conversionCheckPassed == CONVERSIONCHECK_PASSED) {
         // Output for the inital user ID
