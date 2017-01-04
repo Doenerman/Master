@@ -1,5 +1,18 @@
 #include "mainwindow.h"
 
+/**
+ * @brief   Constructor for the main window.
+ *
+ * This constructor set several properties for the objectivs of
+ * \link MainWindow \endlink . The properties set include the geometry
+ * (including where the object is placed), the object name, possible text that
+ * is visiable for the user, possible placeholder to explain what this object
+ * is used for and whether an object is enabled or not. Furthermore the tab
+ * order is set and the connections between buttons, checkboxes and methods
+ * are set.
+ *
+ * @param parent
+ */
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
@@ -119,8 +132,8 @@ void MainWindow::pushStartButton() {
 
 
 /**
- * @brief   Enables and disables the QLineEdit field for the input for the amount of
- *          cards.
+ * @brief   Enables and disables the QLineEdit field for the input for the
+ *          amount of cards.
  *
  * The QLinEdit field for the input for the amount of cards is enabled if and
  * only if the QCheckbox \link cbIterate \endlink is checked. This method works
