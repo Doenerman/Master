@@ -2,6 +2,13 @@
 
 /**
  * @brief This method starts the writting process.
+ *
+ * It converts the QStrings into integer and checks whether the given QStrings
+ * can be converted to integers. If the QStrings can not be converted to Integer
+ * A notification is printed to the QPlainTextEdit field. If the conversion
+ * is done successful given Information about the different IDs and the amount
+ * of cards that should be written is printed in the given QPLainTextEdit field.
+ *
  * @param pte   pointer to the QPlainTextEdit where possible notifications
  *              can be printed
  *
