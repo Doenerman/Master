@@ -89,6 +89,9 @@ MainWindow::MainWindow(QWidget *parent)
     pbStart->setGeometry(QRect(150,470,200,50));
     pbStart->setText(QString::fromUtf8("Beschreiben Starten"));
 
+    pbRead->setObjectName(QString::fromUtf8("read_button"));
+    pbRead->setGeometry(QRect(400,470,100,50));
+    pbRead->setText(QString::fromUtf8("Karte lesen"));
 
 
 
@@ -98,12 +101,14 @@ MainWindow::MainWindow(QWidget *parent)
     // ######################### //
     this->setTabOrder(leCardID, leUserID);
     this->setTabOrder(leUserID, cbIterate);
+    this->setTabOrder(pbStart,pbRead);
 
 
     // ########################################### //
     // ## Connections between SIGNALS and SLOTS ## //
     // ########################################### //
-    connect(this->pbStart,SIGNAL(clicked(bool)), this, SLOT(pushStartButton()));
+    connect(this->pbStart,SIGNAL(clicked(bool)),this,SLOT(pushStartButton()));
+    connect(this->pbRead,SIGNAL(clicked(bool)),this,SLOT(pushReadButton()));
     connect(this->cbIterate,SIGNAL(stateChanged(int)),
             this, SLOT(enable_disable_iterativeWrittingInput()));
 
@@ -127,6 +132,19 @@ void MainWindow::pushStartButton() {
                                        this->leUserID->displayText(),
                                        this->cbIterate->isChecked(),
                                        this->leCardAmount->displayText());
+}
+
+
+/**
+ * @brief   Opens a new windows that shows the information on the given card.
+ *
+ * @todo implement
+ */
+void MainWindow::pushReadButton() {
+    CardInformationWindow* ciw = new CardInformationWindow(this);
+    ciw->setFixedWidth(400);
+    ciw->setFixedHeight(350);
+    ciw->show();
 }
 
 

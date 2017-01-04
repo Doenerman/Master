@@ -12,6 +12,7 @@
 #include <QLayout>
 
 #include "eventhandler.h"
+#include "cardinformationwindow.h"
 
 class MainWindow : public QMainWindow
 {
@@ -108,9 +109,15 @@ private:
      * The button for starting the writting process
      */
     QPushButton* pbStart = new QPushButton(this);
+    /**
+      * @var pbRead
+      * The button for opening a new window that shows the card information
+      */
+    QPushButton* pbRead = new QPushButton(this);
 
 private slots:
     void pushStartButton();
+    void pushReadButton();
     void enable_disable_iterativeWrittingInput();
 
 };
