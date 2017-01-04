@@ -70,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent)
     pteConsole->setObjectName(QString::fromUtf8("console_output"));
     pteConsole->setReadOnly(true);
     pteConsole->setEnabled(false);
-    pteConsole->setGeometry(QRect(250,100,200,300));
+    pteConsole->setGeometry(QRect(250,100,300,300));
 
     pteChecksumAdded->setObjectName(QString::fromUtf8("checksumAdded_output"));
     pteChecksumAdded->setReadOnly(true);
