@@ -63,7 +63,8 @@ void EventHandler::startWrittingProcess(QPlainTextEdit* const pte,
         pte->moveCursor(QTextCursor::End);
 
         // Output for the amount of cards that should be written
-        pte->appendPlainText(QString::fromUtf8("Anzahl an zu schreibenden Karten: "));
+        pte->appendPlainText(QString::fromUtf8("Anzahl an zu schreibenden"
+                                               " Karten: "));
         pte->moveCursor(QTextCursor::End);
         pte->insertPlainText(QString::number(cards));
         pte->moveCursor(QTextCursor::End);
@@ -73,20 +74,24 @@ void EventHandler::startWrittingProcess(QPlainTextEdit* const pte,
         switch(conversionCheckPassed) {
         case CONVERSIONCHECK_FAILED_CARDID:
             pte->appendPlainText(QString::fromUtf8("Fehler:"));
-            pte->appendPlainText(QString::fromUtf8("  Die Kartennummer ist keine ganze Zahl"));
+            pte->appendPlainText(QString::fromUtf8("  Die Kartennummer ist "
+                                                   "keine ganze Zahl"));
             break;
         case CONVERSIONCHECK_FAILED_USERID:
             pte->appendPlainText(QString::fromUtf8("Fehler:"));
-            pte->appendPlainText(QString::fromUtf8("  Die Kundennummer ist keine ganze Zahl"));
+            pte->appendPlainText(QString::fromUtf8("  Die Kundennummer ist "
+                                                   "keine ganze Zahl"));
             break;
         case CONVERSIONCHECK_FAILED_CARDAMOUNT:
             pte->appendPlainText(QString::fromUtf8("Fehler:"));
-            pte->appendPlainText(QString::fromUtf8("  Die Anzahl an zu schreibenden Karten"
+            pte->appendPlainText(QString::fromUtf8("  Die Anzahl an zu "
+                                                   "schreibenden Karten"
                                                    " ist keine ganze Zahl"));
             break;
         default:
-            pte->appendPlainText(QString::fromUtf8("Something unexpected happend"
-                                                   "while reading the input data"));
+            pte->appendPlainText(QString::fromUtf8("Something unexpected "
+                                                   "happend while reading the"
+                                                   " input data"));
         }
     }
 
