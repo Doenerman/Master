@@ -143,7 +143,7 @@ void MainWindow::pushStartButton() {
 void MainWindow::pushReadButton() {
     CardInformationWindow* ciw = new CardInformationWindow(this);
     ciw->setFixedWidth(400);
-    ciw->setFixedHeight(350);
+    ciw->setFixedHeight(700);
     ciw->show();
 }
 
