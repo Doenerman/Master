@@ -10,6 +10,8 @@
 #define CONVERSIONCHECK_FAILED_USERID -2
 #define CONVERSIONCHECK_FAILED_CARDAMOUNT -3
 
+#define ERROR_NOT_IMPLEMENTED -1
+
 class EventHandler : public QObject
 {
     Q_OBJECT
@@ -18,11 +20,12 @@ class EventHandler : public QObject
 
 
 public slots:
-    static void startWrittingProcess(QPlainTextEdit* const pte,
-                                            QString initCardID,
-                                            QString initUserID,
-                                            bool iterate,
-                                            QString cardAmount);
+    static int startWrittingProcess(
+                                     int locNr,
+                                     int revNr,
+                                     int userID,
+                                     int cardID,
+                                     int cardAmount);
 };
 
 #endif // EVENTHANDLER_H

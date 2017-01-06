@@ -137,16 +137,110 @@ MainWindow::~MainWindow()
 /**
  * @brief Initiate the writting process.
  *
- * This method calls \link EventHandler::startWrittingProcess(QPlainTextEdit,
- * QString,QString,bool,QString) \endlink. This method works as SLOT method and
- * ist connected in \link MainWindow::MainWindow() \endlink
+ * Checks whether the input of the QLineEdit fields is valid card
+ * information. If it is not there is a message printed in the output
+ * QPlainTextEdit field. If the input is valid the method
+ * \link EventHandler::startWrittingProcess \endlink is called to start the
+ * writting process.
  */
 void MainWindow::pushStartButton() {
-    EventHandler::startWrittingProcess(this->pteConsole,
-                                       this->leCardID->displayText(),
-                                       this->leUserID->displayText(),
-                                       this->cbIterate->isChecked(),
-                                       this->leCardAmount->displayText());
+
+    QString initCardID = leCardID->displayText();
+    QString initUserID = leUserID->displayText();
+    QString cardAmount = leCardAmount->displayText();
+    bool iterate = cbIterate->isChecked();
+
+    int succWritting = 0;
+    bool cardConversion, userConversion, cardAmountConversion;
+    const int cardID = initCardID.toInt(&cardConversion, 10);
+    const int userID = initUserID.toInt(&userConversion);
+    int cards = 0;
+    int conversionCheckPassed = CONVERSIONCHECK_PASSED;
+    if(iterate) {
+        cards = cardAmount.toInt(&cardAmountConversion);
+    }
+    else {
+        cards = 1;
+    }
+
+
+    // conversion check
+    if( !cardConversion ) {
+        conversionCheckPassed = CONVERSIONCHECK_FAILED_CARDID;
+    }
+    if( !userConversion ) {
+        conversionCheckPassed = CONVERSIONCHECK_FAILED_USERID;
+    }
+    if(0 != (iterate) && (!cardAmountConversion)) {
+        conversionCheckPassed = CONVERSIONCHECK_FAILED_CARDAMOUNT;
+    }
+
+
+    // ############ //
+    // ## Output ## //
+    // ############ //
+    pteConsole->clear();
+    // Output if conversion passed succesfull
+    if(conversionCheckPassed == CONVERSIONCHECK_PASSED) {
+        // Output for the inital user ID
+        pteConsole->appendPlainText(QString::fromUtf8("Initiale Kunden Nummer: "));
+        pteConsole->moveCursor(QTextCursor::End);
+        pteConsole->insertPlainText(QString::number(userID));
+        pteConsole->moveCursor(QTextCursor::End);
+
+        // Output for the initial card ID
+        pteConsole->appendPlainText(QString::fromUtf8("Initiale Karten Nummer: "));
+        pteConsole->moveCursor(QTextCursor::End);
+        pteConsole->insertPlainText(QString::number(cardID));
+        pteConsole->moveCursor(QTextCursor::End);
+
+        // Output for the amount of cards that should be written
+        pteConsole->appendPlainText(QString::fromUtf8("Anzahl an zu schreibenden"
+                                               " Karten: "));
+        pteConsole->moveCursor(QTextCursor::End);
+        pteConsole->insertPlainText(QString::number(cards));
+        pteConsole->moveCursor(QTextCursor::End);
+
+        // start writting process
+        EventHandler::startWrittingProcess( 1, 0, userID, cardID, cards);
+    }
+    // Output if conversion failedg
+    else {
+        switch(conversionCheckPassed) {
+        case CONVERSIONCHECK_FAILED_CARDID:
+            pteConsole->appendPlainText(QString::fromUtf8("Fehler:"));
+            pteConsole->appendPlainText(QString::fromUtf8("  Die Kartennummer ist "
+                                                   "keine ganze Zahl"));
+            break;
+        case CONVERSIONCHECK_FAILED_USERID:
+            pteConsole->appendPlainText(QString::fromUtf8("Fehler:"));
+            pteConsole->appendPlainText(QString::fromUtf8("  Die Kundennummer ist "
+                                                   "keine ganze Zahl"));
+            break;
+        case CONVERSIONCHECK_FAILED_CARDAMOUNT:
+            pteConsole->appendPlainText(QString::fromUtf8("Fehler:"));
+            pteConsole->appendPlainText(QString::fromUtf8("  Die Anzahl an zu "
+                                                   "schreibenden Karten"
+                                                   " ist keine ganze Zahl"));
+            break;
+        default:
+            pteConsole->appendPlainText(QString::fromUtf8("Something unexpected "
+                                                   "happend while reading the"
+                                                   " input data"));
+        }
+    }
+
+
+    succWritting = EventHandler::startWrittingProcess(  0,1,
+                                                        cardID,
+                                                        userID,
+                                                        cards);
+    switch(succWritting) {
+    case ERROR_NOT_IMPLEMENTED:
+        pteConsole->appendPlainText(QString::fromUtf8("Das Schreiben ist noch "
+                                                      "nicht implementiert"));
+        break;
+    }
 }
 
 
