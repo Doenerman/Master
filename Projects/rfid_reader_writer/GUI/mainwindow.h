@@ -61,6 +61,20 @@ private:
      * The label for the plain text edit representing the console
      */
     QLabel* lPBConsole = new QLabel(this);
+    /** @var lCardType
+      * The label for the lineEdit field representing the card type
+      */
+    QLabel* lCardType = new QLabel(this);
+    /**
+      * @var lRecRev
+      * The label for the LineEdit field representing the Record Rev
+      */
+    QLabel* lRecRev = new QLabel(this);
+    /**
+      * @var lLocNr
+      * The label for the LineEdit field representing the location number
+      */
+    QLabel* lLocNr = new QLabel(this);
     /**
       * @var lPBChecksumAdded
       * The label for the plain text edit representing the calculated
@@ -93,8 +107,21 @@ private:
       * should be written
       */
     QLineEdit* leCardAmount = new QLineEdit(this);
-
-
+    /**
+      * @var leCardType
+      * The line edit field for the card type
+      */
+    QLineEdit* leCardType = new QLineEdit(this);
+    /**
+      * @var leRecRev
+      * The line edit field for the recRev
+      */
+    QLineEdit* leRecRev = new QLineEdit(this);
+    /**
+      * @var leLocNr
+      * The line edit field for the location number of the card
+      */
+    QLineEdit* leLocNr = new QLineEdit(this);
 
     // ####################### //
     // ##   PlainTextEdit   ## //
