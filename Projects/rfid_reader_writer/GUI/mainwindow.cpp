@@ -40,6 +40,27 @@ MainWindow::MainWindow(QWidget *parent)
     lPBConsole->setGeometry(QRect(250,70,150,30));
     lPBConsole->setText(QString::fromUtf8("Output"));
 
+    lCardType->setObjectName(QString::fromUtf8("label_cardType"));
+    lCardType->setGeometry(QRect(LABEL_X_FIRST_COLUMN,
+                                 LABEL_Y_CARDTYPE,
+                                 LABEL_SMALL_WIDTH,
+                                 LABEL_DEFAULT_HEIGHT));
+    lCardType->setText(QString::fromUtf8("Kartentyp"));
+
+    lRecRev->setObjectName(QString::fromUtf8("label_recRev"));
+    lRecRev->setGeometry(QRect(LABEL_X_SECOND_COLUMN,
+                               LABEL_Y_RECREV,
+                               LABEL_SMALL_WIDTH,
+                               LABEL_DEFAULT_HEIGHT));
+    lRecRev->setText(QString::fromUtf8("Record Rev"));
+
+    lLocNr->setObjectName(QString::fromUtf8("label_locNr"));
+    lLocNr->setGeometry(QRect(LABEL_X_FIRST_COLUMN,
+                              LABEL_Y_LOCNR,
+                              LABEL_SMALL_WIDTH,
+                              LABEL_DEFAULT_HEIGHT));
+    lLocNr->setText(QString::fromUtf8("Landeskennung"));
+
     lPBChecksumAdded->setObjectName(QString::fromUtf8("label_checksumAdded"));
     lPBChecksumAdded->setGeometry(QRect(30,325,150,30));
     lPBChecksumAdded->setText(QString::fromUtf8("addierte Prüfsumme"));
@@ -47,6 +68,7 @@ MainWindow::MainWindow(QWidget *parent)
     lPBChecksumIBM->setObjectName(QString::fromUtf8("label_checksumIBM"));
     lPBChecksumIBM->setGeometry(QRect(30,375,150,30));
     lPBChecksumIBM->setText(QString::fromUtf8("IBM Prüfsumme"));
+
 
     // ############## //
     // ## LineEdit ## //
@@ -63,6 +85,28 @@ MainWindow::MainWindow(QWidget *parent)
     leCardAmount->setPlaceholderText(QString::fromUtf8("Kartenanzahl"));
     leCardAmount->setEnabled(false);
     leCardAmount->setGeometry(QRect(50,175,120,30));
+
+    leCardType->setObjectName(QString::fromUtf8("cardType_input"));
+    leCardType->setGeometry(QRect(LINEEDIT_X_FIRST_COLUMN,
+                                  LINEEDIT_Y_CARDTYPE,
+                                  LINEEDIT_SMALL_WIDTH,
+                                  LINEEDIT_DEFAULT_HEIGHT));
+    leCardType->setText(QString::number(0));
+
+    leRecRev->setObjectName(QString::fromUtf8("recRev_input"));
+    leRecRev->setGeometry(QRect(LINEEDIT_X_SECOND_COLUMN,
+                                LINEEDIT_Y_RECREV,
+                                LINEEDIT_SMALL_WIDTH,
+                                LINEEDIT_DEFAULT_HEIGHT));
+    leRecRev->setText(QString::number(0));
+
+    leLocNr->setObjectName(QString::fromUtf8("locNr_input"));
+    leLocNr->setGeometry(QRect(LINEEDIT_X_FIRST_COLUMN,
+                               LINEEDIT_Y_LOCNR,
+                               LINEEDIT_SMALL_WIDTH,
+                               LINEEDIT_DEFAULT_HEIGHT));
+    leLocNr->setText(QString::number(0));
+                                  
 
     // ################### //
     // ## PlainTextEdit ## //
@@ -201,8 +245,6 @@ void MainWindow::pushStartButton() {
         pteConsole->insertPlainText(QString::number(cards));
         pteConsole->moveCursor(QTextCursor::End);
 
-        // start writting process
-        EventHandler::startWrittingProcess( 1, 0, userID, cardID, cards);
     }
     // Output if conversion failedg
     else {
@@ -231,10 +273,6 @@ void MainWindow::pushStartButton() {
     }
 
 
-    succWritting = EventHandler::startWrittingProcess(  0,1,
-                                                        cardID,
-                                                        userID,
-                                                        cards);
     switch(succWritting) {
     case ERROR_NOT_IMPLEMENTED:
         pteConsole->appendPlainText(QString::fromUtf8("Das Schreiben ist noch "
