@@ -8,12 +8,10 @@
 #ifndef CALCULATOR_HPP_
 #define CALCULATOR_HPP_
 
-#include <Windows.h>
-#include <Wincrypt.h>
 #include <iostream>
 #include <cstdlib>
 #include <math.h>
-#include "md5.h"
+//#include "md5.h"
 #include "CardInformation.hpp"
 #include <iomanip>
 
@@ -65,6 +63,6 @@ void calcCRC16_added(const int,
 					const int,
 					int *const);
 uint16_t calcCRC16_ibm (const uint8_t*, uint16_t);
-void calcMD5(const unsigned char* inputData, const int length, unsigned char *const md5Data);
-void calcMD5Xor(const unsigned char* inputData, unsigned char *const md5Data);
+//void calcMD5(const unsigned char* inputData, const int length, unsigned char *const md5Data);
+//void calcMD5Xor(const unsigned char* inputData, unsigned char *const md5Data);
 #endif /* CALCULATOR_HPP_ */
