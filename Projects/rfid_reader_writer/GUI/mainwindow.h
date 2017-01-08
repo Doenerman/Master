@@ -182,6 +182,7 @@ private slots:
     void pushStartButton();
     void pushReadButton();
     void enable_disable_iterativeWrittingInput();
+    void updateChecksums();
 
 };
 

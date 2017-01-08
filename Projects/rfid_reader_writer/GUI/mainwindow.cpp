@@ -170,6 +170,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this->cbIterate,SIGNAL(stateChanged(int)),
             this, SLOT(enable_disable_iterativeWrittingInput()));
     connect(this->pbClose,SIGNAL(clicked(bool)),this,SLOT(close()));
+    connect(this->leUserID,SIGNAL(textChanged(QString)),
+            this,SLOT(updateChecksums()));
 
 }
 
@@ -314,3 +316,21 @@ void MainWindow::enable_disable_iterativeWrittingInput() {
         this->leCardAmount->setEnabled(false);
     }
 }
+
+void MainWindow::updateChecksums() {
+  QString crcAdded;
+  QString crcIBM;
+
+  EventHandler::calculateChecksums(leCardType->displayText(),
+                                   leRecRev->displayText(),
+                                   leLocNr->displayText(),
+                                   leUserID->displayText(),
+                                   leCardID->displayText(),
+                                   &crcAdded,
+                                   &crcIBM);
+
+  pteChecksumAdded->clear();
+  pteChecksumAdded->appendPlainText(crcAdded);
+
+
+} 
