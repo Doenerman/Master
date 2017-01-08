@@ -5,6 +5,9 @@
 #include <QPlainTextEdit>
 #include <QWidget>
 
+#include "src/Calculator.hpp"
+#include "src/CardInformation.hpp"
+
 #define CONVERSIONCHECK_PASSED 1
 #define CONVERSIONCHECK_FAILED_CARDID -1
 #define CONVERSIONCHECK_FAILED_USERID -2
@@ -21,11 +24,19 @@ class EventHandler : public QObject
 
 public slots:
     static int startWrittingProcess(
-                                     int locNr,
-                                     int revNr,
-                                     int userID,
-                                     int cardID,
-                                     int cardAmount);
+                                    QString userID,
+                                    QString cardID,
+                                    QString* const consoleOutput,
+                                    QString* const cardsLeft,
+                                    QString* const nextCardID);
+    static void calculateChecksums(
+                                    QString cardType,
+                                    QString recRev,
+                                    QString locNr,
+                                    QString userID,
+                                    QString cardID,
+                                    QString* const crcAdded,
+                                    QString* const crcIBM);
 };
 
 #endif // EVENTHANDLER_H
