@@ -331,6 +331,8 @@ void MainWindow::updateChecksums() {
 
   pteChecksumAdded->clear();
   pteChecksumAdded->appendPlainText(crcAdded);
+  pteChecksumIBM->clear();
+  pteChecksumIBM->appendPlainText(crcIBM);
 
 
 } 
