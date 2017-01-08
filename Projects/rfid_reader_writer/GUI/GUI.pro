@@ -26,8 +26,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         mainwindow.cpp \
         eventhandler.cpp \
-    cardinformationwindow.cpp
+    cardinformationwindow.cpp \
+    src/Calculator.cpp
 
 HEADERS  += mainwindow.h \
         eventhandler.h \
-    cardinformationwindow.h
+    cardinformationwindow.h \
+    src/Calculator.hpp \
+    src/CardInformation.hpp
