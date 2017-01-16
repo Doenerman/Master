@@ -172,6 +172,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this->pbClose,SIGNAL(clicked(bool)),this,SLOT(close()));
     connect(this->leUserID,SIGNAL(textChanged(QString)),
             this,SLOT(updateChecksums()));
+    connect(this->leCardID,SIGNAL(textChanged(QString)),
+            this,SLOT(updateChecksums()));
 
 }
 

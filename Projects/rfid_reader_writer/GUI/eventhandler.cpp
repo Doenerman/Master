@@ -42,6 +42,7 @@ void EventHandler::calculateChecksums(
     int userID;
     int cardID;
     int tempCrcAdded = 0;
+    int tempCrcIBM = 0;
     
     bool succConversion;
 
@@ -76,16 +77,12 @@ void EventHandler::calculateChecksums(
                     tempCard.card_nr,
                     &tempCrcAdded);
 
+    tempCrcIBM = calcCRC16_ibm(&tempCard.card_type,
+                               INFORMATION_LENGTH_IN_BYTE);
+
 
     crcAdded->setNum(tempCrcAdded);
-
-
-
-
-
-
-
-
+    crcIBM->setNum(tempCrcIBM);
   
 }
 
