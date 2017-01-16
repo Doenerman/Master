@@ -230,19 +230,19 @@ static const uint8_t crc16_ibm_table_lo[256]={
   0x40
 };
 
-//uint16_t calcCRC16_ibm (const uint8_t* data, uint16_t len) {
-//	uint8_t uchCRCHi=0xff;
-//	uint8_t uchCRCLo=0xff;
-//	uint8_t uIndex;
-//	
-//	while (len-->0) {
-//		uIndex=(uchCRCLo^((uint8_t)*(data++))); // calc crc
-//		uchCRCLo=(uchCRCHi^crc16_ibm_table_hi[uIndex]);
-//		uchCRCHi=crc16_ibm_table_lo[uIndex];
-//	}
-//	
-//	return (((uint16_t)uchCRCHi<<8)|(uint16_t)uchCRCLo);
-//}
+uint16_t calcCRC16_ibm (const uint8_t* data, uint16_t len) {
+    uint8_t uchCRCHi=0xff;
+    uint8_t uchCRCLo=0xff;
+    uint8_t uIndex;
+
+    while (len-->0) {
+        uIndex=(uchCRCLo^((uint8_t)*(data++))); // calc crc
+        uchCRCLo=(uchCRCHi^crc16_ibm_table_hi[uIndex]);
+        uchCRCHi=crc16_ibm_table_lo[uIndex];
+    }
+
+    return (((uint16_t)uchCRCHi<<8)|(uint16_t)uchCRCLo);
+}
 
 
 /** 
