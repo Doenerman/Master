@@ -12,7 +12,7 @@
 #include <QLayout>
 
 #include "eventhandler.h"
-#include "cardinformationwindow.h"
+#include "src/CardInformation.hpp"
 
 // ############################## //
 // ## Layout depending defines ## //
