@@ -13,6 +13,7 @@
 
 #include "eventhandler.h"
 #include "src/CardInformation.hpp"
+#include "cardinformationwindow.h"
 
 // ############################## //
 // ## Layout depending defines ## //
