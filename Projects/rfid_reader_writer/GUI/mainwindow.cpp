@@ -174,7 +174,12 @@ MainWindow::MainWindow(QWidget *parent)
             this,SLOT(updateChecksums()));
     connect(this->leCardID,SIGNAL(textChanged(QString)),
             this,SLOT(updateChecksums()));
-
+    connect(this->leCardType,SIGNAL(textChanged(QString)),
+            this,SLOT(updateChecksums()));
+    connect(this->leRecRev,SIGNAL(textChanged(QString)),
+            this,SLOT(updateChecksums()));
+    connect(this->leLocNr,SIGNAL(textChanged(QString)),
+            this,SLOT(updateChecksums()));
 }
 
 MainWindow::~MainWindow()
