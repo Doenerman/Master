@@ -14,6 +14,7 @@
 #define CONVERSIONCHECK_FAILED_CARDAMOUNT -3
 
 #define ERROR_NOT_IMPLEMENTED -1
+#define WRITTING_SECCESSFULL 1
 
 class EventHandler : public QObject
 {
