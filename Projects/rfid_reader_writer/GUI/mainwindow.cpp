@@ -111,6 +111,12 @@ MainWindow::MainWindow(QWidget *parent)
     // ################### //
     // ## PlainTextEdit ## //
     // ################### //
+    pteLightBox->setObjectName(QString::fromUtf8("lightbox_output"));
+    pteLightBox->setReadOnly(true);
+    pteLightBox->setEnabled(false);
+    pteLightBox->setGeometry(500,25,50,50);
+    pteLightBox->setStyleSheet("QPlainTextEdit {background-color: green;}");
+
     pteConsole->setObjectName(QString::fromUtf8("console_output"));
     pteConsole->setReadOnly(true);
     pteConsole->setEnabled(false);
@@ -279,6 +285,7 @@ void MainWindow::pushStartButton() {
                                                    "happend while reading the"
                                                    " input data"));
         }
+        pteLightBox->setStyleSheet("QPlainTextEdit {background-color: red;}");
     }
 
 
@@ -287,6 +294,10 @@ void MainWindow::pushStartButton() {
         pteConsole->appendPlainText(QString::fromUtf8("Das Schreiben ist noch "
                                                       "nicht implementiert"));
         break;
+    case WRITTING_SECCESSFULL:
+        pteLightBox->setStyleSheet("QPlainTextEdit {background-color: green;}");
+        pteConsole->appendPlainText(QString::fromUtf8("Karte erfolgreich "
+                                                      "beschrieben"));
     }
 }
 

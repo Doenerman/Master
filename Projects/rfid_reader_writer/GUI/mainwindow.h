@@ -145,6 +145,12 @@ private:
     // ##   PlainTextEdit   ## //
     // ####################### //
     /**
+      * @var pteLightBox
+      * The plain text edit field for the light box that shows the success of
+      * the writting process
+      */
+    QPlainTextEdit* pteLightBox = new QPlainTextEdit(this);
+    /**
       * @var pteConsole
       * The plain text edit field for possible output of the programm
       */
