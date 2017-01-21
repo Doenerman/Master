@@ -162,8 +162,8 @@ MainWindow::MainWindow(QWidget *parent)
     // ######################### //
     // ## Set the focus order ## //
     // ######################### //
-    this->setTabOrder(leCardID, leUserID);
-    this->setTabOrder(leUserID, cbIterate);
+    this->setTabOrder(leUserID, leCardID);
+    this->setTabOrder(leCardID, cbIterate);
     this->setTabOrder(pbStart,pbRead);
     this->setTabOrder(pbRead,pbClose);
 
