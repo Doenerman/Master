@@ -26,6 +26,23 @@ int EventHandler::startWrittingProcess(
     return ERROR_NOT_IMPLEMENTED;
 }
 
+/**
+ * @brief Calculates the checksums with input.
+ *
+ * The checksums are calculated with the help of
+ * \link Calculator.cpp \enlink. The calculated checksums are written in
+ * \link crcAdded \endlink and \link crcIBM \endlink. The \link crcAdded \endlink
+ * is a bytewise added checksum. The \link crcIBM \endlink checksum is calculated
+ * with an algorithm created by IBM.
+ *
+ * @param stringCardType[in]    Type of the card
+ * @param stringRecRev[in]      Record Rev of the card
+ * @param stringLocNr[in]       Location number of the card
+ * @param stringUserID[in]      User ID of the card
+ * @param stringCardID[in]      Card ID of the card
+ * @param crcAdded[out]         The calculated added checksum
+ * @param crcIBM[out]           The calculated IBM checksum
+ */
 void EventHandler::calculateChecksums(
                          QString stringCardType,
                          QString stringRecRev,
