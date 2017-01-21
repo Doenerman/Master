@@ -73,13 +73,13 @@ MainWindow::MainWindow(QWidget *parent)
     // ############## //
     // ## LineEdit ## //
     // ############## //
-    leCardID->setObjectName(QString::fromUtf8("cardID_input"));
-    leCardID->setPlaceholderText(QString::fromUtf8("Kartennummer"));
-    leCardID->setGeometry(20,30,150,30);
-
     leUserID->setObjectName(QString::fromUtf8("userID_input"));
     leUserID->setPlaceholderText(QString::fromUtf8("Kundennummer"));
-    leUserID->setGeometry(20,70,150,30);
+    leUserID->setGeometry(20,30,150,30);
+
+    leCardID->setObjectName(QString::fromUtf8("cardID_input"));
+    leCardID->setPlaceholderText(QString::fromUtf8("Kartennummer"));
+    leCardID->setGeometry(20,70,150,30);
 
     leCardAmount->setObjectName(QString::fromUtf8("cardAmount_input"));
     leCardAmount->setPlaceholderText(QString::fromUtf8("Kartenanzahl"));
