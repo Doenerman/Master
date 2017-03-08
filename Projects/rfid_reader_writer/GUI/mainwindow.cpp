@@ -201,105 +201,76 @@ MainWindow::~MainWindow()
  * QPlainTextEdit field. If the input is valid the method
  * \link EventHandler::startWrittingProcess \endlink is called to start the
  * writting process.
+ *
+ * @todo seperate logic to EventHandler. There exists a method for convert QStrings to cardinformation
  */
 void MainWindow::pushStartButton() {
 
+    QString cardType = leCardType->displayText();
+    QString recRev = leRecRev->displayText();
+    QString locNr = leLocNr->displayText();
     QString initCardID = leCardID->displayText();
     QString initUserID = leUserID->displayText();
     QString cardAmount = leCardAmount->displayText();
     bool iterate = cbIterate->isChecked();
-
-    int succWritting = 0;
-    bool cardConversion, userConversion, cardAmountConversion;
-    const int cardID = initCardID.toInt(&cardConversion, 10);
-    const int userID = initUserID.toInt(&userConversion);
-    int cards = 0;
-    int conversionCheckPassed = CONVERSIONCHECK_PASSED;
-    if(iterate) {
-        cards = cardAmount.toInt(&cardAmountConversion);
-    }
-    else {
-        cards = 1;
-    }
+    int succWritting = false;
 
 
-    // conversion check
-    if( !cardConversion ) {
-        conversionCheckPassed = CONVERSIONCHECK_FAILED_CARDID;
+    // If any requiered input is not given an error window appears
+    // The window informs that not given input is converted to 0
+    if( cardType.isEmpty() || recRev.isEmpty() || locNr.isEmpty()
+            || initCardID.isEmpty() || initUserID.isEmpty()
+            || (cardAmount.isEmpty() && iterate ) ) {
+
+        QMessageBox::StandardButton msgBox;
+        msgBox = QMessageBox::warning(this,QString::fromUtf8("Konvertierungs Warnung"),
+                                      QString::fromUtf8("Leere Eintraege werden "
+                                                                "zu 0 konvertiert"));
     }
-    if( !userConversion ) {
-        conversionCheckPassed = CONVERSIONCHECK_FAILED_USERID;
+
+    // If iterating is activated but the amount of cards must be greater 0 or no card is
+    // written
+    int cardAmountVal = cardAmount.toInt(NULL, 10);
+    if( (cardAmountVal < 1) && iterate) {
+        QMessageBox::StandardButton msgBox;
+        msgBox = QMessageBox::critical(this, QString::fromUtf8("Ungueltige Kartenanzahl"),
+                                        QString::fromUtf8("Die angegebene Kartenanzahl"
+                                                                  " ist unzulaessig"));
     }
-    if(0 != (iterate) && (!cardAmountConversion)) {
-        conversionCheckPassed = CONVERSIONCHECK_FAILED_CARDAMOUNT;
-    }
+
+
 
 
     // ############ //
     // ## Output ## //
     // ############ //
     pteConsole->clear();
-    // Output if conversion passed succesfull
-    if(conversionCheckPassed == CONVERSIONCHECK_PASSED) {
-        // Output for the inital user ID
-        pteConsole->appendPlainText(QString::fromUtf8("Initiale Kunden Nummer: "));
-        pteConsole->moveCursor(QTextCursor::End);
-        pteConsole->insertPlainText(QString::number(userID));
-        pteConsole->moveCursor(QTextCursor::End);
+    leCardID->clear();
+    leCardAmount->clear();
 
-        // Output for the initial card ID
-        pteConsole->appendPlainText(QString::fromUtf8("Initiale Karten Nummer: "));
-        pteConsole->moveCursor(QTextCursor::End);
-        pteConsole->insertPlainText(QString::number(cardID));
-        pteConsole->moveCursor(QTextCursor::End);
+    QString consoleOutput;
+    QString tempCardsLeft;
+    QString outputNextCardID;
 
-        // Output for the amount of cards that should be written
-        pteConsole->appendPlainText(QString::fromUtf8("Anzahl an zu schreibenden"
-                                               " Karten: "));
-        pteConsole->moveCursor(QTextCursor::End);
-        pteConsole->insertPlainText(QString::number(cards));
-        pteConsole->moveCursor(QTextCursor::End);
+    succWritting = EventHandler::startWrittingProcess( cardType, recRev, locNr,
+                                        initUserID, initCardID, cardAmount,
+                                        iterate,
+                                        &consoleOutput, &tempCardsLeft, &outputNextCardID);
 
+    pteConsole->appendPlainText(consoleOutput);
+    leCardID->setText(outputNextCardID);
+    leCardAmount->setText(tempCardsLeft);
+
+    if( succWritting == WRITTING_SUCCESSFULL ) {
+        pteLightBox->setStyleSheet("QPlainTextEdit {background-color: green;}");
     }
-    // Output if conversion failedg
     else {
-        switch(conversionCheckPassed) {
-        case CONVERSIONCHECK_FAILED_CARDID:
-            pteConsole->appendPlainText(QString::fromUtf8("Fehler:"));
-            pteConsole->appendPlainText(QString::fromUtf8("  Die Kartennummer ist "
-                                                   "keine ganze Zahl"));
-            break;
-        case CONVERSIONCHECK_FAILED_USERID:
-            pteConsole->appendPlainText(QString::fromUtf8("Fehler:"));
-            pteConsole->appendPlainText(QString::fromUtf8("  Die Kundennummer ist "
-                                                   "keine ganze Zahl"));
-            break;
-        case CONVERSIONCHECK_FAILED_CARDAMOUNT:
-            pteConsole->appendPlainText(QString::fromUtf8("Fehler:"));
-            pteConsole->appendPlainText(QString::fromUtf8("  Die Anzahl an zu "
-                                                   "schreibenden Karten"
-                                                   " ist keine ganze Zahl"));
-            break;
-        default:
-            pteConsole->appendPlainText(QString::fromUtf8("Something unexpected "
-                                                   "happend while reading the"
-                                                   " input data"));
-        }
         pteLightBox->setStyleSheet("QPlainTextEdit {background-color: red;}");
     }
 
-
-    switch(succWritting) {
-    case ERROR_NOT_IMPLEMENTED:
-        pteConsole->appendPlainText(QString::fromUtf8("Das Schreiben ist noch "
-                                                      "nicht implementiert"));
-        break;
-    case WRITTING_SECCESSFULL:
-        pteLightBox->setStyleSheet("QPlainTextEdit {background-color: green;}");
-        pteConsole->appendPlainText(QString::fromUtf8("Karte erfolgreich "
-                                                      "beschrieben"));
-    }
 }
+
+
 
 
 /**
@@ -312,6 +283,8 @@ void MainWindow::pushReadButton() {
     ciw->setFixedWidth(400);
     ciw->setFixedHeight(700);
     ciw->show();
+
+
 }
 
 

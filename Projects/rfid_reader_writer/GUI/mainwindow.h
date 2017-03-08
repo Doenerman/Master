@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QWidget>
+#include <QMessageBox>
 #include <QPlainTextEdit>
 #include <QTextBrowser>
 #include <QCheckBox>
