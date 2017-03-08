@@ -244,18 +244,18 @@ uint16_t calcCRC16_ibm (const uint8_t* data, uint16_t len) {
     return (((uint16_t)uchCRCHi<<8)|(uint16_t)uchCRCLo);
 }
 
+void calculateQTMD5(const unsigned char* inputData, const int length, unsigned char md5Data[MD5_SIZE]) {
+    QByteArray convertedInput(QByteArray::fromRawData( (const char*) inputData, length));
 
-/** 
- * @brief Calculates the MD5 of the input string.
- *
- *
- */
-//void calcMD5(const unsigned char* inputData, const int length, unsigned char  md5Data[MD5_SIZE]) {
-//	md5_ctx md5Struct;
-//	MD5_Init( &md5Struct);
-//	MD5_Update( &md5Struct,inputData, length);
-//	MD5_Final(md5Data, &md5Struct);
-//}
+	QByteArray outPut = QCryptographicHash::hash(convertedInput,QCryptographicHash::Md5);
+
+	char* tempData = outPut.data();
+
+	for(int arrayIter = 0; arrayIter < MD5_SIZE; arrayIter++) {
+		md5Data[arrayIter] = (unsigned char) tempData[arrayIter];
+	}
+
+}
 
 /**
  * @brief Calculate the md5 of the input and Xors it pairwise.
@@ -268,21 +268,21 @@ uint16_t calcCRC16_ibm (const uint8_t* data, uint16_t len) {
  * 						+ \link MD5_KEY_SIZE \endlink bytes long.
  * @param[out]md5Data	The array where the xored md5 is written in
  */
-//void calcMD5Xor(const unsigned char* inputData, unsigned char *const md5Data) {
-//	
-//	unsigned char tempData[MD5_SIZE];
-//	
-//	
-//	for(int i = 0; i < MD5_SIZE; i++) {
-//		tempData[i] = '0';
-//	}
-//	
-//	calcMD5(&inputData[0], MD5_DATA_SIZE + MD5_KEY_SIZE, &tempData[0]);
-//
-//	
-//	// Xor pairs of the calculated md5
-//	for(int i = 0; i < (2*BYTE_PER_BLOCK); i++) {
-//		md5Data[i] = (tempData[2*i] ^ tempData[2*i+1]);
-//	}
-//}
+void calcMD5Xor(const unsigned char* inputData, unsigned char *const md5Data) {
+
+	unsigned char tempData[MD5_SIZE];
+
+
+	for(int i = 0; i < MD5_SIZE; i++) {
+		tempData[i] = '0';
+	}
+
+	calculateQTMD5(&inputData[0], MD5_DATA_SIZE + MD5_KEY_SIZE, &tempData[0]);
+
+
+	// Xor pairs of the calculated md5
+	for(int i = 0; i < (2*BYTE_PER_BLOCK); i++) {
+		md5Data[i] = (tempData[2*i] ^ tempData[2*i+1]);
+	}
+}
 
