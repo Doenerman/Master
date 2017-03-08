@@ -128,7 +128,7 @@ int testCalcMD5() {
         calculatedMD5[i] = '-';
     }
 
-    //@todo call Test function
+    calculateQTMD5(testData, lengthOfWord, calculatedMD5);
 
     // compare correct md5 with the calculated one
     for(int i = 0; i < MD5_SIZE; i++) {
@@ -176,8 +176,7 @@ int testCalcMD5_Xor() {
         calculatedXoredMD5[i] = '-';
     }
 
-
-    // @todo call Test function
+    calcMD5Xor((uint8_t*)(&TESTCARD.uid[0]), &calculatedXoredMD5[0]);
 
     // compare correct md5 with the calculated one
     for(int i = 0; i < 2*BYTE_PER_BLOCK; i++) {

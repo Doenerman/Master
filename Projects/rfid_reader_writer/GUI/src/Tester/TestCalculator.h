@@ -8,7 +8,7 @@
 #include "../Calculator.hpp"
 
 
-#define TESTCARD card1
+#define TESTCARD card3
 
 int testSimpleIntToHex();
 int testIntToHex();
