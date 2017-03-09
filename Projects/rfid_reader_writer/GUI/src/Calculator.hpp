@@ -11,7 +11,6 @@
 #include <iostream>
 #include <cstdlib>
 #include <math.h>
-//#include "md5.h"
 #include "CardInformation.hpp"
 #include <iomanip>
 #include <QCryptographicHash>
