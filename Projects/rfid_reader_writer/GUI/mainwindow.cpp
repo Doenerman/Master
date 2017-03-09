@@ -30,14 +30,34 @@ MainWindow::MainWindow(QWidget *parent)
     // ## Checkbox ## //
     // ############## //
     cbIterate->setObjectName(QString::fromUtf8("iterate_enable"));
-    cbIterate->setGeometry(QRect(30,150,100,30));
+    cbIterate->setGeometry(QRect(CHECKBOX_ITER_X,
+                                 CHECKBOX_ITER_Y,
+                                 CHECKBOX_WIDTH,
+                                 CHECKBOX_HIGHT));
     cbIterate->setText(QString::fromUtf8("Iterieren"));
 
     // ########### //
     // ## Label ## //
     // ########### //
+    lUserID->setObjectName(QString::fromUtf8("label_userID"));
+    lUserID->setGeometry(QRect(LABEL_USERID_X,
+                               LABEL_USERID_Y,
+                               LABEL_LARGE_WIDTH,
+                               LABEL_DEFAULT_HEIGHT));
+    lUserID->setText(QString::fromUtf8("Kundennummer"));
+
+    lCardID->setObjectName(QString::fromUtf8("label_cardID"));
+    lCardID->setGeometry(QRect(LABEL_CARDID_X,
+                               LABEL_CARDID_Y,
+                               LABEL_LARGE_WIDTH,
+                               LABEL_DEFAULT_HEIGHT));
+    lCardID->setText(QString::fromUtf8("Kartennummer"));
+
     lPBConsole->setObjectName(QString::fromUtf8("label_console"));
-    lPBConsole->setGeometry(QRect(250,70,150,30));
+    lPBConsole->setGeometry(QRect(LABEL_CONSOLE_X,
+                                  LABEL_CONSOLE_Y,
+                                  LABEL_LARGE_WIDTH,
+                                  LABEL_DEFAULT_HEIGHT));
     lPBConsole->setText(QString::fromUtf8("Output"));
 
     lCardType->setObjectName(QString::fromUtf8("label_cardType"));
@@ -62,11 +82,17 @@ MainWindow::MainWindow(QWidget *parent)
     lLocNr->setText(QString::fromUtf8("Landeskennung"));
 
     lPBChecksumAdded->setObjectName(QString::fromUtf8("label_checksumAdded"));
-    lPBChecksumAdded->setGeometry(QRect(30,325,150,30));
+    lPBChecksumAdded->setGeometry(QRect(LABEL_CHECKSUM_ADD_X,
+                                        LABEL_CHECKSUM_ADD_Y,
+                                        LABEL_LARGE_WIDTH,
+                                        LABEL_DEFAULT_HEIGHT));
     lPBChecksumAdded->setText(QString::fromUtf8("addierte Prüfsumme"));
 
     lPBChecksumIBM->setObjectName(QString::fromUtf8("label_checksumIBM"));
-    lPBChecksumIBM->setGeometry(QRect(30,375,150,30));
+    lPBChecksumIBM->setGeometry(QRect(LABEL_CHECKSUM_IBM_X,
+                                      LABEL_CHECKSUM_IBM_Y,
+                                      LABEL_LARGE_WIDTH,
+                                      LABEL_DEFAULT_HEIGHT));
     lPBChecksumIBM->setText(QString::fromUtf8("IBM Prüfsumme"));
 
 
@@ -75,16 +101,25 @@ MainWindow::MainWindow(QWidget *parent)
     // ############## //
     leUserID->setObjectName(QString::fromUtf8("userID_input"));
     leUserID->setPlaceholderText(QString::fromUtf8("Kundennummer"));
-    leUserID->setGeometry(20,30,150,30);
+    leUserID->setGeometry(LINEEDIT_USERID_X,
+                          LINEEDIT_USERID_Y,
+                          LINEEDIT_LARGE_WIDTH,
+                          LINEEDIT_DEFAULT_HEIGHT);
 
     leCardID->setObjectName(QString::fromUtf8("cardID_input"));
     leCardID->setPlaceholderText(QString::fromUtf8("Kartennummer"));
-    leCardID->setGeometry(20,70,150,30);
+    leCardID->setGeometry(LINEEDIT_CARDID_X,
+                          LINEEDIT_CARDID_Y,
+                          LINEEDIT_LARGE_WIDTH,
+                          LINEEDIT_DEFAULT_HEIGHT);
 
     leCardAmount->setObjectName(QString::fromUtf8("cardAmount_input"));
     leCardAmount->setPlaceholderText(QString::fromUtf8("Kartenanzahl"));
     leCardAmount->setEnabled(false);
-    leCardAmount->setGeometry(QRect(50,175,120,30));
+    leCardAmount->setGeometry(QRect(LINEEDIT_CARDAMOUNT_X,
+                                    LINEEDIT_CARDAMOUNT_Y,
+                                    LINEEDIT_CARDAMOUNT_WIDTH,
+                                    LINEEDIT_CARDAMOUNT_HIGHT));
 
     leCardType->setObjectName(QString::fromUtf8("cardType_input"));
     leCardType->setGeometry(QRect(LINEEDIT_X_FIRST_COLUMN,
@@ -114,23 +149,35 @@ MainWindow::MainWindow(QWidget *parent)
     pteLightBox->setObjectName(QString::fromUtf8("lightbox_output"));
     pteLightBox->setReadOnly(true);
     pteLightBox->setEnabled(false);
-    pteLightBox->setGeometry(500,25,50,50);
+    pteLightBox->setGeometry(LIGHT_BOX_X,
+                             LIGHT_BOX_Y,
+                             LIGHTBOX_HIGHT,
+                             LIGHTBOX_WIDTH);
     pteLightBox->setStyleSheet("QPlainTextEdit {background-color: green;}");
 
     pteConsole->setObjectName(QString::fromUtf8("console_output"));
     pteConsole->setReadOnly(true);
     pteConsole->setEnabled(false);
-    pteConsole->setGeometry(QRect(250,100,300,300));
+    pteConsole->setGeometry(QRect(PTE_CONSOLE_X,
+                                  PTE_CONSOLE_Y,
+                                  PTE_CONSOLE_HIGHT,
+                                  PTE_CONSOLE_WIDTH));
 
     pteChecksumAdded->setObjectName(QString::fromUtf8("checksumAdded_output"));
     pteChecksumAdded->setReadOnly(true);
     pteChecksumAdded->setEnabled(false);
-    pteChecksumAdded->setGeometry(QRect(30,350,150,30));
+    pteChecksumAdded->setGeometry(QRect(PTE_CHECKSUM_ADD_X,
+                                        PTE_CHECKSUM_ADD_Y,
+                                        PLAINTEXTEDIT_DEFAULT_WIDTH,
+                                        PLAINTEXTEDIT_DEFAULT_HEIGHT));
 
     pteChecksumIBM->setObjectName(QString::fromUtf8("checksumIBM_out"));
     pteChecksumIBM->setReadOnly(true);
     pteChecksumIBM->setEnabled(false);
-    pteChecksumIBM->setGeometry(QRect(30,400,150,30));
+    pteChecksumIBM->setGeometry(QRect(PTE_CHECKSUM_IBM_X,
+                                      PTE_CHECKSUM_IBM_Y,
+                                      PLAINTEXTEDIT_DEFAULT_WIDTH,
+                                      PLAINTEXTEDIT_DEFAULT_HEIGHT));
 
     // ################ //
     // ## PushButton ## //
