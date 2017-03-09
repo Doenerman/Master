@@ -14,7 +14,7 @@ set(SOURCE_FILES
 set(TESTCALCULATOR_FILES
                     src/Calculator.cpp
                     src/CardInformation.hpp
-                    src/Tester/TestCalculator.cpp)
+                    src/Tester/TestCalculator.cpp src/Tester/TestCards.h)
 
 add_executable(GUI ${SOURCE_FILES})
 add_executable(TestCalculator ${TESTCALCULATOR_FILES})
