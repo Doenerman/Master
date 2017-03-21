@@ -58,7 +58,7 @@ public slots:
                                     QString* const crcIBM);
 
 
-private:
+public:
     static int convertQStringsToCard(  QString stringCardType,
                                 const QString stringRecRev,
                                 const QString stringLocNr,
