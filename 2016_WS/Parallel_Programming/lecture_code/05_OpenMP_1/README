@@ -1,0 +1,5 @@
+Type make to compile all examples.
+
+You need the "make" program installed.
+It is in the cluster, and probably in
+your linux/unix system.

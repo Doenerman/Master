@@ -1,0 +1,6 @@
+Some programs include incorrect code that
+leads to compiling errors. If you want to
+compile all codes at once (except those
+with errors), you can use "make -i" to
+prevent make to stop at those errors and
+keep compiling subsequent programs.

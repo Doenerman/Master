@@ -1,0 +1,42 @@
+#!/usr/bin/env zsh
+
+# Output goes to the file "output-%J.txt" where %J is the job id
+#BSUB -o output-%J.txt
+
+# Name of the job (to appear when executing bjobs)
+#BSUB -J CHOL-TASKS
+
+# Maximum time our job will run for (here, 10 minutes)
+#BSUB -W 0:10
+
+# Maximum amount of memory our job will use (here, 8 GBs)
+#BSUB -M 8000
+
+# run in exclusivity (no other job will run in the same node)
+#BSUB -x
+
+# Give me a node with at least 8 cores
+#BSUB -n 8
+
+# My code uses openmp
+#BSUB -a "openmp"
+
+# The commented code below compiles the code with intel's icc compiler
+# Tasks are not supported in this compiler
+#
+#module switch intel/16.0 intel/17.0
+#icc chol_tasks.c -o chol_tasks.x -fopenmp -mkl=sequential # && ./chol_tasks.x
+#
+#./chol_tasks.x > /dev/null # preload
+#./chol_tasks.x
+
+module load gcc/6
+gcc chol_tasks.c -o chol_tasks.x -fopenmp \
+    -L${MKLROOT}/lib/intel64 -Wl,--no-as-needed -lmkl_rt -lpthread -lm -ldl \
+    -DMKL_ILP64 -m64 -I${MKLROOT}/include
+
+export MKL_NUM_THREADS=1  # each call to the mkl library (dpotrf, dtrsm, dgemm, dsyrk) uses one single thread
+                               # parallelism comes from openmp tasks
+export OMP_MAX_TASK_PRIORITY=1 # enable priorities higher than 0
+./chol_tasks.x > /dev/null # preload
+./chol_tasks.x

@@ -1,0 +1,4 @@
+Try adding the "#pragma omp parallel for"
+directive and observe the undesired behavior.
+Then, try to understand why it happens and
+fix it ;)

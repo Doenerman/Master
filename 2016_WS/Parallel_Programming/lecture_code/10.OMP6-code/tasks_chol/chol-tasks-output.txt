@@ -1,0 +1,74 @@
+Sender: LSF System <lsfadmin@linuxbmc1293>
+Subject: Job 32688562: <CHOL-TASKS> in cluster <rcc> Done
+
+Job <CHOL-TASKS> was submitted from host <cluster-linux> by user <df938257> in cluster <rcc>.
+Job was executed on host(s) <8*linuxbmc1293>, in queue <normal>, as user <df938257> in cluster <rcc>.
+</home/df938257> was used as the home directory.
+</home/df938257/PP16/tasks_chol> was used as the working directory.
+Started at Tue Dec 13 15:59:59 2016
+Results reported on Tue Dec 13 16:01:04 2016
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/usr/bin/env zsh
+
+#BSUB -o output-%J.txt
+#BSUB -J CHOL-TASKS
+#BSUB -W 0:10
+#BSUB -M 8000
+#
+#BSUB -x
+#BSUB -n 8
+#BSUB -a "openmp"
+
+#module switch intel/16.0 intel/17.0
+#icc chol_tasks.c -o chol_tasks.x -fopenmp -mkl=sequential # && ./chol_tasks.x
+#
+#./chol_tasks.x > /dev/null # preload
+#./chol_tasks.x
+
+module load gcc/6
+gcc chol_tasks.c -o chol_tasks.x -fopenmp \
+    -L${MKLROOT}/lib/intel64 -Wl,--no-as-needed -lmkl_rt -lpthread -lm -ldl \
+    -DMKL_ILP64 -m64 -I${MKLROOT}/include
+
+export MKL_NUM_THREADS=1
+export OMP_MAX_TASK_PRIORITY=1
+./chol_tasks.x > /dev/null # preload
+./chol_tasks.x
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   134.76 sec.
+    Max Memory :                                 247 MB
+    Average Memory :                             227.50 MB
+    Total Requested Memory :                     8000.00 MB
+    Delta Memory :                               7753.00 MB
+    Max Swap :                                   -
+    Max Processes :                              5
+    Max Threads :                                6
+    Run time :                                   65 sec.
+    Turnaround time :                            77 sec.
+
+The output (if any) follows:
+
+(OK) Loading gcc 6.2.0
+Setup ok
+Version             | #threads | #Time (s) | Speedup 
+---------------------------------------------------- 
+Sequential          |        1 |     13.89 |    1.00 
+---------------------------------------------------- 
+Task based          |        2 |      7.18 |    1.93 
+Task based          |        4 |      3.60 |    3.85 
+Task based          |        8 |      1.88 |    7.41 
+---------------------------------------------------- 
+Task based (+ prio) |        2 |      7.12 |    1.95 
+Task based (+ prio) |        4 |      3.60 |    3.86 
+Task based (+ prio) |        8 |      1.84 |    7.55 
+---------------------------------------------------- 
