@@ -1,0 +1,29 @@
+STATIC
+Constant work:      146.201834
+Small fluctuations: 162.312791
+Big fluctuations:   1.320633
+Increasing:         97.670094
+
+STATIC,1
+Constant work:      146.383211
+Small fluctuations: 161.928684
+Big fluctuations:   1.339423
+Increasing:         65.201702
+
+DYNAMIC
+Constant work:      146.149867
+Small fluctuations: 161.788409
+Big fluctuations:   0.742575
+Increasing:         64.951742
+
+DYNAMIC,100
+Constant work:      146.558868
+Small fluctuations: 161.619505
+Big fluctuations:   1.186075
+Increasing:         64.956882
+
+GUIDED,10
+Constant work:      146.328557
+Small fluctuations: 162.374999
+Big fluctuations:   2.438081
+Increasing:         65.159343

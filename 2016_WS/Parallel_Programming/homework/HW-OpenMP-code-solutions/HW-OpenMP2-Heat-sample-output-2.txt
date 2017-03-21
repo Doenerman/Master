@@ -1,0 +1,82 @@
+Sender: LSF System <lsfadmin@linuxbsc063>
+Subject: Job 32683190: <HEAT> in cluster <rcc> Done
+
+Job <HEAT> was submitted from host <cluster-linux> by user <df938257> in cluster <rcc>.
+Job was executed on host(s) <8*linuxbsc063>, in queue <normal>, as user <df938257> in cluster <rcc>.
+</home/df938257> was used as the home directory.
+</home/df938257/PP16/OMP> was used as the working directory.
+Started at Tue Dec 13 11:36:30 2016
+Results reported on Tue Dec 13 11:50:15 2016
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/usr/bin/env zsh
+
+#BSUB -o output-%J.txt
+#BSUB -J HEAT
+#BSUB -W 1:00
+#BSUB -M 8000
+#
+#BSUB -x
+#BSUB -n 8
+#BSUB -a "openmp"
+
+gcc HW-OpenMP2-Heat.c -fopenmp -o HW-OpenMP2-Heat.x
+
+export OMP_NUM_THREADS=2
+./HW-OpenMP2-Heat.x 1000
+
+export OMP_NUM_THREADS=4
+./HW-OpenMP2-Heat.x 1000
+
+export OMP_NUM_THREADS=8
+./HW-OpenMP2-Heat.x 1000
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   2083.37 sec.
+    Max Memory :                                 116 MB
+    Average Memory :                             57.04 MB
+    Total Requested Memory :                     8000.00 MB
+    Delta Memory :                               7884.00 MB
+    Max Swap :                                   -
+    Max Processes :                              6
+    Max Threads :                                13
+    Run time :                                   819 sec.
+    Turnaround time :                            833 sec.
+
+The output (if any) follows:
+
+Version             | #iters | #threads | #Time (s) | Speedup 
+------------------------------------------------------------- 
+Sequential          |   3602 |        1 |     75.08 |    1.00 
+Par. outermost loop |   3602 |        2 |     57.25 |    1.31 
+Par. innermost loop |   3602 |        2 |     67.28 |    1.12 
+Par. outer + conv   |   3602 |        2 |     46.95 |    1.60 
+Single parallel reg |   3602 |        2 |     46.40 |    1.62 
+Par. while          |   3602 |        2 |     46.63 |    1.61 
+------------------------------------------------------------- 
+Version             | #iters | #threads | #Time (s) | Speedup 
+------------------------------------------------------------- 
+Sequential          |   3602 |        1 |     72.59 |    1.00 
+Par. outermost loop |   3602 |        4 |     41.74 |    1.74 
+Par. innermost loop |   3602 |        4 |     57.45 |    1.26 
+Par. outer + conv   |   3602 |        4 |     23.87 |    3.04 
+Single parallel reg |   3602 |        4 |     23.36 |    3.11 
+Par. while          |   3602 |        4 |     23.40 |    3.10 
+------------------------------------------------------------- 
+Version             | #iters | #threads | #Time (s) | Speedup 
+------------------------------------------------------------- 
+Sequential          |   3602 |        1 |     74.53 |    1.00 
+Par. outermost loop |   3602 |        8 |     34.16 |    2.18 
+Par. innermost loop |   3602 |        8 |     63.89 |    1.17 
+Par. outer + conv   |   3602 |        8 |     11.94 |    6.24 
+Single parallel reg |   3602 |        8 |     11.78 |    6.33 
+Par. while          |   3602 |        8 |     12.68 |    5.88 
+------------------------------------------------------------- 

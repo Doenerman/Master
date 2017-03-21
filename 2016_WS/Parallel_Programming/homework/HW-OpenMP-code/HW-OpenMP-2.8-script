@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+icc HW-OpenMP-2.8.c -lm -Wall -fopenmp -O0 -o HW-OpenMP-2.8.x
+
+export OMP_NUM_THREADS=4
+
+echo "STATIC"
+export OMP_SCHEDULE="static" 
+./HW-OpenMP-2.8.x
+
+# Edit below to set other options
+# Keep adding as many as you consider
+# Suggestions: kind: static, dynamic, guided
+#              chunk_size: 1, 100
+echo
+echo "Your choices!"
+export OMP_SCHEDULE="kind,chunk_size"
+./HW-OpenMP-2.8.x
+

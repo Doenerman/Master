@@ -1,0 +1,92 @@
+**********************************************
+* Plots describing each workload distribution
+**********************************************
+
+a) Constant
+
+  |
+  |
+  |------------------------
+t |
+  |
+  |
+  |
+  --------------------------
+           iterations
+
+b) Small fluctuations
+
+  |
+  |     __          _ 
+  |_/\_/  \_____/\_/ \_____  } up to 5%
+t |
+  |
+  |
+  |
+  --------------------------
+           iterations
+
+c) Big fluctuations
+
+  | |  ||
+  | |  ||
+  | |  ||
+t | |  ||
+  | |  ||
+  | |  ||
+  |_|__||___ ... __________ 
+  --------------------------
+           iterations
+
+d) Increasing
+
+  |      /
+  |     /
+  |    /
+t |   /
+  |  /
+  | /
+  |/  
+  --------------------------
+           iterations
+
+
+**********
+* Results
+**********
+
+See HW9.1-scheduling.output.txt
+
+***********
+* Comments
+***********
+
+a) Constant
+
+Since the workload per iteration is constant, static scheduling is good enough
+(with or without specific chunk_size). Dynamic also works well, which means the
+overhead for dynamic scheduling is negligible. Notice that the small differences
+between scheduling schemes are smaller than 1% and can be considered noise.
+
+b) Small fluctuations
+
+Here, dynamic schedulings and static with small chunk_size are slightly faster,
+since they allow to compensate the potential aggregation of spikes (higher
+workloads) in close iterations. Still, the difference is negligible.
+
+c) Big fluctuations
+
+Now, the concentration of large workloads (about 5 orders of magnitude more
+work than the baseline workload) among the first 50 iterations benefits dynamic
+scheduling with small chunk_size (1 in the example). The reason is that dynamic
+scheduling allows for the balancing of expensive iterations executed by one or 
+more threads, with many cheap iterations executed by the other threads. Guided
+scheduling (and also static without specified chunk_size) concentrates the expensive
+iterations in one big chunk at the beginning, while static,1 is less flexible
+and in this specific run did not lead to good balancing.
+
+d) Increasing
+
+The bad choice here is static with large chunk_size (either explicit or implicit)
+since some threads clearly perform much more work than the others. Any of the
+other choices leads to proper balancing.

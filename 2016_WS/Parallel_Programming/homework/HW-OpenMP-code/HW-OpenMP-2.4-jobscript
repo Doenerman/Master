@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+
+#BSUB -o HW-2.4.%J
+#BSUB -J HEAT
+#BSUB -W 1:00
+#BSUB -M 1000
+#
+#BSUB -x
+#BSUB -n 8
+#BSUB -a "openmp"
+
+for n in 100 500 1000
+do
+    echo "Running for n = $n"
+    echo
+
+    for nths in 1 2 4 8
+    do
+        export OMP_NUM_THREADS=$nths; ./HW-OpenMP-2.4.x $n
+    done
+
+    echo
+done
