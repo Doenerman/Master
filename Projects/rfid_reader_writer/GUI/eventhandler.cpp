@@ -274,39 +274,13 @@ void EventHandler::calculateChecksums(
                          QString* const crcIBM) {
 
     card_info tempCard;
-    int cardType;
-    int recRev;
-    int locNr;
-    int userID;
-    int cardID;
-    int tempCrcAdded = 0;
-    int tempCrcIBM = 0;
-    
-    bool succConversion;
+    int tempCrcAdded, tempCrcIBM;
 
-    cardType = stringCardType.toInt(&succConversion, 10);
-    if(!succConversion)
-      cardType = 0;
-    recRev = stringRecRev.toInt(&succConversion, 10);
-    if(!succConversion)
-      recRev = 0;
-    locNr = stringLocNr.toInt(&succConversion, 10);
-    if(!succConversion)
-      locNr = 0;
-    userID = stringUserID.toInt(&succConversion, 10);
-    if(!succConversion)
-      userID = 0;
-    cardID = stringCardID.toInt(&succConversion, 10);
-    if(!succConversion)
-      cardID = 0;
+    convertQStringsToCard(stringCardType, stringRecRev,
+                          stringLocNr, stringUserID,
+                          stringCardID, &tempCard);
 
 
-
-    tempCard.card_type = cardType;
-    tempCard.record_rev = recRev;
-    tempCard.locNr = locNr;
-    tempCard.kunden_nr = userID;
-    tempCard.card_nr = cardID;
 
     calcCRC16_added(tempCard.card_type,
                     tempCard.record_rev,
