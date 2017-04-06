@@ -3,11 +3,46 @@
 //
 
 #include "JobFile.h"
-#include "CardInformation.hpp"
 
 
 QString defaultFileName("job.json");
-
+/**
+ * Interprets the given search tag and writes the necessary information in
+ * the given parameter.
+ *
+ * First of all the given QString is cleared. Second the search tag is
+ * checked. In case there is no predefined search tag that fits to the given
+ * one the return value of this function is \link UNKNOWN_SEARCH_TAG \endlink
+ * . In case the given search tag is predefined the parameter are set
+ * respectively. If the search tag is not predefined the integer
+ * output parameter are set to '0' and the QString output parameter is cleared
+ * . A list of predefined search tags is given in \link JobFile.h \endlink .
+ *
+ * @param [in]searchTag
+ * @param [out]string                The word that represents the search tag in
+ *                                   the jobfile.
+ * @param [out]prefixBeforeResult    The amount of characters that are before
+ *                                   the result corresponding to the search tag.
+ * @param [out]suffixAfterResult     the amount of characters that is after
+ *                                   the result corresponding to the search tag.
+ * @param [out]lengthOfTagWord       The length of the word that represents the
+ *                                   search tag in the jobfile. For the search
+ *                                   tag \link CUSTOMER_TAG \endlink the value
+ *                                   would be '5' because the word 'Kunde',
+ *                                   which is written in the jobfile, has a
+ *                                   length of 5.
+ * @return  The value is either \link CORRECT_SEARCH_TAG \endlink in case the
+ *          given search tag has one of the following values
+ *              - \link CUSTOMER_TAG \endlink
+ *              - \link JOBID_TAG \endlink
+ *              - \link USERID_TAG \endlink
+ *              - \link INITCARDID_TAG \endlink
+ *              - \link CARDAMOUNT_TAG \endlink
+ *          or it is
+ *          \link UNKNOWN_SEARCH_TAG \endlink. In case the value is
+ *          \link UNKNOWN_SEARCH_TAG \endlink the integer output parameter are
+ *          set to '0' and the QString output parameter is cleared.
+ */
 int getInfoFromSearchTag(const int searchTag, QString* string,
                          int* prefixBeforeResult,
                          int* suffixAfterResult,
@@ -47,30 +82,68 @@ int getInfoFromSearchTag(const int searchTag, QString* string,
             break;
         default:
             result = UNKNOWN_SEARCH_TAG;
+            *prefixBeforeResult = 0;
+            *suffixAfterResult = 0;
+            *lengthOfTagWord = 0;
             break;
     }
 
     return result;
 }
 
-
+/**
+ * Reads the result of the search for the search tag and writes it in the
+ * QString. The return value indicates the success of the search.
+ *
+ * This method uses the function \link getInfoFromSearchTag \endlink to
+ * gather necessary information about the search. If \link
+ * getInfoFromSearchTag \endlink returns an error value this method returns the
+ * same error value. If the information was gather successful this methods
+ * tries toread from the named file. If this is not possible this method returns
+ * \link FAIL_OPEN_FAIL \endlink. In case the file can be read the method reads
+ * line by line and looks for the phrase that represents the search tag. If
+ * there is no line that fit the search tag the value \link FAIL_FOUND_LINE
+ * \endlink is returned.
+ *
+ * @param [in]fileName  The name of the file in which the line specified by
+ *                      the search tag should be found and the corresponding
+ *                      result be read.
+ * @param [in]searchTag A predefined search tag. A list of the predefined
+ *                      search tags is given in \link JobFile.h \endlink
+ * @param [out]result   In case the search was successful the result is
+ *                      written in this QString. A result for \link
+ *                      INITCARDID_TAG \endlink could be '4' which means the
+ *                      initial card id would be '4'
+ * @return  The value depends on the given search tag and the given filename.
+ *          In case the search tag is not one of the predefined of \link
+ *          getInfoFromSearchTag \endlink this method returns the value
+ *          from \link getInfoFromSearchTag \endlink . In case the search tag
+ *          is predefined in \link getInfoFromSearchTag \endlink the return
+ *          value is either \link FAIL_OPEN_FILE \endlink in case the file
+ *          could not be read, \link FAIL_FOUND_LINE \endlink in case the
+ *          line corresponding to the search tag was not found, \link
+ *          FAIL_READ_RESULT \endlink in case the result of the corresponding
+ *          search tag is too short or \link SUCC_FOUND_LINE_READ_RESULT
+ *          \endlink if the line was found and the result was read.
+ */
 int JobFile::findLineReadResult(QString fileName, const int searchTag,
                        QString* result) {
 
     QFile jobFile(fileName);
     QString temp, searchString;
-    int readLength, prefixBeforeResult, suffixAfterResult;
+    int succRead, readLength, prefixBeforeResult, suffixAfterResult;
 
-    getInfoFromSearchTag(searchTag, &searchString, &prefixBeforeResult,
+    succRead = getInfoFromSearchTag(searchTag, &searchString,
+                                   &prefixBeforeResult,
                          &suffixAfterResult, &readLength);
-
-    int succRead = FAIL_FOUND_LINE;
     QByteArray searchArray = searchString.toLatin1();
-
 
     result->clear();
 
-    if(jobFile.open(QIODevice::ReadOnly)){
+    // can the file be read and is the given search tag correct?
+    if((jobFile.open(QIODevice::ReadOnly)) && (succRead == CORRECT_SEARCH_TAG)){
+        // line not found yet
+        succRead = FAIL_FOUND_LINE;
         QTextStream in(&jobFile);
         //the first line
         temp = in.readLine();
@@ -79,7 +152,7 @@ int JobFile::findLineReadResult(QString fileName, const int searchTag,
         bool endOfFile = false;
         int iter;
 
-        // Find the line with the specific search tag
+        // read each line successivly and check if this line fits the search tag
         while(!lineFound && !endOfFile) {
             temp = in.readLine();
             QByteArray readArray = temp.toLatin1();
@@ -87,6 +160,8 @@ int JobFile::findLineReadResult(QString fileName, const int searchTag,
 
             int maxRead = min(readLength, readArray.size());
 
+            // read the word the represents the search tag
+            // the word for JOBID_TAG would be 'JobID'
             for(iter = 0;((iter < maxRead) && found);iter++){
                 found &= (readArray.at(FIX_PREFIX_ALL_LINES + iter) ==
                             searchArray.at(iter));
@@ -96,14 +171,22 @@ int JobFile::findLineReadResult(QString fileName, const int searchTag,
 
             // if the searched line is found write the result
             if(found && !endOfFile) {
-                for(iter = 0;
-                    iter < temp.size() - prefixBeforeResult -
-                                   suffixAfterResult;
-                    iter++) {
-
-                    result->append(readArray.at(prefixBeforeResult+iter));
+                // does the 'result' in the jobfile has a length of 0
+                // -> this means that the 'result' does not exist
+                if(temp.size() - prefixBeforeResult - suffixAfterResult == 0) {
+                    succRead = FAIL_READ_RESULT;
                 }
-                succRead = SUCC_FOUND_LINE_READ_RESULT;
+                // the 'result' has a length of at least 1
+                // read the result and write it into result
+                else {
+                    for (iter = 0;
+                         iter < temp.size() - prefixBeforeResult -
+                                suffixAfterResult;
+                         iter++) {
+                        result->append(readArray.at(prefixBeforeResult + iter));
+                    }
+                    succRead = SUCC_FOUND_LINE_READ_RESULT;
+                }
             }
         }
 
@@ -117,6 +200,32 @@ int JobFile::findLineReadResult(QString fileName, const int searchTag,
     return succRead;
 }
 
+/**
+ * Reads the jobfile with the given input name. It is read correctly the job
+ * described by the named file is written in the given job.
+ *
+ * This file tries to open the named jobfile and search in the file for
+ *  - \link CUSTOMER_TAG \endlink
+ *  - \link JOBID_TAG \endlink
+ *  - \link USERID_TAG \endlink
+ *  - \link INITCARDID_TAG \endlink
+ *  - \link CARDAMOUNT_TAG \endlink
+ * and reads the corresponding result. In case the file can not be opened
+ * this method returns the value \link FAIL_OPEN_FILE \endlink.
+ * The search is done by the method \link JobFile::findLineReadResult
+ * \endlink. In case that at least on of the
+ * reading tries failed the return value of this method mentions the first
+ * one that failed. If every search of the above tags was successful the job
+ * that the jobfile represents is written in the given paratmeter.
+ *
+ * @param fileName  The name of the file that contains the job
+ * @param job       A job where the information of the jobfile are written in
+ * @return  In case the job was created successful the return value of this
+ *          method is \link SUCC_FOUND_LINE_READ_RESULT \endlink which means
+ *          that all necessary information about the job were read from the
+ *          given jobfile. All other return values are forwarded for the method
+ *          \link JobFile::findLineReadResult \endlink.
+ */
 int JobFile::readJobFile(QString fileName, Job *job) {
 
     QString temp;
@@ -150,20 +259,16 @@ int JobFile::readJobFile(QString fileName, Job *job) {
 
         // check whether everything was read correctly
         response = rCust;
-        if( (rJobID != SUCC_FOUND_LINE_READ_RESULT)
-            && (response == SUCC_FOUND_LINE_READ_RESULT) ) {
+        if( response == SUCC_FOUND_LINE_READ_RESULT ) {
             response = rJobID;
         }
-        if( (rUserID != SUCC_FOUND_LINE_READ_RESULT)
-            && (response == SUCC_FOUND_LINE_READ_RESULT)) {
+        if( response == SUCC_FOUND_LINE_READ_RESULT) {
             response = rUserID;
         }
-        if( (rInitCardID != SUCC_FOUND_LINE_READ_RESULT)
-            && (response == SUCC_FOUND_LINE_READ_RESULT)) {
+        if( response == SUCC_FOUND_LINE_READ_RESULT) {
             response = rInitCardID;
         }
-        if( (rCardAm != SUCC_FOUND_LINE_READ_RESULT)
-            && (response == SUCC_FOUND_LINE_READ_RESULT)) {
+        if( response == SUCC_FOUND_LINE_READ_RESULT) {
             response = rCardAm;
         }
 
@@ -198,9 +303,19 @@ int JobFile::readJobFile(QString fileName, Job *job) {
     return response;
 }
 
-
+/**
+ * Reads the default jobfile. Is it read correctly the job is written in the
+ * given input.
+ *
+ * Calls the method \link JobFile::readJobFile(QString, Job*) \endlink with
+ * the default jobfile name \link defaultJobFileName \endlink
+ *
+ * @param job       A job where the information of the jobfile are written in
+ * @return  Forwards the value of the call
+ *          \link JobFile::readJobFile(QString, Job*) \endlink
+ */
 int JobFile::readJobFile(Job* job) {
-    JobFile::readJobFile(defaultFileName, job);
+    return JobFile::readJobFile(defaultFileName, job);
 }
 
 
