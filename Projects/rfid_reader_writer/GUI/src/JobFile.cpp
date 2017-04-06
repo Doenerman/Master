@@ -3,6 +3,7 @@
 //
 
 #include "JobFile.h"
+#include "CardInformation.hpp"
 
 
 QString defaultFileName("job.json");
@@ -189,8 +190,7 @@ int JobFile::findLineReadResult(QString fileName, const int searchTag,
                 }
             }
         }
-
-
+        jobFile.close();
 
     }
     else{
@@ -294,9 +294,9 @@ int JobFile::readJobFile(QString fileName, Job *job) {
             }
 
         }
-
-
-    } else {
+        jobFile.close();
+    }
+    else {
         response = FAIL_OPEN_FILE;
     }
 
@@ -320,13 +320,42 @@ int JobFile::readJobFile(Job* job) {
 
 
 
-/**
- * Writes a jobfile in the given filename.
- * @param fileName
- * @param job
- * @return
- */
 int JobFile::createJobFile(const QString fileName, const Job job) {
     //@todo impelment
+
+    QFile jobFile(fileName);
+    int succ;
+
+    if(jobFile.open(QIODevice::WriteOnly)) {
+        QTextStream out(&jobFile);
+
+        if(job.cards.size() > 0) {
+
+            // |{
+            out << 0x7b << endl;
+            // |    "Kunde": "'customername'",
+            out << "    " << 0x22 << "Kunde" << 0x22 << ": "
+                << 0x22 << job.customer.toLatin1().data() << 0x22 << ","
+                << endl;
+            // |    "JobID": "'jobid'",
+            out << "    " << 0x22 << "JobID" << 0x22 << ": "
+                << 0x22 << job.userID.toLatin1().data() << 0x22 << "," << endl;
+            // |    "Kundennummer": "'userid'",
+            out << "    " << 0x22 << "Kundennummer" << 0x22 << ": "
+                << 0x22 << job.userID.toLatin1().data() << 0x22 << "," << endl;
+            // |    "Initiale Kartennummer": "'initcardid'",
+            out << "    " << 0x22 << "Initiale Kartennummer" << 0x22 << ": "
+                << 0x22 << job.cards.at(0).kunden_nr << endl;
+            // |    "Kartenanzahl": "'cardamount'"
+            out << "    " << 0x22 << "Kartenanzahl" << 0x22 << ": "
+                << 0x22 << job.cards.size() << endl;
+        }
+
+        jobFile.close();
+    }
+    else{
+        succ = FAIL_OPEN_FILE;
+    }
+
     return 0;
 }
