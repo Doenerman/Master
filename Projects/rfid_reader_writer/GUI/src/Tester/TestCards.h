@@ -8,7 +8,7 @@
 #include "../CardInformation.hpp"
 #include "../Calculator.hpp"
 
-#define TESTCARD card3
+#define TESTCARD card1
 
 
 
@@ -280,6 +280,57 @@ const card_info card3_invalid = {
         },
         0
 };
+const card_info card4 = {
+        {
+                0xE0, 0x04, 0x01, 0x50,
+                0x32, 0x85, 0x49, 0xA0
+        },
+        0,
+        0,
+        1,
+        0,
+        //block 1
+        1234,
+        4321,
+        (uint16_t) calcCRC16_added(card4),
+        calcCRC16_ibm((uint8_t *) &card4, 12),
+        0,
+        0,
+        KEY_1,
+        KEY_2,
+        KEY_3,
+        {
+                0, 0, 0, 0,
+                0, 0, 0, 0
+        },
+        0
+};
+const card_info card5 = {
+        {
+                0xE0, 0x04, 0x01, 0x50,
+                0x32, 0x85, 0x49, 0xA0
+        },
+        0,
+        0,
+        1,
+        0,
+        //block 1
+        1234,
+        4322,
+        (uint16_t) calcCRC16_added(card4),
+        calcCRC16_ibm((uint8_t *) &card4, 12),
+        0,
+        0,
+        KEY_1,
+        KEY_2,
+        KEY_3,
+        {
+                0, 0, 0, 0,
+                0, 0, 0, 0
+        },
+        0
+};
+
 
 
 #endif //GUI_TESTCARDS_H
