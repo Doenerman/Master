@@ -1,0 +1,53 @@
+//
+// Created by utti on 07.04.17.
+//
+
+#ifndef GUI_GENERALDEFINES_H
+#define GUI_GENERALDEFINES_H
+
+
+/**
+ * \def CONVERSION_SUCC
+ * The method  was able to convert the
+ * QString cardType, QString recRev, QString locNr,QString userID, QString
+ * initCardID and QString cardAmount to the respective integer value
+ */
+#define CONVERSION_SUCC 1
+/**
+ * \def INITCARDCONVERSION_FAILED
+ * The method was not able to convert the
+ * QString initCardID to the respective integer value
+ */
+#define INITCARDID_CONVERSION_FAILED -100
+/**
+ * \def CARDAMOUNT_CONVERSION_FAILED
+ * The method was not able to convert the
+ * QString cardAmount the respective integer value
+ */
+#define CARDAMOUNT_CONVERSION_FAILED -1000
+/**
+ * \def USERID_CONVERSION_FAILED
+ * The method was not able to convert the
+ * QString userID to the respective integer value
+ */
+#define USERID_CONVERSION_FAILED -10000
+/**
+ * \def CARDTYPE_CONVERSION_FAILED
+ * The method was not able to convert the
+ * QString cardType to the respective integer value
+ */
+#define CARDTYPE_CONVERSION_FAILED -100000
+/**
+ * \def RECREV_CONVERSION_FAILED
+ * The method was not able to convert the
+ * QString recRev to the respective integer value
+ */
+#define RECREV_CONVERSION_FAILED -1000000
+/**
+ * \def LOCNR_CONVERSION
+ * The method was not able to convert the
+ * QString locNr to the respective integer value
+ */
+#define LOCNR_CONVERSION_FAILED -10000000
+
+#endif //GUI_GENERALDEFINES_H
