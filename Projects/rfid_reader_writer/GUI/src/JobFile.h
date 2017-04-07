@@ -150,6 +150,64 @@
 
 
 /**
+ * \def JOBCREATION_SUCC
+ * The method was able to create a job with the given input parameter. This
+ * means that no conversion error appeared and the given job information were
+ * valid.
+ */
+#define JOBCREATION_SUCC 1
+/**
+ * \def INITCARDID_CARDAMOUNT_CONVERSION_SUCC
+ * The method \link JobFile::createJob \endlink was able to convert the
+ * QString cardType, QString recRev, QString locNr,QString userID, QString
+ * initCardID and QString cardAmount to the respective integer value
+ */
+#define CONVERSION_SUCC 1
+/**
+ * \def INITCARDCONVERSION_FAILED
+ * The method \link JobFile::createJob \endlink was not able to convert the
+ * QString initCardID to the respective integer value
+ */
+#define INITCARDID_CONVERSION_FAILED -100
+/**
+ * \def CARDAMOUNT_CONVERSION_FAILED
+ * The method \link JobFile::createJob \endlink was not able to convert the
+ * QString cardAmount the respective integer value
+ */
+#define CARDAMOUNT_CONVERSION_FAILED -1000
+/**
+ * \def USERID_CONVERSION_FAILED
+ * The method \link JobFile::createJob \endlink was not able to convert the
+ * QString userID to the respective integer value
+ */
+#define USERID_CONVERSION_FAILED -10000
+/**
+ * \def CARDTYPE_CONVERSION_FAILED
+ * The method \link JobFile::createJob \endlink was not able to convert the
+ * QString cardType to the respective integer value
+ */
+#define CARDTYPE_CONVERSION_FAILED -100000
+/**
+ * \def RECREV_CONVERSION_FAILED
+ * The method \link JobFile::createJob \endlink was not able to convert the
+ * QString recRev to the respective integer value
+ */
+#define RECREV_CONVERSION_FAILED -1000000
+/**
+ * \def LOCNR_CONVERSION
+ * The method \link JobFile::createJob \endlink was not able to convert the
+ * QString locNr to the respective integer value
+ */
+#define LOCNR_CONVERSION_FAILED -10000000
+/**
+ * \def INVALID_JOB_NO_CARDS
+ * The return value of the in case a method like \link JobFile::createJobFile
+ * \endlink gets a job that does not include any card that should be written
+ */
+#define INVALID_JOB_NO_CARDS -10
+
+
+/**
  * \def SUCC_FOUND_LINE_READ_RESULT
  * The return value in case the method \link JobFile::findLineReadResult
  * \endlink successfully found a line specified by a search tag and read the
@@ -185,6 +243,12 @@
  */
 #define UNKNOWN_SEARCH_TAG -4
 
+/**
+ * \def JOBFILE_WRITTEN
+ * The return value of the function \link JobFile::createJobFile \endlink in
+ * case the method successfully wrote a the job file
+ */
+#define JOBFILE_WRITTEN 1
 
 
 #define min(a,b) (a<b? a: b)
@@ -210,12 +274,6 @@ typedef struct {
      * @var userID
      * The QString where the user id of this job is stored in
      */
-    QString userID;
-    /**
-     * @var cards
-     * A vector of cards. These cards must be printed in order to complete
-     * the job.
-     */
     QVector<card_info> cards;
 }Job;
 
@@ -230,6 +288,11 @@ public:
                                   QString* result);
     static int readJobFile(Job* job);
     static int readJobFile(QString fileName, Job* job);
+    static int createJob(const QString customer, const QString jobID,
+                         const QString cardType,
+                         const QString recRev, const QString locNr,
+                         const QString userID, const QString initCardID,
+                         const QString cardAmount, Job* job);
     static int createJobFile(const QString fileName, const Job job);
 
 };
