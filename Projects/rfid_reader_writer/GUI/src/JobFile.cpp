@@ -4,6 +4,7 @@
 
 #include "JobFile.h"
 #include "CardInformation.hpp"
+#include "Tester/TestCards.h"
 
 
 QString defaultFileName("job.json");
@@ -137,6 +138,9 @@ int JobFile::findLineReadResult(QString fileName, const int searchTag,
     succRead = getInfoFromSearchTag(searchTag, &searchString,
                                    &prefixBeforeResult,
                          &suffixAfterResult, &readLength);
+
+
+
     QByteArray searchArray = searchString.toLatin1();
 
     result->clear();
@@ -249,7 +253,7 @@ int JobFile::readJobFile(QString fileName, Job *job) {
                                          &job->customer);
         rJobID = JobFile::findLineReadResult(fileName, JOBID_TAG,
                                                &job->jobID);
-        rUserID = JobFile::findLineReadResult(fileName, USERID_TAG, &job->userID);
+        rUserID = JobFile::findLineReadResult(fileName, USERID_TAG, &userID);
         rInitCardID = JobFile::findLineReadResult(fileName, INITCARDID_TAG,
                                           &initCardID);
         rCardAm = JobFile::findLineReadResult(fileName, CARDAMOUNT_TAG,
@@ -273,26 +277,31 @@ int JobFile::readJobFile(QString fileName, Job *job) {
         }
 
 
+
         // in case everything was read correctly for the job file
         if(response == SUCC_FOUND_LINE_READ_RESULT) {
-            int intCards = cardAmount.toInt(NULL, 10);
+            int intAmountCards = cardAmount.toInt(NULL, 10);
             // remove all cards in case there exists one
             card_info tempCard;
-            for (iter = 0; iter < intCards; iter++) {
-                tempCard.card_type = 0;
-                tempCard.record_rev = 0;
-                tempCard.locNr = 0;
-                tempCard.record_rev = 0;
-                tempCard.kunden_nr = (uint32_t) userID.toInt(NULL, 10);
-                tempCard.card_nr = (uint32_t) (initCardID.toInt(NULL, 10) +
-                                               iter);
-                int crcAdd;
-                calcCRC16_added(tempCard, &crcAdd);
-                tempCard.crc16_ibm = calcCRC16_ibm(&tempCard.card_type,
-                                                   INFORMATION_LENGTH_IN_BYTE);
-                job->cards.append(tempCard);
+            if( intAmountCards > 0) {
+                for (iter = 0; iter < intAmountCards; iter++) {
+                    tempCard.card_type = 0;
+                    tempCard.record_rev = 0;
+                    tempCard.locNr = 0;
+                    tempCard.record_rev = 0;
+                    tempCard.kunden_nr = (uint32_t) userID.toInt(NULL, 10);
+                    tempCard.card_nr = (uint32_t) (initCardID.toInt(NULL, 10) +
+                                                   iter);
+                    int crcAdd;
+                    calcCRC16_added(tempCard, &crcAdd);
+                    tempCard.crc16_ibm = calcCRC16_ibm(&tempCard.card_type,
+                                                       INFORMATION_LENGTH_IN_BYTE);
+                    job->cards.append(tempCard);
+                }
             }
-
+            else {
+                response = INVALID_JOB_NO_CARDS;
+            }
         }
         jobFile.close();
     }
@@ -318,44 +327,138 @@ int JobFile::readJobFile(Job* job) {
     return JobFile::readJobFile(defaultFileName, job);
 }
 
+int JobFile::createJob(const QString customer, const QString jobID,
+                       const QString cardType,
+                       const QString recRev, const QString locNr,
+                       const QString userID, const QString initCardID,
+                       const QString cardAmount, Job *job) {
+    int succConversion, cardType_int, locNr_int, recRev_int, initCardID_int,
+            cardAmount_int, userID_int;
+    bool convCardType, convLocNr, convRecRev, convInitID, convCardAm,
+            convUserID;
+
+    succConversion = 0;
+    cardType_int = cardType.toInt(&convCardType, 10);
+    locNr_int = locNr.toInt(&convLocNr, 10);
+    recRev_int = recRev.toInt(&convRecRev,10);
+    initCardID_int = initCardID.toInt(&convInitID, 10);
+    cardAmount_int = cardAmount.toInt(&convCardAm, 10);
+    userID_int = userID.toInt(&convUserID, 10);
+
+    // check if the conversion from qstring to integer was successful
+    if( !convUserID ) {
+        succConversion += USERID_CONVERSION_FAILED;
+    }
+    else if( !convCardAm ) {
+        succConversion += CARDAMOUNT_CONVERSION_FAILED;
+    }
+    else if( !convInitID ) {
+        succConversion += INITCARDID_CONVERSION_FAILED;
+    }
+    else if( !convCardType ) {
+        succConversion += CARDTYPE_CONVERSION_FAILED;
+    }
+    else if( !convRecRev ) {
+        succConversion += RECREV_CONVERSION_FAILED;
+    }
+    else if( !convLocNr ) {
+        succConversion += LOCNR_CONVERSION_FAILED;
+    }
+    else {
+        succConversion = CONVERSION_SUCC;
+    }
 
 
+    if(succConversion == CONVERSION_SUCC) {
+        if(cardAmount_int > 0) {
+            int iter;
+            job->customer = customer;
+            job->jobID = jobID;
+
+            for(iter = 0; iter < cardAmount_int; iter++) {
+                card_info tempCard;
+                // block 0
+                tempCard.card_type = (uint8_t) cardType_int;
+                tempCard.record_rev = (uint8_t) recRev_int;
+                tempCard.locNr = (uint8_t) locNr_int;
+                tempCard.reserved_block0 = 0;
+                //block 1
+                tempCard.kunden_nr = (uint32_t) userID_int;
+                //block 2
+                tempCard.card_nr = (uint32_t) initCardID_int +  iter;
+                //block 3
+                tempCard.crc16_added = (uint16_t) calcCRC16_added(tempCard);
+                tempCard.crc16_ibm = calcCRC16_ibm(&(tempCard.card_type),
+                                                   12);
+                tempCard.reserve_block4 = 0;
+                tempCard.reserve_block5 = 0;
+                job->cards.append(tempCard);
+            }
+            succConversion = JOBCREATION_SUCC;
+        }
+        else {
+            succConversion = INVALID_JOB_NO_CARDS;
+        }
+    }
+
+
+    return succConversion;
+}
+
+
+/**
+ *
+ * @param fileName
+ * @param job
+ * @return
+ */
 int JobFile::createJobFile(const QString fileName, const Job job) {
     //@todo impelment
 
     QFile jobFile(fileName);
     int succ;
 
-    if(jobFile.open(QIODevice::WriteOnly)) {
-        QTextStream out(&jobFile);
+    if(job.cards.size() > 0) {
+        if (jobFile.open(QIODevice::WriteOnly)) {
+            QTextStream out(&jobFile);
 
-        if(job.cards.size() > 0) {
+            if (job.cards.size() > 0) {
 
-            // |{
-            out << 0x7b << endl;
-            // |    "Kunde": "'customername'",
-            out << "    " << 0x22 << "Kunde" << 0x22 << ": "
-                << 0x22 << job.customer.toLatin1().data() << 0x22 << ","
-                << endl;
-            // |    "JobID": "'jobid'",
-            out << "    " << 0x22 << "JobID" << 0x22 << ": "
-                << 0x22 << job.userID.toLatin1().data() << 0x22 << "," << endl;
-            // |    "Kundennummer": "'userid'",
-            out << "    " << 0x22 << "Kundennummer" << 0x22 << ": "
-                << 0x22 << job.userID.toLatin1().data() << 0x22 << "," << endl;
-            // |    "Initiale Kartennummer": "'initcardid'",
-            out << "    " << 0x22 << "Initiale Kartennummer" << 0x22 << ": "
-                << 0x22 << job.cards.at(0).kunden_nr << endl;
-            // |    "Kartenanzahl": "'cardamount'"
-            out << "    " << 0x22 << "Kartenanzahl" << 0x22 << ": "
-                << 0x22 << job.cards.size() << endl;
+                const char brackOpen = 0x7b;
+                const char brackClose = 0x7d;
+                const char sep = 0x22;
+
+                // |{
+                out << brackOpen << endl;
+                // |    "Kunde": "'customername'",
+                out << "    " << sep << "Kunde" << sep << ": "
+                    << sep << job.customer.toLatin1().data() << sep << ","
+                    << endl;
+                // |    "JobID": "'jobid'",
+                out << "    " << sep << "JobID" << sep << ": "
+                    << sep << job.jobID.toLatin1().data() << sep << "," << endl;
+                // |    "Kundennummer": "'userid'",
+                out << "    " << sep << "Kundennummer" << sep << ": "
+                    << sep << job.cards.at(0).kunden_nr << sep << "," << endl;
+                // |    "Initiale Kartennummer": "'initcardid'",
+                out << "    " << sep << "Initiale Kartennummer" << sep << ": "
+                    << sep << job.cards.at(0).kunden_nr << sep << "," << endl;
+                // |    "Kartenanzahl": "'cardamount'"
+                out << "    " << sep << "Kartenanzahl" << sep << ": "
+                    << sep << job.cards.size() << sep << endl;
+                // |}
+                out << brackClose << endl;
+            }
+
+            jobFile.close();
+            succ = JOBFILE_WRITTEN;
+        } else {
+            succ = FAIL_OPEN_FILE;
         }
-
-        jobFile.close();
     }
-    else{
-        succ = FAIL_OPEN_FILE;
+    else {
+        succ = INVALID_JOB_NO_CARDS;
     }
 
-    return 0;
+    return succ;
 }
