@@ -6,11 +6,14 @@
 #include <QPlainTextEdit>
 #include <QWidget>
 #include <QMessageBox>
+#include <QtCore/QTextStream>
+
 
 
 
 #include "src/Calculator.hpp"
 #include "src/CardInformation.hpp"
+#include "src/LogFile.h"
 
 #define CONVERSIONCHECK_PASSED 1
 #define CONVERSIONCHECK_FAILED_CARDID -1
@@ -25,9 +28,13 @@
 #define BOX_COLOR_GREEN "QPlainTextEdit {background-color: green;}"
 
 #define ERROR_NOT_IMPLEMENTED -1
-#define WRITTING_SUCCESSFULL 1
 #define NO_CARD_LEFT_TO_WRITE 2
+#define SINGLE_WRITE_PROCESS_NEXT_CARDID 0
+#define SINGLE_WRITE_PROCESS_CARD_LEFT_TO_WRITE 0
 
+
+// used in case there is no real writting process
+#define WRITEPROCESS WRITTING_SUCCESSFULL
 
 
 class EventHandler : public QObject
@@ -37,17 +44,15 @@ class EventHandler : public QObject
 
 
 public slots:
-    static int startWrittingProcess(
-                                    const QString cardType,
-                                    const QString recRev,
-                                    const QString locNr,
-                                    const QString userID,
-                                    const QString cardID,
-                                    const QString amount,
-                                    const bool iterate,
-                                    QString* const consoleOutput,
-                                    QString* const cardsLeft,
-                                    QString* const nextCardID);
+    static int initWrittingProcess(
+            const QString cardType,
+            const QString recRev,
+            const QString locNr,
+            const QString userID,
+            const QString cardID,
+            const QString amount,
+            const bool iterate,
+            QString *const consoleOutput);
     static void calculateChecksums(
                                     const QString cardType,
                                     const QString recRev,
@@ -65,10 +70,20 @@ public:
                                 const QString stringUserID,
                                 const QString stringCardID,
                                 card_info* card);
+private:
+    static int writeProcess(const QVector<card_info> card,
+                                  const QString customer,
+                                  const QString jobID,
+                                  QString* const consoleOutput,
+                                  QString* const cardsLeft,
+                                  QString* const nextCardID);
 
-
+    static void writeCard(const card_info card,
+                         QVector<int>* error);
 
 
 };
+
+
 
 #endif // EVENTHANDLER_H
