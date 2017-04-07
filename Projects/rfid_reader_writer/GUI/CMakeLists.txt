@@ -23,11 +23,11 @@ set(TESTEVENTHANDLER_FILES
                     src/Tester/TestCards.h
                     src/Tester/TestEventhandler.cpp
                     )
-set(TESTLOGFILE_FILES
-                    src/Logfile.cpp)
 
 set(TESTLOGFILE_FILES
-                    src/LogFile.cpp src/Tester/TestLogFile.cpp)
+                    src/LogFile.cpp
+                    src/Tester/TestLogFile.cpp
+                    src/Calculator.cpp)
 set(TESTJOBFILE_FILES
                     src/Calculator.cpp
                     src/JobFile.cpp
