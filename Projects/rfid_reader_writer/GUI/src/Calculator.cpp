@@ -6,6 +6,7 @@
  */
 
 #include "Calculator.hpp"
+#include "CardInformation.hpp"
 
 /**
  * @brief Converts integer from 0 to 15 into the equivalent hex value
@@ -136,6 +137,21 @@ char hex2char(char nibble)
 
     
     return 0;
+}
+
+int calcCRC16_added(card_info card) {
+	int crc;
+	calcCRC16_added(card, &crc);
+	return crc;
+}
+
+void calcCRC16_added(card_info card, int* const outPut) {
+	calcCRC16_added(card.card_type,
+					card.record_rev,
+					card.locNr,
+	                card.kunden_nr,
+	                card.card_nr,
+	                outPut);
 }
 
 /**

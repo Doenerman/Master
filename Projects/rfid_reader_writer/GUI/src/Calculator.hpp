@@ -54,7 +54,7 @@
 #define MAXIMUM_NIBBLE_SHIFT 28
 /** 
  * @def MAXIMUM_CRC_NIBBLE_SHIFT
- * 
+ * };
  *  The maximum of bits shifted such that the
  *  shifted nibble still covers a nibble of
  *  same block part on the card. So the most left
@@ -77,6 +77,8 @@
 int simpleIntToHex (const int, unsigned char *const);
 int intToHex(const int, unsigned char *const);
 char hex2char(char nibble);
+int calcCRC16_added(card_info card);
+void calcCRC16_added(card_info card, int* const outPut);
 void calcCRC16_added(const int,
 					const int,
 					const int,
