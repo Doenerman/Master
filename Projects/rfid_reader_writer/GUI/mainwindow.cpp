@@ -241,6 +241,24 @@ MainWindow::~MainWindow()
 }
 
 /**
+ * Prints the given QString in the output console
+ * @param output
+ */
+void MainWindow::printOutputConsole(QString output) {
+    pteConsole->clear();
+    pteConsole->appendPlainText(output);
+}
+
+void MainWindow::setLightBoxColor(int color) {
+    if( color == LIGHTBOX_GREEN ) {
+        pteLightBox->setStyleSheet(
+                "QPlainTextEdit {background-color: green;}");
+    }
+    else if( color == LIGHTBOX_RED ) {
+        pteLightBox->setStyleSheet("QPlainTextEdit {background-color: red;}");
+    }
+}
+/**
  * @brief Initiate the writting process.
  *
  * Checks whether the input of the QLineEdit fields is valid card
@@ -263,31 +281,6 @@ void MainWindow::pushStartButton() {
     int succWritting = false;
 
 
-    // If any requiered input is not given an error window appears
-    // The window informs that not given input is converted to 0
-    if( cardType.isEmpty() || recRev.isEmpty() || locNr.isEmpty()
-            || initCardID.isEmpty() || initUserID.isEmpty()
-            || (cardAmount.isEmpty() && iterate ) ) {
-
-        QMessageBox::StandardButton msgBox;
-        msgBox = QMessageBox::warning(this,QString::fromUtf8("Konvertierungs Warnung"),
-                                      QString::fromUtf8("Leere Eintraege werden "
-                                                                "zu 0 konvertiert"));
-    }
-
-    // If iterating is activated but the amount of cards must be greater 0 or no card is
-    // written
-    int cardAmountVal = cardAmount.toInt(NULL, 10);
-    if( (cardAmountVal < 1) && iterate) {
-        QMessageBox::StandardButton msgBox;
-        msgBox = QMessageBox::critical(this, QString::fromUtf8("Ungueltige Kartenanzahl"),
-                                        QString::fromUtf8("Die angegebene Kartenanzahl"
-                                                                  " ist unzulaessig"));
-    }
-
-
-
-
     // ############ //
     // ## Output ## //
     // ############ //
@@ -299,22 +292,79 @@ void MainWindow::pushStartButton() {
     QString tempCardsLeft;
     QString outputNextCardID;
 
-    succWritting = EventHandler::startWrittingProcess( cardType, recRev, locNr,
-                                        initUserID, initCardID, cardAmount,
-                                        iterate,
-                                        &consoleOutput, &tempCardsLeft, &outputNextCardID);
+    // @todo implment showing the next card that will be written
+    // (tempCardsLeft,outputNextCardID)
+    succWritting = EventHandler::initWrittingProcess(cardType, recRev, locNr,
+                                                     initUserID, initCardID,
+                                                     cardAmount,
+                                                     iterate,
+                                                     &consoleOutput);
 
     pteConsole->appendPlainText(consoleOutput);
     leCardID->setText(outputNextCardID);
     leCardAmount->setText(tempCardsLeft);
 
+
+    int color;
     if( succWritting == WRITTING_SUCCESSFULL ) {
-        pteLightBox->setStyleSheet("QPlainTextEdit {background-color: green;}");
+        color = LIGHTBOX_GREEN;
     }
     else {
-        pteLightBox->setStyleSheet("QPlainTextEdit {background-color: red;}");
+        color = LIGHTBOX_RED;
     }
 
+    MainWindow::setLightBoxColor(color);
+
+
+
+}
+
+void MainWindow::conversionErrorWindow(const int conversionErrorNumber) {
+    //@todo implement different conversionerror outputs
+    QString title, message;
+    QMessageBox::StandardButton msgBox;
+
+    switch(conversionErrorNumber) {
+        case LOCNR_CONVERSION_FAILED:
+            title = QString::fromUtf8("Ungueltige Landeskennung");
+            message = QString::fromUtf8("Die angegbene Landeskennung kann "
+                                        "nicht interpretiert werden.");
+            break;
+        case RECREV_CONVERSION_FAILED:
+            title = QString::fromUtf8("Ungueltige Record Rev");
+            message = QString::fromUtf8("Die angegbene Record Rev kann "
+                                        "nicht interpretiert werden.");
+            break;
+        case CARDTYPE_CONVERSION_FAILED:
+            title = QString::fromUtf8("Ungueltiger Kartentyp");
+            message = QString::fromUtf8("Der angegbene Kartentyp kann "
+                                        "nicht interpretiert werden.");
+            break;
+        case USERID_CONVERSION_FAILED:
+            title = QString::fromUtf8("Ungueltige Kundennummer");
+            message = QString::fromUtf8("Die angegbene Kundennummer kann "
+                                        "nicht interpretiert werden.");
+            break;
+        case CARDAMOUNT_CONVERSION_FAILED:
+            title = QString::fromUtf8("Ungueltige Kartenanzahl");
+            message = QString::fromUtf8("Die angegbene Kartenanzahl kann "
+                                        "nicht interpretiert werden.");
+            break;
+        case INITCARDID_CONVERSION_FAILED:
+            title = QString::fromUtf8("Ungueltige Kartennnummer);
+            message = QString::fromUtf8("Die angegbene Kartennummer kann "
+                                        "nicht interpretiert werden.");
+            break;
+        default:
+            title = QString::fromUtf8("Unbekannter Konvertierungsfehler");
+            message = QString::fromUtf8("Beim Konvertieren der "
+                                        "Karteninformationenen ist "
+                                        "ein unbekannter Fehler "
+                                        "aufgetreten");
+            break;
+
+    }
+    msgBox = QMessageBox::critical(NULL, title, message);
 }
 
 
