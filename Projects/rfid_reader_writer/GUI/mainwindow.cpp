@@ -351,7 +351,7 @@ void MainWindow::conversionErrorWindow(const int conversionErrorNumber) {
                                         "nicht interpretiert werden.");
             break;
         case INITCARDID_CONVERSION_FAILED:
-            title = QString::fromUtf8("Ungueltige Kartennnummer);
+            title = QString::fromUtf8("Ungueltige Kartennnummer");
             message = QString::fromUtf8("Die angegbene Kartennummer kann "
                                         "nicht interpretiert werden.");
             break;
