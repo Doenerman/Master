@@ -11,7 +11,7 @@ set(SOURCE_FILES
                     cardinformationwindow.cpp
                     eventhandler.cpp
                     src/Calculator.cpp
-                    src/CardInformation.hpp src/LogFile.cpp)
+                    src/CardInformation.hpp src/LogFile.cpp src/GeneralDefines.h)
 set(TESTCALCULATOR_FILES
                     src/Calculator.cpp
                     src/CardInformation.hpp
@@ -22,16 +22,17 @@ set(TESTEVENTHANDLER_FILES
                     src/Calculator.cpp
                     src/Tester/TestCards.h
                     src/Tester/TestEventhandler.cpp
-                    )
+                    src/LogFile.cpp
+        src/GeneralDefines.h)
 
 set(TESTLOGFILE_FILES
                     src/LogFile.cpp
                     src/Tester/TestLogFile.cpp
-                    src/Calculator.cpp)
+                    src/Calculator.cpp src/GeneralDefines.h)
 set(TESTJOBFILE_FILES
                     src/Calculator.cpp
                     src/JobFile.cpp
-                    src/Tester/TestJobFile.cpp)
+                    src/Tester/TestJobFile.cpp src/GeneralDefines.h)
 
 
 find_package(Qt5Core REQUIRED)
