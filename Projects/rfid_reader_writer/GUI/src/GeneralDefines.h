@@ -55,5 +55,10 @@
  * QString locNr to the respective integer value
  */
 #define LOCNR_CONVERSION_FAILED -10000000
+/**
+ * \def JOBID_EMPTY
+ * The given job id is empty and thus not valid
+ */
+#define JOBID_EMPTY -100000000
 
 #endif //GUI_GENERALDEFINES_H
