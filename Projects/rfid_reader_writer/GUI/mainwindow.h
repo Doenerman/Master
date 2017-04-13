@@ -66,6 +66,11 @@
 #define LABEL_CARDID_X LINEEDIT_CARDID_X + LABEL_GAP_TO_LINEEDIT_HORIZONTAL + LINEEDIT_LARGE_WIDTH
 #define LABEL_CARDID_Y LINEEDIT_CARDID_Y
 
+#define LINEEDIT_JOBID_X 300
+#define LINEEDIT_JOBID_Y LINEEDIT_CARDID_Y
+#define LABEL_JOBID_X LINEEDIT_JOBID_X + LABEL_GAP_TO_LINEEDIT_HORIZONTAL + LINEEDIT_LARGE_WIDTH
+#define LABEL_JOBID_Y LINEEDIT_JOBID_Y
+
 #define CHECKBOX_ITER_X LINEEDIT_X_FIRST_COLUMN
 #define CHECKBOX_ITER_Y 150
 #define CHECKBOX_WIDTH 100
@@ -95,7 +100,7 @@
 #define PTE_CONSOLE_WIDTH 300
 
 #define LIGHT_BOX_X 500
-#define LIGHT_BOX_Y 25
+#define LIGHT_BOX_Y 15
 #define LIGHTBOX_HIGHT 50
 #define LIGHTBOX_WIDTH LIGHTBOX_HIGHT
 #define LIGHTBOX_GREEN 1
@@ -148,6 +153,10 @@ private:
       * The label for the lineEdit field representing the card type
       */
     QLabel* lCardType = new QLabel(this);
+    /** @var lJobID
+     * The label for the line edit representing the job id
+     */
+    QLabel* lJobID = new QLabel(this);
     /**
       * @var lRecRev
       * The label for the LineEdit field representing the Record Rev
@@ -195,6 +204,11 @@ private:
       * The line edit field for the card type
       */
     QLineEdit* leCardType = new QLineEdit(this);
+    /**
+     * @var leJobID
+     * The line edit for the job id
+     */
+    QLineEdit* leJobID = new QLineEdit(this);
     /**
       * @var leRecRev
       * The line edit field for the recRev

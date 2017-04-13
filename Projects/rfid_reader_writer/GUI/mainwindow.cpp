@@ -53,6 +53,13 @@ MainWindow::MainWindow(QWidget *parent)
                                LABEL_DEFAULT_HEIGHT));
     lCardID->setText(QString::fromUtf8("Kartennummer"));
 
+    lJobID->setObjectName(QString::fromUtf8("label_jobID"));
+    lJobID->setGeometry(QRect(LABEL_JOBID_X,
+                              LABEL_JOBID_Y,
+                              LABEL_LARGE_WIDTH,
+                              LABEL_DEFAULT_HEIGHT));
+    lJobID->setText(QString::fromUtf8("Auftragsnr"));
+
     lPBConsole->setObjectName(QString::fromUtf8("label_console"));
     lPBConsole->setGeometry(QRect(LABEL_CONSOLE_X,
                                   LABEL_CONSOLE_Y,
@@ -127,6 +134,13 @@ MainWindow::MainWindow(QWidget *parent)
                                   LINEEDIT_SMALL_WIDTH,
                                   LINEEDIT_DEFAULT_HEIGHT));
     leCardType->setText(QString::number(0));
+
+    leJobID->setObjectName(QString::fromUtf8("jobID_input"));
+    leJobID->setGeometry(QRect(LINEEDIT_JOBID_X,
+                               LINEEDIT_JOBID_Y,
+                               LINEEDIT_LARGE_WIDTH,
+                               LINEEDIT_DEFAULT_HEIGHT));
+    leJobID->setPlaceholderText(QString::fromUtf8("Auftragsnummer"));
 
     leRecRev->setObjectName(QString::fromUtf8("recRev_input"));
     leRecRev->setGeometry(QRect(LINEEDIT_X_SECOND_COLUMN,
