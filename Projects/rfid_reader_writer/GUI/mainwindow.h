@@ -15,6 +15,7 @@
 #include "eventhandler.h"
 #include "src/CardInformation.hpp"
 #include "cardinformationwindow.h"
+#include "src/GeneralDefines.h"
 
 // ############################## //
 // ## Layout depending defines ## //
@@ -87,9 +88,9 @@
 #define LABEL_CHECKSUM_IBM_Y PTE_CHECKSUM_IBM_Y - PLAINTEXTEDIT_LABEL_GAP_VERTICAL
 
 #define LABEL_CONSOLE_X 250
-#define LABEL_CONSOLE_Y 70
+#define LABEL_CONSOLE_Y 110
 #define PTE_CONSOLE_X 250
-#define PTE_CONSOLE_Y 100
+#define PTE_CONSOLE_Y 140
 #define PTE_CONSOLE_HIGHT 300
 #define PTE_CONSOLE_WIDTH 300
 
@@ -97,6 +98,8 @@
 #define LIGHT_BOX_Y 25
 #define LIGHTBOX_HIGHT 50
 #define LIGHTBOX_WIDTH LIGHTBOX_HIGHT
+#define LIGHTBOX_GREEN 1
+#define LIGHTBOX_RED 2
 
 
 
@@ -247,6 +250,11 @@ private:
       */
     QPushButton* pbClose = new QPushButton(this);
 
+public slots:
+    static void conversionErrorWindow(const int conversionErrorNumber);
+public:
+    void printOutputConsole(QString output);
+    void setLightBoxColor(int color);
 private slots:
     void pushStartButton();
     void pushReadButton();
