@@ -14,6 +14,12 @@
  */
 #define CONVERSION_SUCC 1
 /**
+ * \def NO_CONVERSION_ERROR_YET
+ * The method was able to convert the given QSTrings to the respective
+ * integer values until this moment
+ */
+#define NO_CONVERSION_ERROR_YET 0
+/**
  * \def INITCARDCONVERSION_FAILED
  * The method was not able to convert the
  * QString initCardID to the respective integer value
