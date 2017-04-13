@@ -123,6 +123,7 @@ int EventHandler::convertQStringsToCard(  QString stringCardType,
  * @todo implement the connection to the background programm
  */
 int EventHandler::initWrittingProcess(
+        const QString jobID,
         const QString cardType,
         const QString recRev,
         const QString locNr,
@@ -134,69 +135,72 @@ int EventHandler::initWrittingProcess(
 
     card_info tempCard;
     bool readyToWrite, cardAmount_conv;
-    int succConversion;
+    int jobCreated;
     int cardAmount = amount.toInt(&cardAmount_conv, 10);
     int succWritting = 0;
-    succConversion =
-            EventHandler::convertQStringsToCard(cardType,recRev,
-                                                locNr,userID,
-                                                cardID,&tempCard);
-    if( !cardAmount_conv ) {
-        succConversion += CARDAMOUNT_CONVERSION_FAILED;
-    }
+    Job job;
+
+    jobCreated = JobFile::createJob(userID,jobID, cardType,recRev,locNr,
+                                    userID, cardID, amount, &job);
 
 
     // Output for converion error
     // output console
 
     // @todo set alarm because of the appeared error
-    if( succConversion != CONVERSION_SUCC ) {
+    if( jobCreated != JOBCREATION_SUCC ) {
         readyToWrite = false;
         consoleOutput->append(QString::fromUtf8("Fehler:\n"));
-        if( succConversion <= LOCNR_CONVERSION_FAILED ) {
-            std::cout << "rofl die kuh weg" << std::endl;
-            succConversion -= LOCNR_CONVERSION_FAILED;
+        if( jobCreated <= JOBID_EMPTY ) {
+            jobCreated -= JOBID_EMPTY;
+            consoleOutput->append(QString::fromUtf8("  Es ist keine "
+                                                    "Auftragsnummer "
+                                                    "angegeben\n"));
+            MainWindow::conversionErrorWindow(JOBID_EMPTY);
+        }
+        if( jobCreated <= LOCNR_CONVERSION_FAILED ) {
+            jobCreated -= LOCNR_CONVERSION_FAILED;
             consoleOutput->append(QString::fromUtf8("  Die Landeskennung kann"
                                                     " nicht interpretiert "
                                                     "werden\n"));
             MainWindow::conversionErrorWindow(LOCNR_CONVERSION_FAILED);
         }
-        if( succConversion <= RECREV_CONVERSION_FAILED ) {
-            succConversion -= RECREV_CONVERSION_FAILED;
+        if( jobCreated <= RECREV_CONVERSION_FAILED ) {
+            jobCreated -= RECREV_CONVERSION_FAILED;
             consoleOutput->append(QString::fromUtf8("  Die Record Rev kann"
                                                     " nicht interpretiert "
                                                     "werden\n"));
             MainWindow::conversionErrorWindow(RECREV_CONVERSION_FAILED);
         }
-        if( succConversion <= CARDTYPE_CONVERSION_FAILED ) {
-            succConversion -= CARDTYPE_CONVERSION_FAILED;
+        if( jobCreated <= CARDTYPE_CONVERSION_FAILED ) {
+            jobCreated -= CARDTYPE_CONVERSION_FAILED;
             consoleOutput->append(QString::fromUtf8("  Der Kartentyp kann"
                                                     " nicht interpretiert "
                                                     "werden\n"));
             MainWindow::conversionErrorWindow(CARDTYPE_CONVERSION_FAILED);
         }
-        if( succConversion <= USERID_CONVERSION_FAILED ) {
-            succConversion -= USERID_CONVERSION_FAILED;
+        if( jobCreated <= USERID_CONVERSION_FAILED ) {
+            jobCreated -= USERID_CONVERSION_FAILED;
             consoleOutput->append(QString::fromUtf8("  Die Kundennummer kann"
                                                     " nicht interpretiert "
                                                     "werden\n"));
             MainWindow::conversionErrorWindow(USERID_CONVERSION_FAILED);
         }
-        if( succConversion <= CARDAMOUNT_CONVERSION_FAILED ) {
-            succConversion -= CARDAMOUNT_CONVERSION_FAILED;
+        if( jobCreated <= CARDAMOUNT_CONVERSION_FAILED ) {
+            jobCreated -= CARDAMOUNT_CONVERSION_FAILED;
             consoleOutput->append(QString::fromUtf8("  Die Kundenanzahl kann"
                                                     " nicht interpretiert "
                                                     "werden\n"));
             MainWindow::conversionErrorWindow(CARDAMOUNT_CONVERSION_FAILED);
         }
-        if( succConversion <= INITCARDID_CONVERSION_FAILED ) {
-            succConversion -= INITCARDID_CONVERSION_FAILED;
+        if( jobCreated <= INITCARDID_CONVERSION_FAILED ) {
+            jobCreated -= INITCARDID_CONVERSION_FAILED;
             consoleOutput->append(QString::fromUtf8("  Die Kartennummer kann"
                                                     " nicht interpretiert "
                                                     "werden\n"));
             MainWindow::conversionErrorWindow(INITCARDID_CONVERSION_FAILED);
         }
-        if( succConversion < 0) {
+        if( jobCreated < 0) {
             consoleOutput->append(QString::fromUtf8("  unbekannter Fehler"));
         }
 
@@ -230,7 +234,7 @@ int EventHandler::initWrittingProcess(
 
     consoleOutput->clear();
         // conversion of all data was successfull
-        if (succConversion == CONVERSIONCHECK_PASSED) {
+        if (jobCreated == JOBCREATION_SUCC) {
 
 
             // console output

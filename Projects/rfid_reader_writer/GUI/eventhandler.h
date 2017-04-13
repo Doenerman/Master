@@ -15,6 +15,7 @@
 #include "src/Calculator.hpp"
 #include "src/CardInformation.hpp"
 #include "src/LogFile.h"
+#include "src/JobFile.h"
 
 #define CONVERSIONCHECK_PASSED 1
 #define CONVERSIONCHECK_FAILED_CARDID -1
@@ -46,6 +47,7 @@ class EventHandler : public QObject
 
 public slots:
     static int initWrittingProcess(
+            const QString jobID,
             const QString cardType,
             const QString recRev,
             const QString locNr,
