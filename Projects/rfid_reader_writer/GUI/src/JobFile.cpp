@@ -337,7 +337,7 @@ int JobFile::createJob(const QString customer, const QString jobID,
     bool convCardType, convLocNr, convRecRev, convInitID, convCardAm,
             convUserID;
 
-    succConversion = 0;
+    succConversion = NO_CONVERSION_ERROR_YET;
     cardType_int = cardType.toInt(&convCardType, 10);
     locNr_int = locNr.toInt(&convLocNr, 10);
     recRev_int = recRev.toInt(&convRecRev,10);
@@ -349,22 +349,27 @@ int JobFile::createJob(const QString customer, const QString jobID,
     if( !convUserID ) {
         succConversion += USERID_CONVERSION_FAILED;
     }
-    else if( !convCardAm ) {
+    if( !convCardAm ) {
         succConversion += CARDAMOUNT_CONVERSION_FAILED;
     }
-    else if( !convInitID ) {
+    if( !convInitID ) {
         succConversion += INITCARDID_CONVERSION_FAILED;
     }
-    else if( !convCardType ) {
+    if( !convCardType ) {
         succConversion += CARDTYPE_CONVERSION_FAILED;
     }
-    else if( !convRecRev ) {
+    if( !convRecRev ) {
         succConversion += RECREV_CONVERSION_FAILED;
     }
-    else if( !convLocNr ) {
+    if( !convLocNr ) {
         succConversion += LOCNR_CONVERSION_FAILED;
     }
-    else {
+    if( jobID.isEmpty() ) {
+        succConversion += JOBID_EMPTY;
+    }
+
+    // all conversion checks passed and no error appeared
+    if( succConversion == NO_CONVERSION_ERROR_YET ) {
         succConversion = CONVERSION_SUCC;
     }
 
