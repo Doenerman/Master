@@ -161,30 +161,35 @@ int EventHandler::initWrittingProcess(
             consoleOutput->append(QString::fromUtf8("  Die Record Rev kann"
                                                     " nicht interpretiert "
                                                     "werden\n"));
+            MainWindow::conversionErrorWindow(RECREV_CONVERSION_FAILED);
         }
         if( succConversion <= CARDTYPE_CONVERSION_FAILED ) {
             succConversion -= CARDTYPE_CONVERSION_FAILED;
             consoleOutput->append(QString::fromUtf8("  Der Kartentyp kann"
                                                     " nicht interpretiert "
                                                     "werden\n"));
+            MainWindow::conversionErrorWindow(CARDTYPE_CONVERSION_FAILED);
         }
         if( succConversion <= USERID_CONVERSION_FAILED ) {
             succConversion -= USERID_CONVERSION_FAILED;
             consoleOutput->append(QString::fromUtf8("  Die Kundennummer kann"
                                                     " nicht interpretiert "
                                                     "werden\n"));
+            MainWindow::conversionErrorWindow(USERID_CONVERSION_FAILED);
         }
-        if( succConversion <= CARDTYPE_CONVERSION_FAILED ) {
-            succConversion -= CARDTYPE_CONVERSION_FAILED;
+        if( succConversion <= CARDAMOUNT_CONVERSION_FAILED ) {
+            succConversion -= CARDAMOUNT_CONVERSION_FAILED;
             consoleOutput->append(QString::fromUtf8("  Die Kundenanzahl kann"
                                                     " nicht interpretiert "
                                                     "werden\n"));
+            MainWindow::conversionErrorWindow(CARDAMOUNT_CONVERSION_FAILED);
         }
         if( succConversion <= INITCARDID_CONVERSION_FAILED ) {
             succConversion -= INITCARDID_CONVERSION_FAILED;
             consoleOutput->append(QString::fromUtf8("  Die Kartennummer kann"
                                                     " nicht interpretiert "
                                                     "werden\n"));
+            MainWindow::conversionErrorWindow(INITCARDID_CONVERSION_FAILED);
         }
         if( succConversion < 0) {
             consoleOutput->append(QString::fromUtf8("  unbekannter Fehler"));
