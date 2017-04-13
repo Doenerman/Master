@@ -290,6 +290,7 @@ void MainWindow::pushStartButton() {
     QString locNr = leLocNr->displayText();
     QString initCardID = leCardID->displayText();
     QString initUserID = leUserID->displayText();
+    QString jobID = leJobID->displayText();
     QString cardAmount = leCardAmount->displayText();
     bool iterate = cbIterate->isChecked();
     int succWritting = false;
@@ -308,7 +309,8 @@ void MainWindow::pushStartButton() {
 
     // @todo implment showing the next card that will be written
     // (tempCardsLeft,outputNextCardID)
-    succWritting = EventHandler::initWrittingProcess(cardType, recRev, locNr,
+    succWritting = EventHandler::initWrittingProcess(jobID,cardType, recRev,
+                                                     locNr,
                                                      initUserID, initCardID,
                                                      cardAmount,
                                                      iterate,
@@ -339,6 +341,11 @@ void MainWindow::conversionErrorWindow(const int conversionErrorNumber) {
     QMessageBox::StandardButton msgBox;
 
     switch(conversionErrorNumber) {
+        case JOBID_EMPTY:
+            title = QString::fromUtf8("Ungueltige Auftragsnummer");
+            message = QString::fromUtf8("Es ist keine Auftragsnummer "
+                                        "angegeben");
+            break;
         case LOCNR_CONVERSION_FAILED:
             title = QString::fromUtf8("Ungueltige Landeskennung");
             message = QString::fromUtf8("Die angegbene Landeskennung kann "
