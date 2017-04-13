@@ -10,7 +10,8 @@
 
 
 
-
+#include "mainwindow.h"
+#include "src/GeneralDefines.h"
 #include "src/Calculator.hpp"
 #include "src/CardInformation.hpp"
 #include "src/LogFile.h"
@@ -53,7 +54,7 @@ public slots:
             const QString amount,
             const bool iterate,
             QString *const consoleOutput);
-    static void calculateChecksums(
+    static int calculateChecksums(
                                     const QString cardType,
                                     const QString recRev,
                                     const QString locNr,
