@@ -133,14 +133,19 @@ int EventHandler::initWrittingProcess(
         QString *const consoleOutput) {
 
     card_info tempCard;
-    bool readyToWrite;
+    bool readyToWrite, cardAmount_conv;
     int succConversion;
-    int cardAmount = amount.toInt(NULL, 10);
+    int cardAmount = amount.toInt(&cardAmount_conv, 10);
     int succWritting = 0;
     succConversion =
             EventHandler::convertQStringsToCard(cardType,recRev,
                                                 locNr,userID,
                                                 cardID,&tempCard);
+    if( !cardAmount_conv ) {
+        succConversion += CARDAMOUNT_CONVERSION_FAILED;
+    }
+
+
     // Output for converion error
     // output console
 
