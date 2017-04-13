@@ -31,7 +31,7 @@ int EventHandler::convertQStringsToCard(  QString stringCardType,
     int cardID;
 
     // succConversion is set to fails if any conversion fails
-    bool    succConversion = true;
+    int    succConversion = NO_CONVERSION_ERROR_YET;
     bool    cardTypeConversion = false;
     bool    recRevConversion = false;
     bool    locNrConversion = false;
@@ -49,23 +49,27 @@ int EventHandler::convertQStringsToCard(  QString stringCardType,
     // conversion check
     if( !cardTypeConversion ) {
         cardType = 0;
-        succConversion = CONVERSIONCHECK_FAILED_CARDTYPE;
+        succConversion += CARDTYPE_CONVERSION_FAILED;
     }
     if( !recRevConversion ) {
         recRev = 0;
-        succConversion = CONVERSIONCHECK_FAILED_RECREV;
+        succConversion += RECREV_CONVERSION_FAILED;
     }
     if( !locNrConversion ) {
         locNr = 0;
-        succConversion = CONVERSIONCHECK_FAILED_LOCNR;
+        succConversion += LOCNR_CONVERSION_FAILED;
     }
     if( !userIDConversion ) {
         userID = 0;
-        succConversion = CONVERSIONCHECK_FAILED_USERID;
+        succConversion += USERID_CONVERSION_FAILED;
     }
     if( !cardIDConversion ) {
         cardID = 0;
-        succConversion = CONVERSIONCHECK_FAILED_CARDID;
+        succConversion += INITCARDID_CONVERSION_FAILED;
+    }
+
+    if(succConversion == NO_CONVERSION_ERROR_YET) {
+        succConversion = CONVERSION_SUCC;
     }
 
 
@@ -129,6 +133,7 @@ int EventHandler::initWrittingProcess(
         QString *const consoleOutput) {
 
     card_info tempCard;
+    bool readyToWrite;
     int succConversion;
     int cardAmount = amount.toInt(NULL, 10);
     int succWritting = 0;
@@ -138,93 +143,100 @@ int EventHandler::initWrittingProcess(
                                                 cardID,&tempCard);
     // Output for converion error
     // output console
-    if( succConversion != CONVERSIONCHECK_PASSED ) {
-        switch (succConversion) {
-            case CONVERSIONCHECK_FAILED_CARDTYPE:
-                consoleOutput->append(QString::fromUtf8("Fehler:\n"));
-                consoleOutput->append(QString::fromUtf8(
-                        "  Der Kartentyp kann nicht "
-                                "interpretiert werden"));
-                break;
-            case CONVERSIONCHECK_FAILED_RECREV:
-                consoleOutput->append(QString::fromUtf8("Fehler:\n"));
-                consoleOutput->append(QString::fromUtf8(
-                        "  Die Record Rev kann nicht "
-                                "interpretiert werden"));
-                break;
-            case CONVERSIONCHECK_FAILED_LOCNR:
-                consoleOutput->append(QString::fromUtf8("Fehler:\n"));
-                consoleOutput->append(QString::fromUtf8(
-                        "  Die Landeskennung kann nicht "
-                                "interpretiert werden"));
-                break;
-            case CONVERSIONCHECK_FAILED_USERID:
-                consoleOutput->append(QString::fromUtf8("Fehler:\n"));
-                consoleOutput->append(QString::fromUtf8(
-                        "  Die Kundennummber kann nicht "
-                                "interpretiert werden"));
-                break;
-            case CONVERSIONCHECK_FAILED_CARDID:
-                consoleOutput->append(QString::fromUtf8("Fehler:\n"));
-                consoleOutput->append(QString::fromUtf8(
-                        "  Die Kartennummer kann nicht "
-                                "interpretiert werden"));
-                break;
-            case CONVERSIONCHECK_FAILED_CARDAMOUNT:
-                consoleOutput->append(QString::fromUtf8("Fehler:\n"));
-                consoleOutput->append(QString::fromUtf8(
-                        "  Die Anzahl an zu "
-                                "schreibenden Karten "
-                                "kann nicht interpertiert"
-                                " werden"));
-                break;
-            default:
-                consoleOutput->append(QString::fromUtf8("Fehler:\n"));
-                consoleOutput->append(QString::fromUtf8(
-                        "  unbekannter Fehler"));
-                break;
+
+    // @todo set alarm because of the appeared error
+    if( succConversion != CONVERSION_SUCC ) {
+        readyToWrite = false;
+        consoleOutput->append(QString::fromUtf8("Fehler:\n"));
+        if( succConversion <= LOCNR_CONVERSION_FAILED ) {
+            std::cout << "rofl die kuh weg" << std::endl;
+            succConversion -= LOCNR_CONVERSION_FAILED;
+            consoleOutput->append(QString::fromUtf8("  Die Landeskennung kann"
+                                                    " nicht interpretiert "
+                                                    "werden\n"));
+            MainWindow::conversionErrorWindow(LOCNR_CONVERSION_FAILED);
         }
+        if( succConversion <= RECREV_CONVERSION_FAILED ) {
+            succConversion -= RECREV_CONVERSION_FAILED;
+            consoleOutput->append(QString::fromUtf8("  Die Record Rev kann"
+                                                    " nicht interpretiert "
+                                                    "werden\n"));
+        }
+        if( succConversion <= CARDTYPE_CONVERSION_FAILED ) {
+            succConversion -= CARDTYPE_CONVERSION_FAILED;
+            consoleOutput->append(QString::fromUtf8("  Der Kartentyp kann"
+                                                    " nicht interpretiert "
+                                                    "werden\n"));
+        }
+        if( succConversion <= USERID_CONVERSION_FAILED ) {
+            succConversion -= USERID_CONVERSION_FAILED;
+            consoleOutput->append(QString::fromUtf8("  Die Kundennummer kann"
+                                                    " nicht interpretiert "
+                                                    "werden\n"));
+        }
+        if( succConversion <= CARDTYPE_CONVERSION_FAILED ) {
+            succConversion -= CARDTYPE_CONVERSION_FAILED;
+            consoleOutput->append(QString::fromUtf8("  Die Kundenanzahl kann"
+                                                    " nicht interpretiert "
+                                                    "werden\n"));
+        }
+        if( succConversion <= INITCARDID_CONVERSION_FAILED ) {
+            succConversion -= INITCARDID_CONVERSION_FAILED;
+            consoleOutput->append(QString::fromUtf8("  Die Kartennummer kann"
+                                                    " nicht interpretiert "
+                                                    "werden\n"));
+        }
+        if( succConversion < 0) {
+            consoleOutput->append(QString::fromUtf8("  unbekannter Fehler"));
+        }
+
+    }
+    else {
+        readyToWrite = true;
     }
 
-    //@todo call writeProcess(..)
 
 
-    //////////////////////
-    // Writting Process //
-    //////////////////////
+    if(readyToWrite ) {
+        //@todo call writeProcess(..)
 
-    if( (iterate && cardAmount > 0) || (!iterate) ) {
-        succWritting = WRITEPROCESS;
-    }
-    if( iterate && (cardAmount <= 0) ) {
-        succWritting = NO_CARD_LEFT_TO_WRITE;
-    }
 
-    //@todo kontrolllesen
+        //////////////////////
+        // Writting Process //
+        //////////////////////
 
-    ///////////////////
-    // Write Logfile //
-    ///////////////////
+        if ((iterate && cardAmount > 0) || (!iterate)) {
+            succWritting = WRITEPROCESS;
+        }
+        if (iterate && (cardAmount <= 0)) {
+            succWritting = NO_CARD_LEFT_TO_WRITE;
+        }
+
+        //@todo kontrolllesen
+
+        ///////////////////
+        // Write Logfile //
+        ///////////////////
 
     consoleOutput->clear();
-    // conversion of all data was successfull
-    if( succConversion == CONVERSIONCHECK_PASSED ) {
+        // conversion of all data was successfull
+        if (succConversion == CONVERSIONCHECK_PASSED) {
 
 
-        // console output
-        consoleOutput->append(QString::fromUtf8("Kunden Nummer: "));
-        consoleOutput->append(QString::number(tempCard.kunden_nr, 10));
-        consoleOutput->append(QString::fromUtf8("\n"));
-        consoleOutput->append(QString::fromUtf8("Karten Nummer: "));
-        consoleOutput->append(QString::number(tempCard.card_nr, 10));
-        consoleOutput->append(QString::fromUtf8("\n"));
-        consoleOutput->append(
-                QString::fromUtf8("Anzahl zu schreibender Karten: "));
-        consoleOutput->append(QString::number(cardAmount));
-        consoleOutput->append(QString::fromUtf8("\n"));
+            // console output
+            consoleOutput->append(QString::fromUtf8("Kunden Nummer: "));
+            consoleOutput->append(QString::number(tempCard.kunden_nr, 10));
+            consoleOutput->append(QString::fromUtf8("\n"));
+            consoleOutput->append(QString::fromUtf8("Karten Nummer: "));
+            consoleOutput->append(QString::number(tempCard.card_nr, 10));
+            consoleOutput->append(QString::fromUtf8("\n"));
+            consoleOutput->append(
+                    QString::fromUtf8("Anzahl zu schreibender Karten: "));
+            consoleOutput->append(QString::number(cardAmount));
+            consoleOutput->append(QString::fromUtf8("\n"));
 
+        }
     }
-
     // output if an error occures while conversion
 
     return succWritting;
@@ -327,8 +339,10 @@ int EventHandler::writeProcess(const QVector<card_info> cards,
  * @param stringCardID[in]      Card ID of the card
  * @param crcAdded[out]         The calculated added checksum
  * @param crcIBM[out]           The calculated IBM checksum
+ * @return the success or error message that is returned by \link
+ *        convertQStringsToCard \endlink
  */
-void EventHandler::calculateChecksums(
+int EventHandler::calculateChecksums(
                          const QString stringCardType,
                          const QString stringRecRev,
                          const QString stringLocNr,
@@ -338,27 +352,31 @@ void EventHandler::calculateChecksums(
                          QString* const crcIBM) {
 
     card_info tempCard;
-    int tempCrcAdded, tempCrcIBM;
+    int tempCrcAdded, tempCrcIBM, response;
 
-    convertQStringsToCard(stringCardType, stringRecRev,
+    response = convertQStringsToCard(stringCardType, stringRecRev,
                           stringLocNr, stringUserID,
                           stringCardID, &tempCard);
 
 
+    if(response == CONVERSION_SUCC ) {
 
-    calcCRC16_added(tempCard.card_type,
-                    tempCard.record_rev,
-                    tempCard.locNr,
-                    tempCard.kunden_nr,
-                    tempCard.card_nr,
-                    &tempCrcAdded);
+        calcCRC16_added(tempCard.card_type,
+                        tempCard.record_rev,
+                        tempCard.locNr,
+                        tempCard.kunden_nr,
+                        tempCard.card_nr,
+                        &tempCrcAdded);
 
-    tempCrcIBM = calcCRC16_ibm(&tempCard.card_type,
-                               INFORMATION_LENGTH_IN_BYTE);
+        tempCrcIBM = calcCRC16_ibm(&tempCard.card_type,
+                                   INFORMATION_LENGTH_IN_BYTE);
 
 
-    crcAdded->setNum(tempCrcAdded);
-    crcIBM->setNum(tempCrcIBM);
+        crcAdded->setNum(tempCrcAdded);
+        crcIBM->setNum(tempCrcIBM);
+    }
+
+    return response;
   
 }
 
