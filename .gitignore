@@ -1,6 +1,9 @@
 # mac files
 .DS_Store
 
+# temp vim files
+*.swp
+
 # latex files
 *.aux
 *.log
@@ -18,3 +21,23 @@
 **/build-GUI-Desktop-Debug/*
 **/cmake-build-debug/*
 **/.idea/*
+
+# rfid Project
+**/GUI/GUI_automoc.*
+**/GUI/JobFileTest_automoc.*
+**/GUI/CMakeFiles/*
+**/GUI/CalculatorTest_automoc.*
+**/GUI/EventHandlerTest_automoc.*
+**/GUI/LogfileTest_automoc.*
+**/GUI/src/CardInformation.hpp
+**/GUI/CMakeCache.txt
+**/GUI/moc_JobFile.cpp
+**/GUI/moc_LogFile.cpp
+**/GUI/testBin/CalculatorTest
+**/GUI/testBin/EventHandlerTest
+**/GUI/testBin/JobFileTest
+**/GUI/testBin/LogfileTest
+**/GUI/*.cbp
+**/GUI/Makefile
+**/GUI/cmake_install.cmake
+**/GUI/GUI
