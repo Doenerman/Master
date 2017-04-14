@@ -100,6 +100,17 @@ int intToHex(const int input, unsigned char *const out){
 	return succCalc;
 }
 
+/**
+ * @brief Calculates the integer value of the given character.
+ *
+ * In case the input character is neither in the integer range
+ * zero to ten, nor in the range of 'a' to 'f' or 'A' to 'F' the
+ * method returns the value the equals the decimal value if the 
+ * input is handle like an hexadecimal value.
+ *
+ * @return  The decimal value in case the input is handle like and 
+ *          hexadecimal value.
+ */
 char hex2char(char nibble)
 {
 
@@ -138,13 +149,38 @@ char hex2char(char nibble)
     
     return 0;
 }
-
+/**
+ * @brief Calculates the added checksum of a card.
+ *
+ * This means the values of the card, beginning with the card type 
+ * and ending with the card id, are added up and cut into a unsigned
+ * 16 bit integer. This method uses the method 
+ * \link calcCRC16_added(card_info, int* const) \endlink to calculate
+ * the checksum.
+ *
+ * @param[in] The card information of the card whose checksum should be
+ *            calculated
+ *
+ * @return The 16 bit value of the checksum
+ */
 int calcCRC16_added(card_info card) {
 	int crc;
 	calcCRC16_added(card, &crc);
 	return crc;
 }
 
+/**
+ * @brief Calculates the added checksum of the given card and writes it into
+ *        given pointer.
+ *
+ * The checksum is calculated by the method 
+ * \link calcCRC16_added(const int, const int, const int, const int, const int, int *const ) \endlink .
+ * and writes it into the given pointer.
+ *
+ * @param[in] the card information about the card whose checksum should be
+ *            calculated
+ * @param[out] the calculated 16 bit integer value of the checksum
+ */
 void calcCRC16_added(card_info card, int* const outPut) {
 	calcCRC16_added(card.card_type,
 					card.record_rev,
@@ -157,6 +193,9 @@ void calcCRC16_added(card_info card, int* const outPut) {
 /**
  * @brief 	Calculates a checksum where the input parameter are summed bytewise.
  * 			The calculated checksum is written in 'outPut'.
+ *
+ * Calculates the checksum of the input parameter. The value of the checksum is
+ * is cut in an 16 bit integer and is written into the given pointer.
  *
  * @param[in] cardType		value representing the cardType
  * @param[in] recordRev		value representing the recordRev
@@ -202,7 +241,10 @@ void calcCRC16_added(const int cardType,
 	*outPut = UINT_16_BITMAP & sum;
 
 }
-/** @brief Table of CRC16-IBM values for high-order byte */
+/**
+ * @var crc16_ibm_table_hi
+ * @brief Table of CRC16-IBM values for high-order byte 
+ */
 static const uint8_t crc16_ibm_table_hi[256]={
   0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81,
   0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0,
@@ -224,7 +266,10 @@ static const uint8_t crc16_ibm_table_hi[256]={
   0x40
 };
 
-/** @brief Table of CRC16-IBM values for low-order byte */
+/**
+ * @var crc16_ibm_table_lo
+ * @brief Table of CRC16-IBM values for low-order byte
+ */
 static const uint8_t crc16_ibm_table_lo[256]={
   0x00, 0xC0, 0xC1, 0x01, 0xC3, 0x03, 0x02, 0xC2, 0xC6, 0x06, 0x07, 0xC7, 0x05, 0xC5, 0xC4,
   0x04, 0xCC, 0x0C, 0x0D, 0xCD, 0x0F, 0xCF, 0xCE, 0x0E, 0x0A, 0xCA, 0xCB, 0x0B, 0xC9, 0x09,
@@ -245,7 +290,18 @@ static const uint8_t crc16_ibm_table_lo[256]={
   0x44, 0x84, 0x85, 0x45, 0x87, 0x47, 0x46, 0x86, 0x82, 0x42, 0x43, 0x83, 0x41, 0x81, 0x80,
   0x40
 };
-
+/**
+ * @brief Calculates the checksum by using CRC16-IBM algorithm.
+ *
+ * The method uses the table \link crc16_ibm_table_lo \endlink and 
+ * \link crc16_ibtm_table_hi \endlink to calculate the checksum of the data
+ * the pointer is pointing on and the given length.
+ *
+ * @param[in] Start adress of the data buffer
+ * @param[in] The length of the data buffer
+ *
+ * @return The value of the calculated checksum
+ */
 uint16_t calcCRC16_ibm (const uint8_t* data, uint16_t len) {
     uint8_t uchCRCHi=0xff;
     uint8_t uchCRCLo=0xff;
@@ -260,6 +316,16 @@ uint16_t calcCRC16_ibm (const uint8_t* data, uint16_t len) {
     return (((uint16_t)uchCRCHi<<8)|(uint16_t)uchCRCLo);
 }
 
+/**
+ * @brief Calculates the MD5 of the given input data using the QT library.
+ *
+ * Using the QT cryptographic hash library for calculate the MD5 of the input
+ * data. After the MD5 is computed it is written in the given array.
+ *
+ * @param[in] The start adress of the data the MD5 should be calculated of.
+ * @param[in] The length of the data the MD5 should be calculated of.
+ * @param[out] The calculated MD5 of the given data
+ */
 void calculateQTMD5(const unsigned char* inputData, const int length, unsigned char md5Data[MD5_SIZE]) {
     QByteArray convertedInput(QByteArray::fromRawData( (const char*) inputData, length));
 
@@ -276,13 +342,13 @@ void calculateQTMD5(const unsigned char* inputData, const int length, unsigned c
 /**
  * @brief Calculate the md5 of the input and Xors it pairwise.
  * 
- * The md5 is calculated by the method \link calcMd5 \endlink with the input data given
+ * The md5 is calculated by the method <calcMd5()>  with the input data given
  * to this method. Then the bytes i and i+1, where i is even, are xored and written in the
  * array for the output.
  *
- * @param[in]inputData 	The data the md5 is calculated for. The data must be \link MD5_DATA_SIZE \endlink
+ * @param[in] inputData 	The data the md5 is calculated for. The data must be \link MD5_DATA_SIZE \endlink
  * 						+ \link MD5_KEY_SIZE \endlink bytes long.
- * @param[out]md5Data	The array where the xored md5 is written in
+ * @param[out] md5Data	The array where the xored md5 is written in
  */
 void calcMD5Xor(const unsigned char* inputData, unsigned char *const md5Data) {
 

@@ -20,7 +20,7 @@
  */
 #define NO_CONVERSION_ERROR_YET 0
 /**
- * \def INITCARDCONVERSION_FAILED
+ * \def INITCARDID_CONVERSION_FAILED
  * The method was not able to convert the
  * QString initCardID to the respective integer value
  */
@@ -50,7 +50,7 @@
  */
 #define RECREV_CONVERSION_FAILED -1000000
 /**
- * \def LOCNR_CONVERSION
+ * \def LOCNR_CONVERSION_FAILED
  * The method was not able to convert the
  * QString locNr to the respective integer value
  */

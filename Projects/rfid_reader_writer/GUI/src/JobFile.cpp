@@ -20,14 +20,14 @@ QString defaultFileName("job.json");
  * output parameter are set to '0' and the QString output parameter is cleared
  * . A list of predefined search tags is given in \link JobFile.h \endlink .
  *
- * @param [in]searchTag
- * @param [out]string                The word that represents the search tag in
+ * @param[in] searchTag              The search tag
+ * @param[out] string                The word that represents the search tag in
  *                                   the jobfile.
- * @param [out]prefixBeforeResult    The amount of characters that are before
+ * @param[out] prefixBeforeResult    The amount of characters that are before
  *                                   the result corresponding to the search tag.
- * @param [out]suffixAfterResult     the amount of characters that is after
+ * @param[out] suffixAfterResult     the amount of characters that is after
  *                                   the result corresponding to the search tag.
- * @param [out]lengthOfTagWord       The length of the word that represents the
+ * @param[out] lengthOfTagWord       The length of the word that represents the
  *                                   search tag in the jobfile. For the search
  *                                   tag \link CUSTOMER_TAG \endlink the value
  *                                   would be '5' because the word 'Kunde',
@@ -107,12 +107,12 @@ int getInfoFromSearchTag(const int searchTag, QString* string,
  * there is no line that fit the search tag the value \link FAIL_FOUND_LINE
  * \endlink is returned.
  *
- * @param [in]fileName  The name of the file in which the line specified by
+ * @param[in] fileName  The name of the file in which the line specified by
  *                      the search tag should be found and the corresponding
  *                      result be read.
- * @param [in]searchTag A predefined search tag. A list of the predefined
+ * @param[in] searchTag A predefined search tag. A list of the predefined
  *                      search tags is given in \link JobFile.h \endlink
- * @param [out]result   In case the search was successful the result is
+ * @param[out] result   In case the search was successful the result is
  *                      written in this QString. A result for \link
  *                      INITCARDID_TAG \endlink could be '4' which means the
  *                      initial card id would be '4'
@@ -222,13 +222,15 @@ int JobFile::findLineReadResult(QString fileName, const int searchTag,
  * one that failed. If every search of the above tags was successful the job
  * that the jobfile represents is written in the given paratmeter.
  *
- * @param fileName  The name of the file that contains the job
- * @param job       A job where the information of the jobfile are written in
+ * @param[in] fileName  The name of the file that contains the job
+ * @param[out] job      A job where the information of the jobfile are written in
  * @return  In case the job was created successful the return value of this
  *          method is \link SUCC_FOUND_LINE_READ_RESULT \endlink which means
  *          that all necessary information about the job were read from the
  *          given jobfile. All other return values are forwarded for the method
- *          \link JobFile::findLineReadResult \endlink.
+ *          \link JobFile::findLineReadResult() \endlink.
+ *
+ * @todo stop listing in this comment
  */
 int JobFile::readJobFile(QString fileName, Job *job) {
 

@@ -85,7 +85,7 @@
 /**
  * \def CORRECT_SEARCH_TAG
  * The return value in case a given search tag fits the one of the predefined
- * in the function \link gitInfoFromSearchTag \endlink .
+ * in the function \link gitInfoFromSearchTag() \endlink .
  */
 #define CORRECT_SEARCH_TAG 1
 /**
@@ -196,7 +196,7 @@
 #define FAIL_READ_RESULT -3
 /**
  * \def UNKNOWN_SEARCH_TAG
- * The return value of \link getInfoFromSearchtag \endlink in case the search
+ * The return value of \link getInfoFromSearchtag() \endlink in case the search
  * tag given to the function does not fit one of the predefined ones
  */
 #define UNKNOWN_SEARCH_TAG -4
@@ -229,8 +229,10 @@ typedef struct {
      */
     QString jobID;
     /**
-     * @var userID
-     * The QString where the user id of this job is stored in
+     * @var cards
+     * @brief A vector of the cards the belong to the job.
+     *
+     * The cards have all the same user id and have continuous card id.
      */
     QVector<card_info> cards;
 }Job;
