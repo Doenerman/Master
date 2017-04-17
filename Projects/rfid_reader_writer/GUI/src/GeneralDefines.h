@@ -61,4 +61,17 @@
  */
 #define JOBID_EMPTY -100000000
 
+
+/**
+ * \def MAX_WRITE_ATTEMPTS
+ * @brief The maximum amount of attempts the write something on the card.
+ */
+#define MAX_WRITE_ATTEMPTS 3
+/**
+ * \def WRITTING_SUCCESSFULL
+ * @brief The value in case the attempt of writing something on a card was
+ *        successful
+ */
+#define WRITTING_SUCCESSFULL 1
+
 #endif //GUI_GENERALDEFINES_H

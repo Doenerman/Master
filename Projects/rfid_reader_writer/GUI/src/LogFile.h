@@ -14,9 +14,8 @@
 #include <QVector>
 
 #include "CardInformation.hpp"
+#include "GeneralDefines.h"
 
-#define MAX_WRITE_ATTEMPTS 3
-#define WRITTING_SUCCESSFULL 1
 
 class LogFile : public QObject {
 Q_OBJECT

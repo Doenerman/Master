@@ -222,31 +222,6 @@
  */
 #define min(a,b) (a<b? a: b)
 
-/**
- * \struct Job
- * Includes all neccery Information about the job to write the cards and the
- * log files. The information include the name of the customer and the unique
- * job id so it can be tracked after the writting proccess.
- */
-typedef struct {
-    /**
-     * @var customer
-     * The QString where the customer name of the this job is stored in
-     */
-    QString customer;
-    /**
-     * @var jobID
-     * The QString where the job id of this job is stored in
-     */
-    QString jobID;
-    /**
-     * @var cards
-     * @brief A vector of the cards the belong to the job.
-     *
-     * The cards have all the same user id and have continuous card id.
-     */
-    QVector<card_info> cards;
-}Job;
 
 class JobFile : public QObject {
     Q_OBJECT
@@ -274,19 +249,25 @@ public:
 
 /**
  * \struct Job
- * Includes all neccery Information about the job to write the cards and the
+ *
+ * @brief Contains information about a job, including information about the
+ *        cards the job contains and job id and the customer.
+ *
+ * Includes all necessary Information about the job to write the cards and the
  * log files. The information include the name of the customer and the unique
- * job id so it can be tracked after the writting proccess.
+ * job id so it can be tracked after the writing process.
  */
 typedef struct {
     /**
      * @var customer
-     * The QString where the customer name of the this job is stored in
+     * @brief The QString where the customer name of the this job is stored in
      */
     QString customer;
     /**
      * @var jobID
-     * The QString where the job id of this job is stored in
+     * @brief The QString where the job id of this job is stored in
+     *
+     * The job id does not have to be a numeric sequence.
      */
     QString jobID;
     /**
