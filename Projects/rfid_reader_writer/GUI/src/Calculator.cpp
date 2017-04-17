@@ -69,7 +69,7 @@ int Calculator::simpleIntToHex (const int inputValue, unsigned char *const out) 
  */
 int Calculator::intToHex(const int input, unsigned char *const out){
 
-	int succCalc = 1;
+	int succCalc;
 	int intValues[BLOCKSIZE_ON_CARD];
 
 	// decompose input to the form i = x0*16^0 + x1*16^1 + x2*16^2 ...
@@ -148,10 +148,6 @@ char Calculator::hex2char(char nibble)
         default:
             return 0;
     }
-    
-
-    
-    return 0;
 }
 /**
  * @brief Calculates the added checksum of a card.
