@@ -109,8 +109,10 @@ void LogFile::writeCards(const QVector<card_info> cards,
  * Writes the logfile in case a single card is written.
  * @param customer
  * @param jobID
- * @param card
+ * @param cards
  * @param errors
+ *
+ * @todo write comment for this function
  */
 void LogFile::writeLogFile(const QString customer,
                            const QString jobID,

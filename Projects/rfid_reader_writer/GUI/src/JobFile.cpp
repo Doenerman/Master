@@ -94,15 +94,15 @@ int getInfoFromSearchTag(const int searchTag, QString* string,
 }
 
 /**
- * Reads the result of the search for the search tag and writes it in the
- * QString. The return value indicates the success of the search.
+ * @brief Reads the result of the search for the search tag and writes it in the
+ *        QString. The return value indicates the success of the search.
  *
  * This method uses the function \link getInfoFromSearchTag \endlink to
  * gather necessary information about the search. If \link
  * getInfoFromSearchTag \endlink returns an error value this method returns the
  * same error value. If the information was gather successful this methods
  * tries toread from the named file. If this is not possible this method returns
- * \link FAIL_OPEN_FAIL \endlink. In case the file can be read the method reads
+ * \link FAIL_OPEN_FILE \endlink. In case the file can be read the method reads
  * line by line and looks for the phrase that represents the search tag. If
  * there is no line that fit the search tag the value \link FAIL_FOUND_LINE
  * \endlink is returned.
@@ -205,8 +205,8 @@ int JobFile::findLineReadResult(QString fileName, const int searchTag,
 }
 
 /**
- * Reads the jobfile with the given input name. It is read correctly the job
- * described by the named file is written in the given job.
+ * @brief Reads the jobfile with the given input name. It is read correctly the job
+ *        described by the named file is written in the given job.
  *
  * This file tries to open the named jobfile and search in the file for
  *  - \link CUSTOMER_TAG \endlink
@@ -214,6 +214,7 @@ int JobFile::findLineReadResult(QString fileName, const int searchTag,
  *  - \link USERID_TAG \endlink
  *  - \link INITCARDID_TAG \endlink
  *  - \link CARDAMOUNT_TAG \endlink
+ *
  * and reads the corresponding result. In case the file can not be opened
  * this method returns the value \link FAIL_OPEN_FILE \endlink.
  * The search is done by the method \link JobFile::findLineReadResult
@@ -229,8 +230,6 @@ int JobFile::findLineReadResult(QString fileName, const int searchTag,
  *          that all necessary information about the job were read from the
  *          given jobfile. All other return values are forwarded for the method
  *          \link JobFile::findLineReadResult() \endlink.
- *
- * @todo stop listing in this comment
  */
 int JobFile::readJobFile(QString fileName, Job *job) {
 
@@ -315,11 +314,11 @@ int JobFile::readJobFile(QString fileName, Job *job) {
 }
 
 /**
- * Reads the default jobfile. Is it read correctly the job is written in the
- * given input.
+ * @brief Reads the default jobfile. Is it read correctly the job is written in the
+ *        given input.
  *
  * Calls the method \link JobFile::readJobFile(QString, Job*) \endlink with
- * the default jobfile name \link defaultJobFileName \endlink
+ * the default jobfile name \link defaultFileName \endlink
  *
  * @param job       A job where the information of the jobfile are written in
  * @return  Forwards the value of the call
@@ -329,6 +328,45 @@ int JobFile::readJobFile(Job* job) {
     return JobFile::readJobFile(defaultFileName, job);
 }
 
+/**
+ * @brief Writes the given job information in the given \link Job \endlink
+ *
+ * The method interprets the given information and write them respectively in
+ * the given job. If the given information can be converted into the
+ * corresponding data type the return value of this method is 
+ * \link JOBCREATION_SUCC \endlink . In case the return value is not 
+ * \link JOBCREATION_SUCC \endlink it is the sum of all conversion that failed.
+ * So if the given card type and the given locNr could not be converted to an
+ * integer the return value would be \link CARDTYPE_CONVERSION_FAILED \endlink
+ * plus \link LOCNR_CONVERSION_FAILED \endlink. Because each conversion error that
+ * could happen during this method has pairwise different amounts of zeros after
+ * the first non-zero digit, the return value of the method contains all failed
+ * conversion.
+ *
+ * @param[in] customer  A QString that is handle as the customer name.
+ * @param[in] jobID     A QSTRING that is handle as the jobID. This does not
+ *                      necessarily have to be a sequence of numbers.
+ * @param[in] cardType  A QString that will be converted to an integer and will
+ *                      be the card type of all cards this job contains.
+ * @param[in] recRev    A QString that will be converted to an integer and will
+ *                      be the record Rev of all cards this job contains.
+ * @param[in] locNr     A QString that will be converted to an integer and will
+ *                      be the location number of all cards this job contains.
+ * @param[in] userID    A QString that will be coverted to an integer and will
+ *                      the user id of all cards this job contains.
+ * @param[in] initCardID  A QString that will be converted to an integer and
+ *                        will be card id of the first card this job contains.
+ *                        The following cards are increasing by one for each new
+ *                        card.
+ * @param[in] cardAmount  A QString that will be converted to an integer and
+ *                        sets the amount of cards that this job contains.
+ *
+ * @param[out] job      The job that all of the above information are stored in.
+ *
+ * @return    In case all conversion were done successfully this method returns 
+ *            \link JOBCREATION_SUCC \endlink otherwise it is the sum of the
+ *            failed conversions.
+ */
 int JobFile::createJob(const QString customer, const QString jobID,
                        const QString cardType,
                        const QString recRev, const QString locNr,
@@ -414,10 +452,23 @@ int JobFile::createJob(const QString customer, const QString jobID,
 
 
 /**
+ * @brief Writes the given job in a file.
  *
- * @param fileName
- * @param job
- * @return
+ * This method writes the given job in a file such that the method 
+ * \link JobFile::readJobFile \endlink is able to recreate the given job.
+ * It is not defined what the job file looks in case the already exists a file
+ * with the same name.
+ *
+ * @param fileName  A QString of the file name. It is expected to be an file of
+ *                  the type '.json'.
+ * @param job       The job that should be written in a file.
+ * @return          One of the following values:
+ *                  - \link INVALID_JOB_NO_CARDS \endlink if the given job does
+ *                    not contain any cards
+ *                  - \link FAIL_OPEN_FILE \endlink if the method was not able
+ *                    to write the file
+ *                  - \link JOBFILE_WRITTEN \endlink if no of the above error
+ *                    appeared
  */
 int JobFile::createJobFile(const QString fileName, const Job job) {
     //@todo impelment

@@ -158,8 +158,8 @@ char hex2char(char nibble)
  * \link calcCRC16_added(card_info, int* const) \endlink to calculate
  * the checksum.
  *
- * @param[in] The card information of the card whose checksum should be
- *            calculated
+ * @param[in] card  The card information of the card whose checksum should be
+ *                  calculated
  *
  * @return The 16 bit value of the checksum
  */
@@ -177,9 +177,9 @@ int calcCRC16_added(card_info card) {
  * \link calcCRC16_added(const int, const int, const int, const int, const int, int *const ) \endlink .
  * and writes it into the given pointer.
  *
- * @param[in] the card information about the card whose checksum should be
- *            calculated
- * @param[out] the calculated 16 bit integer value of the checksum
+ * @param[in] card    The card information about the card whose checksum should be
+ *                    calculated
+ * @param[out] outPut The calculated 16 bit integer value of the checksum
  */
 void calcCRC16_added(card_info card, int* const outPut) {
 	calcCRC16_added(card.card_type,
@@ -242,7 +242,6 @@ void calcCRC16_added(const int cardType,
 
 }
 /**
- * @var crc16_ibm_table_hi
  * @brief Table of CRC16-IBM values for high-order byte 
  */
 static const uint8_t crc16_ibm_table_hi[256]={
@@ -267,7 +266,6 @@ static const uint8_t crc16_ibm_table_hi[256]={
 };
 
 /**
- * @var crc16_ibm_table_lo
  * @brief Table of CRC16-IBM values for low-order byte
  */
 static const uint8_t crc16_ibm_table_lo[256]={
@@ -294,11 +292,11 @@ static const uint8_t crc16_ibm_table_lo[256]={
  * @brief Calculates the checksum by using CRC16-IBM algorithm.
  *
  * The method uses the table \link crc16_ibm_table_lo \endlink and 
- * \link crc16_ibtm_table_hi \endlink to calculate the checksum of the data
+ * \link crc16_ibm_table_hi \endlink to calculate the checksum of the data
  * the pointer is pointing on and the given length.
  *
- * @param[in] Start adress of the data buffer
- * @param[in] The length of the data buffer
+ * @param[in] data  Start adress of the data buffer
+ * @param[in] len   The length of the data buffer
  *
  * @return The value of the calculated checksum
  */
@@ -322,9 +320,9 @@ uint16_t calcCRC16_ibm (const uint8_t* data, uint16_t len) {
  * Using the QT cryptographic hash library for calculate the MD5 of the input
  * data. After the MD5 is computed it is written in the given array.
  *
- * @param[in] The start adress of the data the MD5 should be calculated of.
- * @param[in] The length of the data the MD5 should be calculated of.
- * @param[out] The calculated MD5 of the given data
+ * @param[in] inputData The start adress of the data the MD5 should be calculated of.
+ * @param[in] length    The length of the data the MD5 should be calculated of.
+ * @param[out] md5Data  The calculated MD5 of the given data
  */
 void calculateQTMD5(const unsigned char* inputData, const int length, unsigned char md5Data[MD5_SIZE]) {
     QByteArray convertedInput(QByteArray::fromRawData( (const char*) inputData, length));

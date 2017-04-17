@@ -95,6 +95,8 @@
  */
 #define MAXIMUM_CRC_NIBBLE_SHIFT 12
 
+/** @todo refactor the names of the defines so they fit their usage 
+ * -> they are not uint16 */
 /**
  * \def FIRST_8_BIT_OF_UINT16
  * @brief A bit map that is used to calculate the first 8 bit of an unsigned
@@ -136,6 +138,7 @@
 #define LAST_8_BIT_OF_INT 0xFF
 /** @todo check the define below and its meaning */
 #define UINT_16_BITMAP 0x0000FFFF
+
 
 int simpleIntToHex (const int, unsigned char *const);
 int intToHex(const int, unsigned char *const);
