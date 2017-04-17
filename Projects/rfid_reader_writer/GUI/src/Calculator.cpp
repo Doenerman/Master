@@ -7,6 +7,10 @@
 
 #include "Calculator.hpp"
 
+
+constexpr uint8_t Calculator::crc16_ibm_table_hi[256];
+constexpr uint8_t Calculator::crc16_ibm_table_lo[256];
+
 /**
  * @brief Converts integer from 0 to 15 into the equivalent hex value
  *
@@ -261,8 +265,8 @@ uint16_t Calculator::calcCRC16_ibm (const uint8_t* data, uint16_t len) {
 
     while (len-->0) {
         uIndex=(uchCRCLo^((uint8_t)*(data++))); // calc crc
-        uchCRCLo=(uchCRCHi^crc16_ibm_table_hi[uIndex]);
-        uchCRCHi=crc16_ibm_table_lo[uIndex];
+        uchCRCLo=(uchCRCHi^Calculator::crc16_ibm_table_hi[uIndex]);
+        uchCRCHi=Calculator::crc16_ibm_table_lo[uIndex];
     }
 
     return (((uint16_t)uchCRCHi<<8)|(uint16_t)uchCRCLo);
