@@ -292,8 +292,8 @@ const card_info card4 = {
         //block 1
         1234,
         4321,
-        (uint16_t) calcCRC16_added(card4),
-        calcCRC16_ibm((uint8_t *) &card4.card_type, 12),
+        (uint16_t) Calculator::calcCRC16_added(card4),
+        Calculator::calcCRC16_ibm((uint8_t *) &card4.card_type, 12),
         0,
         0,
         KEY_1,
@@ -317,8 +317,8 @@ const card_info card5 = {
         //block 1
         1234,
         4322,
-        (uint16_t) calcCRC16_added(card5),
-        calcCRC16_ibm((uint8_t *) &card5.card_type, 12),
+        (uint16_t) Calculator::calcCRC16_added(card5),
+        Calculator::calcCRC16_ibm((uint8_t *) &card5.card_type, 12),
         0,
         0,
         KEY_1,

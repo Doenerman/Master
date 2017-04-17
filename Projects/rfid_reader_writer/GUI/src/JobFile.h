@@ -222,31 +222,6 @@
  */
 #define min(a,b) (a<b? a: b)
 
-
-class JobFile : public QObject {
-    Q_OBJECT
-
-public slots:
-
-
-public:
-    static int findLineReadResult(QString fileName, const int searchTag,
-                                  QString* result);
-    static int readJobFile(Job* job);
-    static int readJobFile(QString fileName, Job* job);
-    static int createJob(const QString customer, const QString jobID,
-                         const QString cardType,
-                         const QString recRev, const QString locNr,
-                         const QString userID, const QString initCardID,
-                         const QString cardAmount, Job* job);
-    static int createJobFile(const QString fileName, const Job job);
-
-};
-
-
-
-
-
 /**
  * \struct Job
  *
@@ -278,5 +253,30 @@ typedef struct {
      */
     QVector<card_info> cards;
 }Job;
+
+class JobFile : public QObject {
+    Q_OBJECT
+
+public slots:
+
+
+public:
+    static int findLineReadResult(QString fileName, const int searchTag,
+                                  QString* result);
+    static int readJobFile(Job* job);
+    static int readJobFile(QString fileName, Job* job);
+    static int createJob(const QString customer, const QString jobID,
+                         const QString cardType,
+                         const QString recRev, const QString locNr,
+                         const QString userID, const QString initCardID,
+                         const QString cardAmount, Job* job);
+    static int createJobFile(const QString fileName, const Job job);
+
+};
+
+
+
+
+
 
 #endif //GUI_JOBFILE_H

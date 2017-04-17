@@ -13,18 +13,6 @@
 /////////////////////////////////////////////////
 BOOST_AUTO_TEST_SUITE( calculatorTest )
     /**
-     * @brief Tests the method \link simpleIntToHex \endlink with fix parameter.
-     */
-    BOOST_AUTO_TEST_CASE ( simpleIntToHexTest ) {
-
-        const int i = 10;
-        unsigned char tempBuffer[1];
-        simpleIntToHex(i, &tempBuffer[0]);
-        char buffer[2] = { (char)tempBuffer[0], '\r' };
-
-        BOOST_CHECK(i == std::strtol(&buffer[0], NULL, 16));
-    }
-    /**
      * @brief Tests the method \link intToHex \endlink with fix parameter.
      */
     BOOST_AUTO_TEST_CASE( intToHexTest ) {
@@ -32,14 +20,15 @@ BOOST_AUTO_TEST_SUITE( calculatorTest )
         const int i = 12345;
         int calcVal = 0;
         unsigned char tempBuffer[bufferLength];
-        intToHex( i, &tempBuffer[0]);
+        Calculator::intToHex( i, &tempBuffer[0]);
         char buffer [bufferLength];
         for(int i = 0; i < bufferLength; i++) {
             buffer[i] = (char) tempBuffer[i];
         }
 
         for(int iter = 0; iter < BLOCKSIZE_ON_CARD; iter++) {
-            calcVal = (calcVal | (hex2char(buffer[iter]) << MAXIMUM_NIBBLE_SHIFT - iter * SHIFT_NIBBLE) );
+            calcVal = (calcVal | (Calculator::hex2char(buffer[iter]) <<
+                                                          MAXIMUM_NIBBLE_SHIFT - iter * SHIFT_NIBBLE) );
         }
 
 
@@ -59,7 +48,7 @@ BOOST_AUTO_TEST_SUITE( calculatorTest )
 
         const int crc_calc_by_hand = TESTCARD.crc16_added;
 
-        calcCRC16_added( i0, i1, i2, i3, i4, &crc);
+        Calculator::calcCRC16_added( i0, i1, i2, i3, i4, &crc);
 
 
         BOOST_CHECK( crc == crc_calc_by_hand );
@@ -71,7 +60,9 @@ BOOST_AUTO_TEST_SUITE( calculatorTest )
 
 
         // calculate the crc
-        uint16_t crcVal = calcCRC16_ibm((uint8_t*)(&TESTCARD.card_type), 12);
+        uint16_t crcVal = Calculator::calcCRC16_ibm((uint8_t*)(&TESTCARD
+                                                           .card_type),
+                                            12);
 
 
         BOOST_CHECK( crcVal == TESTCARD.crc16_ibm );
@@ -103,7 +94,7 @@ BOOST_AUTO_TEST_SUITE( calculatorTest )
             calculatedMD5[i] = '-';
         }
 
-        calculateQTMD5(testData, lengthOfWord, calculatedMD5);
+        Calculator::calculateQTMD5(testData, lengthOfWord, calculatedMD5);
 
         // compare correct md5 with the calculated one
         for(int i = 0; i < MD5_SIZE; i++) {
@@ -149,7 +140,8 @@ BOOST_AUTO_TEST_SUITE( calculatorTest )
             calculatedXoredMD5[i] = '-';
         }
 
-        calcMD5Xor((uint8_t*)(&TESTCARD.uid[0]), &calculatedXoredMD5[0]);
+        Calculator::calcMD5Xor((uint8_t*)(&TESTCARD.uid[0]),
+                              &calculatedXoredMD5[0]);
 
         // compare correct md5 with the calculated one
         for(int i = 0; i < 2*BYTE_PER_BLOCK; i++) {

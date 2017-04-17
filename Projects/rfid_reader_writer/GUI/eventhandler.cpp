@@ -375,14 +375,14 @@ int EventHandler::calculateChecksums(
 
     if(response == CONVERSION_SUCC ) {
 
-        calcCRC16_added(tempCard.card_type,
+        Calculator::calcCRC16_added(tempCard.card_type,
                         tempCard.record_rev,
                         tempCard.locNr,
                         tempCard.kunden_nr,
                         tempCard.card_nr,
                         &tempCrcAdded);
 
-        tempCrcIBM = calcCRC16_ibm(&tempCard.card_type,
+        tempCrcIBM = Calculator::calcCRC16_ibm(&tempCard.card_type,
                                    INFORMATION_LENGTH_IN_BYTE);
 
 

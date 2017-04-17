@@ -294,8 +294,9 @@ int JobFile::readJobFile(QString fileName, Job *job) {
                     tempCard.card_nr = (uint32_t) (initCardID.toInt(NULL, 10) +
                                                    iter);
                     int crcAdd;
-                    calcCRC16_added(tempCard, &crcAdd);
-                    tempCard.crc16_ibm = calcCRC16_ibm(&tempCard.card_type,
+                    Calculator::calcCRC16_added(tempCard, &crcAdd);
+                    tempCard.crc16_ibm = Calculator::calcCRC16_ibm(&tempCard
+                                                                          .card_type,
                                                        INFORMATION_LENGTH_IN_BYTE);
                     job->cards.append(tempCard);
                 }
@@ -432,8 +433,10 @@ int JobFile::createJob(const QString customer, const QString jobID,
                 //block 2
                 tempCard.card_nr = (uint32_t) initCardID_int +  iter;
                 //block 3
-                tempCard.crc16_added = (uint16_t) calcCRC16_added(tempCard);
-                tempCard.crc16_ibm = calcCRC16_ibm(&(tempCard.card_type),
+                tempCard.crc16_added =
+                        (uint16_t) Calculator::calcCRC16_added(tempCard);
+                tempCard.crc16_ibm =
+                        Calculator::calcCRC16_ibm(&(tempCard.card_type),
                                                    12);
                 tempCard.reserve_block4 = 0;
                 tempCard.reserve_block5 = 0;
