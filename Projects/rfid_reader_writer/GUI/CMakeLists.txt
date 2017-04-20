@@ -9,7 +9,7 @@ set(SOURCE_FILES
                     main.cpp
                     mainwindow.cpp
                     cardinformationwindow.cpp
-                    eventhandler.cpp
+                    src/eventhandler.cpp
                     src/Calculator.cpp
                     src/CardInformation.hpp
                     src/LogFile.cpp
@@ -21,7 +21,7 @@ set(TESTCALCULATOR_FILES
                     src/Tester/TestCalculator.cpp
                     src/Tester/TestCards.h )
 set(TESTEVENTHANDLER_FILES
-                    eventhandler.cpp
+                    src/eventhandler.cpp
                     src/Calculator.cpp
                     src/Tester/TestCards.h
                     src/Tester/TestEventhandler.cpp
