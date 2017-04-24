@@ -41,3 +41,4 @@
 **/GUI/Makefile
 **/GUI/cmake_install.cmake
 **/GUI/GUI
+**/CMakeLists.txt
