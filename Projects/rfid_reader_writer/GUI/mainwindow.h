@@ -13,7 +13,7 @@
 #include <QLineEdit>
 #include <QLayout>
 
-#include "eventhandler.h"
+#include "src/eventhandler.h"
 #include "src/CardInformation.hpp"
 #include "cardinformationwindow.h"
 #include "src/GeneralDefines.h"
@@ -275,7 +275,7 @@ private slots:
     void pushReadButton();
     void enable_disable_iterativeWrittingInput();
     void updateChecksums();
-    QString selectFileNameDialog();
+//    QString selectFileNameDialog();
 
 };
 

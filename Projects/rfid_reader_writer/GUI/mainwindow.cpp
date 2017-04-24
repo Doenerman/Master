@@ -323,7 +323,7 @@ void MainWindow::pushStartButton() {
 
 
     int color;
-    if( succWritting == WRITTING_SUCCESSFULL ) {
+    if( succWritting == WRITING_SUCCESSFULL ) {
         color = LIGHTBOX_GREEN;
     }
     else {
@@ -448,12 +448,12 @@ void MainWindow::updateChecksums() {
 /**
  *
  */
-QString setJobFileName() {
-  QString windowName, homeDir;
-  windowName = QString::fromUtf8("Waehle Jobdatei");
-  homeDir = QString::fromUtf8("$HOME");
-  return MainWindow::selectFileNameDialog(windowName, homeDir);
-}
+//QString setJobFileName() {
+//  QString windowName, homeDir;
+//  windowName = QString::fromUtf8("Waehle Jobdatei");
+//  homeDir = QString::fromUtf8("$HOME");
+//  return MainWindow::selectFileNameDialog(windowName, homeDir);
+//}
 /**
  * @brief Opens a dialog where the user can select a file of type json.
  *
@@ -463,8 +463,8 @@ QString setJobFileName() {
  * @return  The filename of the selected file. In case the window was closed via
  *          the 'cancel' button a NULL QString is returned.
  */
-QString MainWindow::selectFileNameDialog(QString windowName,
-                                         QString homeDir,
-                                         ) {
-  return QFileDialog::getOpenFileName(this, windowName, homeDir,"*.json");
-}
+//QString MainWindow::selectFileNameDialog(QString windowName,
+//                                         QString homeDir
+//                                         ) {
+//  return QFileDialog::getOpenFileName(this, windowName, homeDir,"*.json");
+//}

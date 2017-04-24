@@ -1,5 +1,4 @@
 #include "eventhandler.h"
-#include "src/CardInformation.hpp"
 
 
 /**
@@ -287,7 +286,7 @@ int EventHandler::writeProcess(const Job job,
 
     QVector<QVector<int>> error = QVector<QVector<int>>(0);
     int iter = 0;
-    int succWritting = WRITTING_SUCCESSFULL;
+    int succWritting = WRITING_SUCCESSFULL;
 
 
     for(iter = 0; iter < job.cards.size(); iter++) {
@@ -302,9 +301,9 @@ int EventHandler::writeProcess(const Job job,
         int innerIter =0;
         int succWrite = error.at(iter).at(error.at(iter).size()-1);
 
-        switch(succWrite) { {
+        switch(succWrite) {
 
-          case WRITTING_SUCC:
+          case WRITING_SUCCESSFULL:
                     consoleOutput->append(QString::fromUtf8("Kunden Nummer: "));
                     consoleOutput
                       ->append(QString::number(job.cards.at(iter).kunden_nr,

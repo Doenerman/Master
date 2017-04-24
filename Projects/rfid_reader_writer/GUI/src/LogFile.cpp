@@ -2,6 +2,7 @@
 // Created by utti on 21.03.17.
 //
 #include "LogFile.h"
+#include "CardInformation.hpp"
 
 
 void LogFile::getUserLogin(QString *username) {
@@ -74,7 +75,7 @@ void LogFile::writeCards(const QVector<card_info> cards,
         *out << "         " << sep << "crcAdd" << sep << ": "
              << cards.at(outerIter).crc16_added << "," << endl;
         *out << "         " << sep << "md5" << sep << ": ";
-        for (innerIter = 0; innerIter < MAX_MD5_LENGTH_IN_BYTE; innerIter++) {
+        for (innerIter = 0; innerIter < MD5_LENGTH; innerIter++) {
             *out << cards.at(outerIter).md5_arr[innerIter];
         }
         *out << "," << endl;
@@ -84,7 +85,7 @@ void LogFile::writeCards(const QVector<card_info> cards,
         for (innerIter = 0; ((innerIter < error.at(outerIter).size()) && (!succ));
              innerIter++) {
             *out << error.at(outerIter).at(innerIter);
-            if (error[outerIter][innerIter] == WRITTING_SUCCESSFULL) {
+            if (error[outerIter][innerIter] == WRITING_SUCCESSFULL) {
                 succ = true;
                 *out << "]" << endl;
             }

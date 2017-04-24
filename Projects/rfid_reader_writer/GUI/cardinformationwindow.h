@@ -6,7 +6,7 @@
 #include <QLabel>
 #include <QPushButton>
 
-#include "eventhandler.h"
+#include "src/eventhandler.h"
 
 
 // ################################### //

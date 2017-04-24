@@ -72,6 +72,6 @@
  * @brief The value in case the attempt of writing something on a card was
  *        successful
  */
-#define WRITTING_SUCCESSFULL 1
+#define WRITING_SUCCESSFULL 1
 
 #endif //GUI_GENERALDEFINES_H
