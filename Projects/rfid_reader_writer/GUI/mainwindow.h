@@ -8,6 +8,7 @@
 #include <QPlainTextEdit>
 #include <QTextBrowser>
 #include <QCheckBox>
+#include <QFileDialog>
 #include <QLabel>
 #include <QLineEdit>
 #include <QLayout>
@@ -274,6 +275,7 @@ private slots:
     void pushReadButton();
     void enable_disable_iterativeWrittingInput();
     void updateChecksums();
+    QString selectFileNameDialog();
 
 };
 
