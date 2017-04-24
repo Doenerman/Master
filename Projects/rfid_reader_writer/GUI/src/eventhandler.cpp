@@ -6,16 +6,25 @@
  * @brief   Interprets the given QStrings as card information and
  *          writes them into the given \link card_info \endlink
  *
+ * In order to interpret the given QStringsthe all have to be converted into an
+ * integer. After all conversions are done successfully the information are
+ * written to the given card. In case one conversion failed no information will
+ * be written on the card and the return value is the sum of all failed
+ * conversions.
  *
- * @param stringCardType[in]  the type of the card
- * @param stringRecRev[in]    the record Rev of the card
- * @param stringLocNr[in]     the location number of the card
- * @param stringUserID[in]    the user ID of the card
- * @param stringCardID[in]    the card ID of the card
- * @param stringCard[out]     the \link card_info \endlink where the
+ *
+ * @param[in] stringCardType  the type of the card
+ * @param[in] stringRecRev    the record Rev of the card
+ * @param[in] stringLocNr     the location number of the card
+ * @param[in] stringUserID    the user ID of the card
+ * @param[in] stringCardID    the card ID of the card
+ * @param[out] card     the \link card_info \endlink where the
  *                            converted information is stored in
- * @return          true if and only if the QStrings were successfully
- *                  interpreted as card information
+ * @return              \link CONVERSION_SUCC \endlink in case no conversion
+ *                      appeared. If at least one conversion error appeared this
+ *                      value is the sum of all conversion errors. With the help
+ *                      of this sum it is possible to determine which conversion
+ *                      failed.
  */
 int EventHandler::convertQStringsToCard(  QString stringCardType,
                                    QString stringRecRev,
@@ -72,15 +81,16 @@ int EventHandler::convertQStringsToCard(  QString stringCardType,
         succConversion = CONVERSION_SUCC;
     }
 
-
-    card->card_type = (uint8_t)cardType;
-    card->record_rev = (uint8_t)recRev;
-    card->locNr = (uint8_t)locNr;
-    card->reserved_block0 = 0;
-    card->kunden_nr = (uint32_t)userID;
-    card->card_nr = (uint32_t)cardID;
-    card->reserve_block4 = 0;
-    card->reserve_block5 = 0;
+    if( succConversion == CONVERSION_SUCC ) {
+      card->card_type = (uint8_t)cardType;
+      card->record_rev = (uint8_t)recRev;
+      card->locNr = (uint8_t)locNr;
+      card->reserved_block0 = 0;
+      card->kunden_nr = (uint32_t)userID;
+      card->card_nr = (uint32_t)cardID;
+      card->reserve_block4 = 0;
+      card->reserve_block5 = 0;
+    }
 
     return succConversion;
 }
@@ -89,11 +99,11 @@ int EventHandler::convertQStringsToCard(  QString stringCardType,
  *
  * It converts the QStrings into integer and checks whether the given
  * QStrings can be converted to integers. If the QStrings can not be
- * converted to Integer. A notification is printed to the
- * QPlainTextEdit field. If the conversion is done successful given
- * Information about the different IDs and the amount of cards that
- * should be written is printed in the given QPLainTextEdit field.
+ * converted to Integer a notification is printed. If the conversion is done
+ * successful given Information about the different IDs and the amount of cards that
+ * should be written are printed.
  *
+ * @param[in] jobID             The QString of the current jobID
  * @param[in] cardType          A QString that will be converted to
  *                              the card type
  * @param[in] recRev            A QString that will be converted to
@@ -113,12 +123,8 @@ int EventHandler::convertQStringsToCard(  QString stringCardType,
  * @param[out] consoleOutput    A pointer where the output of for
  *                              the console will be
  *                              written in
- * @param[out] cardsLeft        A pointer where the cards left will
- *                              be written in
- * @param[out] nextCardID       A pointer where the next cardID will
- *                              be written in
  *
- * @return  \link WRITTING_SUCCSESSFULL \endlink iff the writting
+ * @return  \link WRITTING_SUCCESSFULL \endlink iff the writting
  *                              process was seccessful
  * @todo implement the connection to the background programm
  */
@@ -258,11 +264,12 @@ int EventHandler::initWrittingProcess(
 }
 
 /**
- * @brief Writes a single card only.
+ * @brief Writes the cards of the given jobs.
  *
- * Writes the card \link card \endlink.
+ * Write the cards of the job with the help of the method
+ * \link EventHandler::writeCard() \endlink. 
  *
- * @param cards              The card information that should be written
+ * @param[in] job               The description of the current job
  * @param[out] consoleOutput    A pointer where the output of for
  *                              the console will be
  *                              written in
@@ -272,9 +279,7 @@ int EventHandler::initWrittingProcess(
  *                              be written in
  * @return
  */
-int EventHandler::writeProcess(const QVector<card_info> cards,
-                               const QString customer,
-                               const QString jobID,
+int EventHandler::writeProcess(const Job job,
                                QString *const consoleOutput,
                                QString *const cardsLeft,
                                QString *const nextCardID) {
@@ -285,53 +290,40 @@ int EventHandler::writeProcess(const QVector<card_info> cards,
     int succWritting = WRITTING_SUCCESSFULL;
 
 
-    for(iter = 0; iter < cards.size(); iter++) {
+    for(iter = 0; iter < job.cards.size(); iter++) {
         QVector<int> currError = QVector<int>(0);
         error.append(currError);
 
         // @todo check cast (QVector<int> *) below
-        EventHandler::writeCard(cards.at(iter),
+        EventHandler::writeCard(job.cards.at(iter),
                                 (QVector<int> *) &error.at(iter));
         // @todo kontrollesen
+        
+        int innerIter =0;
+        int succWrite = error.at(iter).at(error.at(iter).size()-1);
 
+        switch(succWrite) { {
 
-        switch (succWritting) {
-            case WRITTING_SUCCESSFULL:/* - 1 because one cards is written
-                                       * and one cards less must be written */
-                cardsLeft->setNum(SINGLE_WRITE_PROCESS_NEXT_CARDID);
-                /* + 1 because one cards is written
-                 * and the next cardID must be used */
-                nextCardID->setNum(cards.at(iter).card_nr + 1);
-                // console output
-                consoleOutput->append(QString::fromUtf8("Kunden Nummer: "));
-                consoleOutput->append(QString::number(cards.at(iter).kunden_nr, 10));
-                consoleOutput->append(QString::fromUtf8("\n"));
-                consoleOutput->append(QString::fromUtf8("Karten Nummer: "));
-                consoleOutput->append(QString::number(cards.at(iter).card_nr, 10));
-                consoleOutput->append(QString::fromUtf8("\n"));
-                consoleOutput->append(
-                        QString::fromUtf8("Anzahl zu schreibender Karten: "));
-                consoleOutput->append(QString::number(
-                        SINGLE_WRITE_PROCESS_CARD_LEFT_TO_WRITE));
-                consoleOutput->append(QString::fromUtf8("\n"));
-                break;
-            case NO_CARD_LEFT_TO_WRITE:
-                cardsLeft->setNum(SINGLE_WRITE_PROCESS_CARD_LEFT_TO_WRITE);
-                nextCardID->setNum(cards.at(iter).card_nr);
-                consoleOutput->append(QString::fromUtf8("\n"));
-                consoleOutput->append(QString::fromUtf8("Fehler:\n"));
-                consoleOutput->append(QString::fromUtf8(
-                        "  unzulaessige Kartenanzahl"));
-                break;
-            default:
-                consoleOutput->append(QString::fromUtf8("\n"));
-                consoleOutput->append(QString::fromUtf8("Fehler:\n"));
-                consoleOutput->append(QString::fromUtf8(
-                        "  unbekannter Fehler beim Schreiben"));
+          case WRITTING_SUCC:
+                    consoleOutput->append(QString::fromUtf8("Kunden Nummer: "));
+                    consoleOutput
+                      ->append(QString::number(job.cards.at(iter).kunden_nr,
+                                          10));
+                    consoleOutput->append(QString::fromUtf8("\n"));
+                    consoleOutput->append(QString::fromUtf8("Karten Nummer: "));
+                    consoleOutput->append(QString::number(job.cards.at(iter).card_nr,
+                                          10));
+                    consoleOutput->append(QString::fromUtf8("\n"));
+                    consoleOutput->append(
+                            QString::fromUtf8("Anzahl zu schreibender Karten: "));
+                    consoleOutput->append(QString::number(
+                            SINGLE_WRITE_PROCESS_CARD_LEFT_TO_WRITE));
+                    consoleOutput->append(QString::fromUtf8("\n"));
         }
+        
     }
 
-    LogFile::writeLogFile(customer, jobID, cards, error);
+    LogFile::writeLogFile(job.customer, job.jobID, job.cards, error);
 
     return succWritting;
 }
@@ -340,21 +332,21 @@ int EventHandler::writeProcess(const QVector<card_info> cards,
  * @brief Calculates the checksums with input.
  *
  * The checksums are calculated with the help of
- * \link Calculator.cpp \enlink. The calculated checksums are written in
- * \link crcAdded \endlink and \link crcIBM \endlink. The
- * \link crcAdded \endlink is a bytewise added checksum. The
- * \link crcIBM \endlink checksum is calculated
+ * \link Calculator \endlink. The calculated checksums are written in
+ * 'crcAdded' and 'crcIBM'. The
+ * 'crcAdded' is a byte-wise added checksum. The
+ * 'crcIBM' checksum is calculated
  * with an algorithm created by IBM.
  *
- * @param stringCardType[in]    Type of the card
- * @param stringRecRev[in]      Record Rev of the card
- * @param stringLocNr[in]       Location number of the card
- * @param stringUserID[in]      User ID of the card
- * @param stringCardID[in]      Card ID of the card
- * @param crcAdded[out]         The calculated added checksum
- * @param crcIBM[out]           The calculated IBM checksum
+ * @param[in] stringCardType    Type of the card
+ * @param[in] stringRecRev      Record Rev of the card
+ * @param[in] stringLocNr       Location number of the card
+ * @param[in] stringUserID      User ID of the card
+ * @param[in] stringCardID      Card ID of the card
+ * @param[out] crcAdded         The calculated added checksum
+ * @param[out] crcIBM           The calculated IBM checksum
  * @return the success or error message that is returned by \link
- *        convertQStringsToCard \endlink
+ *        EventHandler::convertQStringsToCard() \endlink
  */
 int EventHandler::calculateChecksums(
                          const QString stringCardType,
@@ -401,11 +393,11 @@ int EventHandler::calculateChecksums(
  * This method writes the given information on a card. The writting process
  * has \link MAX_WRITE_ATTEMPTS \endlink to perform. In case an error occured
  * during the writting process the error is logged in the QVector
- * \link error \endlink .
+ * 'error'.
  *
- * @param card  The \link card_info \endlink that should be written
- * @param error A QVector<int> where all error that occured while writting are
- *              logged
+ * @param[in] card  The \link card_info \endlink that should be written
+ * @param[out] error  A QVector<int> where all error that occured while writting are
+ *                    logged
  */
 void EventHandler::writeCard(const card_info card,
                             QVector<int>* error) {

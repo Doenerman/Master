@@ -74,12 +74,10 @@ public:
                                 const QString stringCardID,
                                 card_info* card);
 private:
-    static int writeProcess(const QVector<card_info> card,
-                                  const QString customer,
-                                  const QString jobID,
-                                  QString* const consoleOutput,
-                                  QString* const cardsLeft,
-                                  QString* const nextCardID);
+    static int writeProcess(const Job job,
+                            QString* const consoleOutput,
+                            QString* const cardsLeft,
+                            QString* const nextCardID);
 
     static void writeCard(const card_info card,
                          QVector<int>* error);
