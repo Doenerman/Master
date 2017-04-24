@@ -281,7 +281,8 @@ void MainWindow::setLightBoxColor(int color) {
  * \link EventHandler::startWrittingProcess \endlink is called to start the
  * writting process.
  *
- * @todo seperate logic to EventHandler. There exists a method for convert QStrings to cardinformation
+ * @todo seperate logic to EventHandler. There exists a method for convert
+ *       QStrings to cardinformation
  */
 void MainWindow::pushStartButton() {
 
@@ -442,6 +443,28 @@ void MainWindow::updateChecksums() {
   pteChecksumAdded->appendPlainText(crcAdded);
   pteChecksumIBM->clear();
   pteChecksumIBM->appendPlainText(crcIBM);
-
-
 } 
+
+/**
+ *
+ */
+QString setJobFileName() {
+  QString windowName, homeDir;
+  windowName = QString::fromUtf8("Waehle Jobdatei");
+  homeDir = QString::fromUtf8("$HOME");
+  return MainWindow::selectFileNameDialog(windowName, homeDir);
+}
+/**
+ * @brief Opens a dialog where the user can select a file of type json.
+ *
+ * @param[in] windowName  The name the popped up window should have
+ * @param[in] homeDir     The home dictonary the popped up windows will show
+ *
+ * @return  The filename of the selected file. In case the window was closed via
+ *          the 'cancel' button a NULL QString is returned.
+ */
+QString MainWindow::selectFileNameDialog(QString windowName,
+                                         QString homeDir,
+                                         ) {
+  return QFileDialog::getOpenFileName(this, windowName, homeDir,"*.json");
+}
