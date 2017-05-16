@@ -189,5 +189,10 @@ CardInformationWindow::CardInformationWindow(QWidget *parent)
  * @todo implementation
  */
 void CardInformationWindow::reload() {
+    QSerialPort *port = new QSerialPort(this);
+    std::cout << Communicator::open_2(port) << std::endl;
+    int tempCard;
+    //Reader::getUserID(rfid, &(tempCard));
+    std::cout << tempCard << std::endl;
 
 }
