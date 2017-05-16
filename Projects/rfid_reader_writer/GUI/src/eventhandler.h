@@ -10,12 +10,12 @@
 
 
 
-#include "mainwindow.h"
-#include "src/GeneralDefines.h"
-#include "src/Calculator.hpp"
-#include "src/CardInformation.hpp"
-#include "src/LogFile.h"
-#include "src/JobFile.h"
+#include "../mainwindow.h"
+#include "GeneralDefines.h"
+#include "Calculator.hpp"
+#include "CardInformation.hpp"
+#include "LogFile.h"
+#include "JobFile.h"
 
 #define CONVERSIONCHECK_PASSED 1
 #define CONVERSIONCHECK_FAILED_CARDID -1
@@ -36,7 +36,7 @@
 
 
 // used in case there is no real writting process
-#define WRITEPROCESS WRITTING_SUCCESSFULL
+#define WRITEPROCESS WRITING_SUCCESSFULL
 
 
 class EventHandler : public QObject
@@ -74,12 +74,10 @@ public:
                                 const QString stringCardID,
                                 card_info* card);
 private:
-    static int writeProcess(const QVector<card_info> card,
-                                  const QString customer,
-                                  const QString jobID,
-                                  QString* const consoleOutput,
-                                  QString* const cardsLeft,
-                                  QString* const nextCardID);
+    static int writeProcess(const Job job,
+                            QString* const consoleOutput,
+                            QString* const cardsLeft,
+                            QString* const nextCardID);
 
     static void writeCard(const card_info card,
                          QVector<int>* error);

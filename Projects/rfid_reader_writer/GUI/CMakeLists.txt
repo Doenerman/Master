@@ -4,12 +4,13 @@ project(GUI)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 11)
 
+set(BOOST_DIR /usr/local/Cellar/boost/1.64.0)
 
 set(SOURCE_FILES
                     main.cpp
                     mainwindow.cpp
                     cardinformationwindow.cpp
-                    eventhandler.cpp
+                    src/eventhandler.cpp
                     src/Calculator.cpp
                     src/CardInformation.hpp
                     src/LogFile.cpp
@@ -21,7 +22,7 @@ set(TESTCALCULATOR_FILES
                     src/Tester/TestCalculator.cpp
                     src/Tester/TestCards.h )
 set(TESTEVENTHANDLER_FILES
-                    eventhandler.cpp
+                    src/eventhandler.cpp
                     src/Calculator.cpp
                     src/Tester/TestCards.h
                     src/Tester/TestEventhandler.cpp
@@ -47,25 +48,25 @@ find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 add_executable(GUI ${SOURCE_FILES})
 
 add_executable(CalculatorTest ${TESTCALCULATOR_FILES})
-target_link_libraries(CalculatorTest /usr/lib/x86_64-linux-gnu/libboost_unit_test_framework.so)
+target_link_libraries(CalculatorTest ${BOOST_DIR}/lib/libboost_unit_test_framework.a)
 set_target_properties(CalculatorTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY testBin)
 add_test(NAME CalculatorTestRofl WORKING_DIRECTORY testBin
                              COMMAND testBin/Calculator)
 
 add_executable( EventHandlerTest ${TESTEVENTHANDLER_FILES})
-target_link_libraries(EventHandlerTest /usr/lib/x86_64-linux-gnu/libboost_unit_test_framework.so)
+target_link_libraries(CalculatorTest ${BOOST_DIR}/lib/libboost_unit_test_framework.a)
 set_target_properties(EventHandlerTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY testBin)
 add_test(NAME EventHandlerTest WORKING_DIRECTORY testBin
                               COMMAND testBin/EventHandlerTest)
 
 add_executable( LogfileTest ${TESTLOGFILE_FILES})
-target_link_libraries(LogfileTest /usr/lib/x86_64-linux-gnu/libboost_unit_test_framework.so)
+target_link_libraries(CalculatorTest ${BOOST_DIR}/lib/libboost_unit_test_framework.a)
 set_target_properties(LogfileTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY testBin)
 add_test(NAME LogfileTest WORKING_DIRECTORY testBin
         COMMAND testBin/LogfileTest)
 
 add_executable( JobFileTest ${TESTJOBFILE_FILES})
-target_link_libraries( JobFileTest /usr/lib/x86_64-linux-gnu/libboost_unit_test_framework.so)
+target_link_libraries(CalculatorTest ${BOOST_DIR}/lib/libboost_unit_test_framework.a)
 set_target_properties( JobFileTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY testBin)
 add_test(NAME JobFileTest WORKING_DIRECTORY testBin
         COMMAND testBin/JobFileTest)

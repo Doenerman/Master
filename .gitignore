@@ -41,3 +41,4 @@
 **/GUI/Makefile
 **/GUI/cmake_install.cmake
 **/GUI/GUI
+Projects/rfid_reader_writer/GUI/CMakeLists.txt

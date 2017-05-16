@@ -57,7 +57,8 @@
 #define MD5_SIZE 16
 /**
  * \def MD5_DATA_SIZE
- * @brief The size of the data on the card that is used to calculate the MD5 of a card.
+ * @brief The size of the data on the card that is used to calculate the MD5 of a 
+ * card.
  * 
  * This includes the unique card id and the first five blocks of the card.
  */

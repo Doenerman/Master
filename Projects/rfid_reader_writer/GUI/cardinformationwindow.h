@@ -5,8 +5,11 @@
 #include <QPlainTextEdit>
 #include <QLabel>
 #include <QPushButton>
+#include <QtSerialPort/QSerialPort>
 
-#include "eventhandler.h"
+#include "src/eventhandler.h"
+#include "src/Communicator.hpp"
+#include "src/Reader.hpp"
 
 
 // ################################### //
@@ -45,6 +48,8 @@ public:
 signals:
 
 private:
+
+    HANDLE* rfid;
 
     // ########### //
     // ## Label ## //
