@@ -180,6 +180,11 @@ CardInformationWindow::CardInformationWindow(QWidget *parent)
     // ########################################### //
     connect(this->pbClose,SIGNAL(clicked(bool)),this,SLOT(close()));
     connect(this->pbRefresh,SIGNAL(clicked(bool)),this,SLOT(reload()));
+
+    // ################################# //
+    // ## Read the data from the card ## //
+    // ################################# //
+    CardInformationWindow::reload();
 }
 
 
@@ -189,10 +194,97 @@ CardInformationWindow::CardInformationWindow(QWidget *parent)
  * @todo implementation
  */
 void CardInformationWindow::reload() {
-    QSerialPort *port = new QSerialPort(this);
-    std::cout << Communicator::open_2(port) << std::endl;
-    int tempCard;
-    //Reader::getUserID(rfid, &(tempCard));
-    std::cout << tempCard << std::endl;
 
+    int cardType, recRev, locNr, userID, cardID, crcAdd, crcIBM;
+    QByteArray uniqueID, md5Sum;
+
+    QPalette pAdd = pteChecksumAdded->palette();
+    QPalette pIBM = pteChecksumIBM->palette();
+    QPalette pMD5 = pteMD5->palette();
+
+    pAdd.setColor(QPalette::Text, Qt::blue);
+    pIBM.setColor(QPalette::Text, Qt::blue);
+    pMD5.setColor(QPalette::Text, Qt::blue);
+
+    bool correctCard = true;
+
+
+    Reader::readCard(&uniqueID, &cardType, &recRev, &locNr, &userID, &cardID, &crcAdd, &crcIBM, &md5Sum);
+
+
+    pteUniquecardID->clear();
+    pteLocationNumber->clear();
+    pteRev->clear();
+    pteUserID->clear();
+    pteCardID->clear();
+    pteChecksumAdded->clear();
+    pteChecksumIBM->clear();
+    pteMD5->clear();
+
+    // calculate checksums
+    card_info tempCard;
+    for(int iter = 0; iter < UID_LENGTH; iter++) {
+      tempCard.uid[iter] = uniqueID.at(iter);
+    }
+    tempCard.card_type = cardType;
+    tempCard.record_rev = recRev;
+    tempCard.locNr = locNr;
+    tempCard.reserved_block0 = 0;
+    tempCard.kunden_nr = userID;
+    tempCard.card_nr = cardID;
+    uint16_t crcAdd_calc, crcIBM_calc;
+    crcAdd_calc = Calculator::calcCRC16_added(tempCard);
+    crcIBM_calc = Calculator::calcCRC16_ibm ((uint8_t*)(&tempCard.card_type), 12);
+    tempCard.crc16_added = crcAdd;
+    tempCard.crc16_ibm = crcIBM;
+    unsigned char md5Calc[2*BYTE_PER_BLOCK];
+    for(int i = 0; i<2*BYTE_PER_BLOCK; i++) {
+        md5Calc[i] = '-';
+    }
+    Calculator::calcMD5Xor((uint8_t*)(&tempCard.uid[0]), &md5Calc[0]);
+
+
+    for(int i = 0; i < 2*BYTE_PER_BLOCK; i++) {
+        std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)md5Calc[i];
+    }
+
+            std::cout << std::endl;
+
+    if(crcAdd_calc != crcAdd) {
+      pAdd.setColor(QPalette::Text, Qt::red);
+      correctCard = false;
+    }
+    if(crcIBM_calc != crcIBM) {
+      pIBM.setColor(QPalette::Text, Qt::red);
+      correctCard = false;
+    }
+
+    QString tempString;
+    for(int iter = 0; iter < 2*BYTE_PER_BLOCK; iter++) {
+      tempString.append(md5Calc[iter]);
+    }
+    if( 0 ==
+        QString::compare(QString(md5Sum), tempString, Qt::CaseInsensitive)) {
+      pMD5.setColor(QPalette::Text, Qt::red);
+      correctCard = false;
+    }
+
+
+//    if(!correctCard) {
+//      SystemCommands::beep(50);
+//    }
+
+    pteChecksumAdded->setPalette(pAdd);
+    pteChecksumIBM->setPalette(pIBM);
+    pteMD5->setPalette(pMD5);
+
+    QString uniqueIDString = QString(uniqueID);
+    pteUniquecardID->appendPlainText(uniqueIDString);
+    pteLocationNumber->appendPlainText(QString::number(locNr, 10));
+    pteRev->appendPlainText(QString::number(recRev, 10));
+    pteUserID->appendPlainText(QString::number(userID, 10));
+    pteCardID->appendPlainText(QString::number(cardID, 10));
+    pteChecksumAdded->appendPlainText(QString::number(crcAdd, 10));
+    pteChecksumIBM->appendPlainText(QString::number(crcIBM, 10));
+    pteMD5->appendPlainText(md5Sum);
 }
