@@ -15,7 +15,11 @@ set(SOURCE_FILES
                     src/CardInformation.hpp
                     src/LogFile.cpp
                     src/JobFile.cpp
-                    src/GeneralDefines.h)
+                    src/GeneralDefines.h
+                    src/Communicator.cpp
+                    src/Reader.cpp
+                    src/Writer.cpp
+                    src/SystemCommands.cpp)
 set(TESTCALCULATOR_FILES
                     src/Calculator.cpp
                     src/CardInformation.hpp
@@ -105,7 +109,7 @@ add_test(NAME JobFileTest WORKING_DIRECTORY testBin
 
 
 
-qt5_use_modules(GUI Core Widgets Gui)
+qt5_use_modules(GUI Core SerialPort Widgets Gui)
 qt5_use_modules(CalculatorTest Core)
 qt5_use_modules(EventHandlerTest Core Widgets)
 qt5_use_modules(LogfileTest Core )
