@@ -4,7 +4,7 @@ project(GUI)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 11)
 
-set(BOOST_DIR /usr/local/Cellar/boost/1.64.0)
+set(BOOST_DIR /usr/local/Cellar/boost/1.64.0_1)
 
 set(SOURCE_FILES
                     main.cpp
