@@ -15,6 +15,7 @@
 #include <iomanip>
 #include <QCryptographicHash>
 #include <QByteArray>
+#include <QChar>
 
 /**
  * \def KEY_1
@@ -157,6 +158,7 @@ class Calculator {
     static char hex2char(char nibble);
     static int intToHex(const int,
         unsigned char *const);
+    static int intToHex(const int input, QByteArray *const out);
     static int calcCRC16_added(card_info card);
     static void calcCRC16_added(card_info card,
               int* const outPut);
@@ -167,12 +169,15 @@ class Calculator {
               const int,
               int *const);
     static uint16_t calcCRC16_ibm (const uint8_t*, uint16_t);
+    static char xorOfUChars(const unsigned char char0,
+                            const unsigned char char1);
     static void calcMD5Xor(const unsigned char* inputData,
         unsigned char *const md5Data);
+    static void calcXor(const uint8_t, uint8_t*);
 
 	static void calculateQTMD5(const unsigned char* inputData,
         const int length, unsigned char md5Data[MD5_SIZE]);
-
+  static void endianSwitcher(QByteArray input, QByteArray* output);
 private:
     static int simpleIntToHex (const int,
         unsigned char *const);

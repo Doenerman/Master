@@ -104,6 +104,43 @@ int Calculator::intToHex(const int input, unsigned char *const out){
 	return succCalc;
 }
 
+int Calculator::intToHex(const int input, QByteArray *const out){
+
+	int succCalc;
+
+	// decompose input to the form i = x0*16^0 + x1*16^1 + x2*16^2 ...
+	// and store the x
+	// -> x0 = i % 16
+	// -> x1 = ((i - x0)/16)%16
+  int res = input;
+  while(res != 0) {
+    int modVal = res % 16;
+    res -= modVal;
+    res = res / 16;
+    unsigned char modChar;
+    simpleIntToHex(modVal, &modChar);
+    out->insert(0,(modChar));
+  }
+
+
+
+
+	// in order to check the calculation
+	// sum the int values of the calculated hex array and sum them up
+	int sum = 0;
+  for(unsigned int iter = 0; iter < out->size(); iter++) {
+    sum+=out->at(out->size()-iter-1)*pow(16,iter);
+  }
+
+
+	if(sum == input) {
+		succCalc = 1;
+	}
+	else
+		succCalc = 0;
+
+	return succCalc;
+}
 /**
  * @brief Calculates the integer value of the given character.
  *
@@ -322,7 +359,38 @@ void Calculator::calcMD5Xor(const unsigned char* inputData,
 
 	// Xor pairs of the calculated md5
 	for(int i = 0; i < (2*BYTE_PER_BLOCK); i++) {
-		md5Data[i] = (tempData[2*i] ^ tempData[2*i+1]);
+		md5Data[i] = Calculator::xorOfUChars(tempData[2*i], tempData[2*i+1]);
 	}
 }
 
+/**
+ * @brief Xors the two given unsigend Character.
+ *
+ * @param char0 First character for the xor calculation
+ * @param char1 Second character for the xor calculation
+ *
+ * @return The xored value of the given input.
+ */
+char Calculator::xorOfUChars(const unsigned char char0,
+                             const unsigned char char1) {
+  return char0 ^ char1;
+}
+
+/**
+ * @brief Switches the endian format of the input QByteArray and writes it into
+ * the pointer of the output QByteArray.
+ *
+ * @param[in] input   QByteArray whoes endian format should be switched
+ * @param[out] output Pointer to a QByteArray where transformed QByteArray
+ *                    is written in
+ */
+void Calculator::endianSwitcher(QByteArray input, QByteArray* output) {
+  if( (input.size() % 2) != 0) {
+    output->insert(0, '0');
+  }
+  for( int iter = 0; iter < input.size(); iter= iter +2) {
+    output->insert(0, input.at(iter+1));
+    output->insert(0, input.at(iter));
+  }
+
+}
