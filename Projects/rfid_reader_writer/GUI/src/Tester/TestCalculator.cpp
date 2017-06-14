@@ -27,8 +27,7 @@ BOOST_AUTO_TEST_SUITE( calculatorTest )
         }
 
         for(int iter = 0; iter < BLOCKSIZE_ON_CARD; iter++) {
-            calcVal = (calcVal | (Calculator::hex2char(buffer[iter]) <<
-                                                          MAXIMUM_NIBBLE_SHIFT - iter * SHIFT_NIBBLE) );
+            calcVal = (calcVal | (Calculator::hex2char(buffer[iter]) << (MAXIMUM_NIBBLE_SHIFT - iter * SHIFT_NIBBLE)) );
         }
 
 
@@ -122,6 +121,8 @@ BOOST_AUTO_TEST_SUITE( calculatorTest )
 
         BOOST_CHECK( succ );
     }
+
+// @todo hardcoded xor test with result
     /**
      * @brief Tests the method \link calcMD5Xor \endlink with fix parameter.
      *
@@ -167,6 +168,38 @@ BOOST_AUTO_TEST_SUITE( calculatorTest )
             std::cout << std::endl;
         }
         BOOST_CHECK( succ );
+
+    }
+    BOOST_AUTO_TEST_CASE( endianSwitcherTest ) {
+
+      bool succ = true;
+      
+      QByteArray initial, singleSwitched, doubleSwitched;
+
+      for(int iter = 0; iter < 10; iter++) {
+        initial.append(iter);
+      }
+
+      Calculator::endianSwitcher(initial, &singleSwitched);
+      Calculator::endianSwitcher(singleSwitched, &doubleSwitched);
+
+      for(int iter = 0; iter < initial.size(); iter++) {
+        if(initial.at(iter) != doubleSwitched.at(iter)) {
+          std::cout << " endianSwitcher: " << iter << " ";
+          std::cout << initial.at(iter) << " " << doubleSwitched.at(iter);
+          succ = false;
+        }
+      }
+      BOOST_CHECK( succ );
+    }
+
+    BOOST_AUTO_TEST_CASE( xorTest ) {
+      uint8_t int1 = (uint8_t)0x01001110;
+      uint8_t int2 = (uint8_t)0x11111111;
+      uint8_t correctXor = (uint8_t)0x10110001;
+      uint8_t calcXor = Calculator::xorOfUChars(int1, int2);
+
+      BOOST_CHECK( correctXor == calcXor );
 
     }
 
