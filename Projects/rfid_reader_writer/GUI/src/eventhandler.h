@@ -16,6 +16,7 @@
 #include "CardInformation.hpp"
 #include "LogFile.h"
 #include "JobFile.h"
+#include "Tester/TestCards.h"
 
 #define CONVERSIONCHECK_PASSED 1
 #define CONVERSIONCHECK_FAILED_CARDID -1
@@ -38,6 +39,17 @@
 // used in case there is no real writting process
 #define WRITEPROCESS WRITING_SUCCESSFULL
 
+#define CORRECTNESS_ERROR_AMOUNT 3
+#define CRCADD_ERROR 0
+#define CRCIBM_ERROR 1
+#define MD5SUM_ERROR 2
+
+#define CRCADD_ERROR_POS 0
+#define CRCIBM_ERROR_POS 1
+#define MD5SUM_ERROR_POS 2
+
+#define NO_CHECKSUM_ERROR 0
+#define CHECKSUM_ERROR -1
 
 class EventHandler : public QObject
 {
@@ -73,13 +85,21 @@ public:
                                 const QString stringUserID,
                                 const QString stringCardID,
                                 card_info* card);
+    static void tempWrite(
+        const QString cardType,
+        const QString recRev,
+        const QString locNr,
+        const QString userID,
+        const QString cardID);
+    static bool checkCardCorrectness(const card_info card, 
+                                  QVector<int>* results);
 private:
     static int writeProcess(const Job job,
                             QString* const consoleOutput,
                             QString* const cardsLeft,
                             QString* const nextCardID);
 
-    static void writeCard(const card_info card,
+    static int writeCard(const card_info card,
                          QVector<int>* error);
 
 

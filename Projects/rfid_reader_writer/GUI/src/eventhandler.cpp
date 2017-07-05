@@ -93,6 +93,36 @@ int EventHandler::convertQStringsToCard(  QString stringCardType,
 
     return succConversion;
 }
+
+
+
+
+
+
+void EventHandler::tempWrite(
+        const QString cardType,
+        const QString recRev,
+        const QString locNr,
+        const QString userID,
+        const QString cardID) {
+  card_info tempCard;
+  QVector<int> res;
+  QString crcAdd, crcIBM;
+  unsigned char md5CharArr[2*BLOCKSIZE_ON_CARD];
+  EventHandler::convertQStringsToCard(cardType, recRev, locNr, userID, cardID, &tempCard);
+  tempCard.crc16_added = Calculator::calcCRC16_added(tempCard);
+  tempCard.crc16_ibm = Calculator::calcCRC16_ibm(&tempCard.card_type,
+                                    INFORMATION_LENGTH_IN_BYTE);
+
+  Calculator::calcMD5Xor(&tempCard.uid[0], md5CharArr);
+  for(int iter = 0; iter < (BLOCKSIZE_ON_CARD); iter++) {
+    tempCard.md5_arr[iter] = md5CharArr[iter];
+  }
+
+
+  Writer::writeCompleteCard(tempCard, &res);
+
+}
 /**
  * @brief This method starts the writting process.
  *
@@ -226,6 +256,7 @@ int EventHandler::initWrittingProcess(
 
         if ((iterate && cardAmount > 0) || (!iterate)) {
             succWritting = WRITEPROCESS;
+            
         }
         if (iterate && (cardAmount <= 0)) {
             succWritting = NO_CARD_LEFT_TO_WRITE;
@@ -237,7 +268,7 @@ int EventHandler::initWrittingProcess(
         // Write Logfile //
         ///////////////////
 
-    consoleOutput->clear();
+        consoleOutput->clear();
         // conversion of all data was successfull
         if (jobCreated == JOBCREATION_SUCC) {
 
@@ -398,7 +429,79 @@ int EventHandler::calculateChecksums(
  * @param[out] error  A QVector<int> where all error that occured while writting are
  *                    logged
  */
-void EventHandler::writeCard(const card_info card,
+int EventHandler::writeCard(const card_info card,
                             QVector<int>* error) {
     // @todo impelment
+
+
+  return -1;
+    
+}
+
+bool EventHandler::checkCardCorrectness(const card_info card, QVector<int>* results) {
+
+  bool correctCard = true;
+
+  QByteArray uniqueID, md5Sum;
+
+
+  for(int iter = 0; iter < 2*BLOCKSIZE_ON_CARD; iter++) {
+    md5Sum.append(card.md5_arr[iter]);
+  }
+  
+
+  // calculate checksums
+  uint16_t crcAdd_calc, crcIBM_calc;
+  crcAdd_calc = Calculator::calcCRC16_added(card);
+  crcIBM_calc = Calculator::calcCRC16_ibm ((uint8_t*)(&card.card_type), 12);
+  unsigned char md5Calc[2*BYTE_PER_BLOCK];
+  for(int i = 0; i<2*BYTE_PER_BLOCK; i++) {
+      md5Calc[i] = '-';
+  }
+  Calculator::calcMD5Xor((uint8_t*)(&TESTCARD.uid[0]), &md5Calc[0]);
+
+  results->clear();
+  for(int iter = 0; iter < CORRECTNESS_ERROR_AMOUNT; iter++) {
+    results->append(NO_CHECKSUM_ERROR);
+  }
+
+
+  // check equality of the calculated checksums
+  if(crcAdd_calc != card.crc16_added) {
+    results->replace(CRCADD_ERROR_POS, CHECKSUM_ERROR);
+    correctCard = false;
+  }
+  if(crcIBM_calc != card.crc16_ibm) {
+    results->replace(CRCIBM_ERROR_POS, CHECKSUM_ERROR);
+    correctCard = false;
+  }
+
+  QString tempString;
+  for(int iter = 0; iter < 2*BYTE_PER_BLOCK; iter++) {
+    QByteArray temp;
+    Calculator::intToHex(card.md5_arr[iter], &temp);
+    if(temp.size()%2 != 0)
+      temp.insert(0, '0');
+    tempString.append(temp);
+  }
+  if( 0 ==
+      QString::compare(QString(md5Sum), tempString, Qt::CaseInsensitive)) {
+    results->replace(MD5SUM_ERROR_POS, CHECKSUM_ERROR);
+    correctCard = false;
+  }
+
+  std::cout << "calc md5: ";
+  for(int iter = 0; (iter < tempString.size()) && (iter < BLOCKSIZE_ON_CARD); iter++) {
+    std::cout << tempString.toUtf8().at(iter);
+  } std::cout<< std::endl;
+  std::cout << "read md5: " << md5Sum.data() << std::endl;
+  Reader::printCard(card);
+
+
+  if(!correctCard) {
+    SystemCommands::beep(50);
+  }
+
+
+  return correctCard;
 }

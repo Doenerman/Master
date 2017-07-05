@@ -224,7 +224,8 @@ MainWindow::MainWindow(QWidget *parent)
     // ## Set the focus order ## //
     // ######################### //
     this->setTabOrder(leUserID, leCardID);
-    this->setTabOrder(leCardID, cbIterate);
+    this->setTabOrder(leCardID, leJobID);
+    this->setTabOrder(leJobID, cbIterate);
     this->setTabOrder(pbStart,pbRead);
     this->setTabOrder(pbRead,pbClose);
 
@@ -232,7 +233,7 @@ MainWindow::MainWindow(QWidget *parent)
     // ########################################### //
     // ## Connections between SIGNALS and SLOTS ## //
     // ########################################### //
-    connect(this->pbStart,SIGNAL(clicked(bool)),this,SLOT(pushStartButton()));
+    connect(this->pbStart,SIGNAL(clicked(bool)),this,SLOT(pushStartButton2()));
     connect(this->pbRead,SIGNAL(clicked(bool)),this,SLOT(pushReadButton()));
     connect(this->cbIterate,SIGNAL(stateChanged(int)),
             this, SLOT(enable_disable_iterativeWrittingInput()));
@@ -271,6 +272,19 @@ void MainWindow::setLightBoxColor(int color) {
     else if( color == LIGHTBOX_RED ) {
         pteLightBox->setStyleSheet("QPlainTextEdit {background-color: red;}");
     }
+}
+
+void MainWindow::pushStartButton2() {
+    QString cardType = leCardType->displayText();
+    QString recRev = leRecRev->displayText();
+    QString locNr = leLocNr->displayText();
+    QString initCardID = leCardID->displayText();
+    QString initUserID = leUserID->displayText();
+    QString jobID = leJobID->displayText();
+    QString cardAmount = leCardAmount->displayText();
+
+    EventHandler::tempWrite(cardType, recRev, locNr, initCardID, initUserID);
+
 }
 /**
  * @brief Initiate the writting process.
@@ -402,8 +416,6 @@ void MainWindow::pushReadButton() {
     ciw->setFixedWidth(400);
     ciw->setFixedHeight(700);
     ciw->show();
-
-
 }
 
 

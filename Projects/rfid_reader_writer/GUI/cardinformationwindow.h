@@ -6,10 +6,13 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QtSerialPort/QSerialPort>
+#include <QPalette>
+
 
 #include "src/eventhandler.h"
 #include "src/Communicator.hpp"
 #include "src/Reader.hpp"
+#include "src/Tester/TestCards.h"
 
 
 // ################################### //
@@ -49,7 +52,6 @@ signals:
 
 private:
 
-    HANDLE* rfid;
 
     // ########### //
     // ## Label ## //
@@ -66,7 +68,12 @@ private:
       * location number
       */
     QLabel* lLocationNumber = new QLabel(this);
-/** @todo add missing label for the information of the first block */
+    /**
+     * @var lCardType
+     * QLabel to inform the user that the QPlainTextEdit below shows the card
+     * type
+     */
+    QLabel* lCardType = new QLabel(this);
     /**
       * @var lRev
       * QLabel to inform the user that the QPlainTextEdit below shows the
@@ -118,7 +125,11 @@ private:
       * A QPlainTextEdit field for the output of the read location number
       */
     QPlainTextEdit* pteLocationNumber = new QPlainTextEdit(this);
-/** @todo add missing information of the first block */
+    /**
+     * @var pteCardType
+     * A QPlainTextEdit field for the output of the read card type
+     */
+    QPlainTextEdit* pteCardType = new QPlainTextEdit(this);
     /**
       * @var pteRev
       * A QPlainTextEdit field for the output of the read revision number

@@ -14,6 +14,7 @@
 #include <QLayout>
 
 #include "src/eventhandler.h"
+#include "src/Writer.h"
 #include "src/CardInformation.hpp"
 #include "cardinformationwindow.h"
 #include "src/GeneralDefines.h"
@@ -266,12 +267,13 @@ private:
     QPushButton* pbClose = new QPushButton(this);
 
 public slots:
-    static void conversionErrorWindow(const int conversionErrorNumber);
+ static void conversionErrorWindow(const int conversionErrorNumber);
 public:
     void printOutputConsole(QString output);
     void setLightBoxColor(int color);
 private slots:
     void pushStartButton();
+    void pushStartButton2();
     void pushReadButton();
     void enable_disable_iterativeWrittingInput();
     void updateChecksums();

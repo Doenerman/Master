@@ -32,6 +32,12 @@ CardInformationWindow::CardInformationWindow(QWidget *parent)
                                        LABEL_DEFAULT_HEIGHT));
     lLocationNumber->setText(QString::fromUtf8("Landeskennung"));
 
+    lCardType->setObjectName(QString::fromUtf8("label_cardType"));
+    lCardType->setGeometry(QRect(LABEL_X_POS_SECOND_COLUMN,
+                                 LABEL_Y_POS_LOCNR,
+                                 LABEL_DEFAULT_WIDTH,
+                                 LABEL_DEFAULT_HEIGHT));
+
     lRev->setObjectName(QString::fromUtf8("label_revision"));
     lRev->setGeometry(QRect(LABEL_X_POS_SECOND_COLUMN,
                             LABEL_Y_POS_REVNR,
@@ -94,6 +100,14 @@ CardInformationWindow::CardInformationWindow(QWidget *parent)
                                          + PLAINTEXT_LABEL_PUFFER,
                                          PLAINTEXTEDIT_DEFAULT_WIDTH,
                                          PLAINTEXTEDIT_DEFAULT_HEIGHT));
+
+
+    pteCardType->setObjectName(QString::fromUtf8("pte_cardType"));
+    pteCardType->setEnabled(false);
+    pteCardType->setGeometry(QRect(PLAINTEXTEDIT_X_SECOND_COLUMN,
+                                   LABEL_Y_POS_LOCNR + PLAINTEXT_LABEL_PUFFER,
+                                   PLAINTEXTEDIT_DEFAULT_WIDTH,
+                                   PLAINTEXTEDIT_DEFAULT_HEIGHT));
 
     pteRev->setObjectName(QString::fromUtf8("pte_revNr"));
     pteRev->setEnabled(false);
@@ -181,10 +195,6 @@ CardInformationWindow::CardInformationWindow(QWidget *parent)
     connect(this->pbClose,SIGNAL(clicked(bool)),this,SLOT(close()));
     connect(this->pbRefresh,SIGNAL(clicked(bool)),this,SLOT(reload()));
 
-    // ################################# //
-    // ## Read the data from the card ## //
-    // ################################# //
-    CardInformationWindow::reload();
 }
 
 
@@ -197,6 +207,8 @@ void CardInformationWindow::reload() {
 
     int cardType, recRev, locNr, userID, cardID, crcAdd, crcIBM;
     QByteArray uniqueID, md5Sum;
+    QVector<int> error;
+    bool correctCard = true;
 
     QPalette pAdd = pteChecksumAdded->palette();
     QPalette pIBM = pteChecksumIBM->palette();
@@ -206,14 +218,10 @@ void CardInformationWindow::reload() {
     pIBM.setColor(QPalette::Text, Qt::blue);
     pMD5.setColor(QPalette::Text, Qt::blue);
 
-    bool correctCard = true;
-
-
-    Reader::readCard(&uniqueID, &cardType, &recRev, &locNr, &userID, &cardID, &crcAdd, &crcIBM, &md5Sum);
-
 
     pteUniquecardID->clear();
     pteLocationNumber->clear();
+    pteCardType->clear();
     pteRev->clear();
     pteUserID->clear();
     pteCardID->clear();
@@ -221,9 +229,12 @@ void CardInformationWindow::reload() {
     pteChecksumIBM->clear();
     pteMD5->clear();
 
+    Reader::readCard(&uniqueID, &cardType, &recRev, &locNr, &userID, &cardID, &crcAdd, &crcIBM, &md5Sum);
+
+
     // calculate checksums
     card_info tempCard;
-    for(int iter = 0; iter < UID_LENGTH; iter++) {
+    for(int iter = 0; iter < uniqueID.size(); iter++) {
       tempCard.uid[iter] = uniqueID.at(iter);
     }
     tempCard.card_type = cardType;
@@ -232,47 +243,29 @@ void CardInformationWindow::reload() {
     tempCard.reserved_block0 = 0;
     tempCard.kunden_nr = userID;
     tempCard.card_nr = cardID;
-    uint16_t crcAdd_calc, crcIBM_calc;
-    crcAdd_calc = Calculator::calcCRC16_added(tempCard);
-    crcIBM_calc = Calculator::calcCRC16_ibm ((uint8_t*)(&tempCard.card_type), 12);
     tempCard.crc16_added = crcAdd;
     tempCard.crc16_ibm = crcIBM;
-    unsigned char md5Calc[2*BYTE_PER_BLOCK];
-    for(int i = 0; i<2*BYTE_PER_BLOCK; i++) {
-        md5Calc[i] = '-';
+    tempCard.reserve_block4 = 0;
+    tempCard.reserve_block5 = 0;
+
+    unsigned char* temp;
+
+
+    bool cardIsCorrect = EventHandler::checkCardCorrectness(tempCard, &error);
+
+    if(!cardIsCorrect) {
+      
+      if(error.at(CRCADD_ERROR_POS) == CHECKSUM_ERROR) {
+        pAdd.setColor(QPalette::Text, Qt::red);
+      }
+      if(error.at(CRCIBM_ERROR_POS) == CHECKSUM_ERROR) {
+        pIBM.setColor(QPalette::Text, Qt::red);
+      }
+      if(error.at(MD5SUM_ERROR_POS) == CHECKSUM_ERROR) {
+        pMD5.setColor(QPalette::Text, Qt::red);
+      }
+
     }
-    Calculator::calcMD5Xor((uint8_t*)(&tempCard.uid[0]), &md5Calc[0]);
-
-
-    for(int i = 0; i < 2*BYTE_PER_BLOCK; i++) {
-        std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)md5Calc[i];
-    }
-
-            std::cout << std::endl;
-
-    if(crcAdd_calc != crcAdd) {
-      pAdd.setColor(QPalette::Text, Qt::red);
-      correctCard = false;
-    }
-    if(crcIBM_calc != crcIBM) {
-      pIBM.setColor(QPalette::Text, Qt::red);
-      correctCard = false;
-    }
-
-    QString tempString;
-    for(int iter = 0; iter < 2*BYTE_PER_BLOCK; iter++) {
-      tempString.append(md5Calc[iter]);
-    }
-    if( 0 ==
-        QString::compare(QString(md5Sum), tempString, Qt::CaseInsensitive)) {
-      pMD5.setColor(QPalette::Text, Qt::red);
-      correctCard = false;
-    }
-
-
-//    if(!correctCard) {
-//      SystemCommands::beep(50);
-//    }
 
     pteChecksumAdded->setPalette(pAdd);
     pteChecksumIBM->setPalette(pIBM);
@@ -281,6 +274,7 @@ void CardInformationWindow::reload() {
     QString uniqueIDString = QString(uniqueID);
     pteUniquecardID->appendPlainText(uniqueIDString);
     pteLocationNumber->appendPlainText(QString::number(locNr, 10));
+    pteCardType->appendPlainText(QString::number(cardType, 10));
     pteRev->appendPlainText(QString::number(recRev, 10));
     pteUserID->appendPlainText(QString::number(userID, 10));
     pteCardID->appendPlainText(QString::number(cardID, 10));
