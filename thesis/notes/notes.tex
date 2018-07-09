@@ -1,0 +1,224 @@
+\documentclass[10pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\usepackage{blindtext}
+\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,shadows,positioning,shapes}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{subfiles}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{wrapfig}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\theoremstyle{plain}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+
+\begin{document}
+
+%\begin{lstlisting}[escapeinside={(*}{*)}]
+%  For each (*$i\in \{0,\dots,k\}$*)
+%    (*$Q_i=\{q\in Q | \text{ $q$ is part of a path to a reachable loop $l$,
+%                      with $\forall q^\prime \in l, c(q)\geq i$ and}$*)
+%              (*$q^{\prime\prime} \in l, c(q^{\prime\prime})=i,$ and $i$
+%                      is the minimal color of l$\}$ *)
+%        (*$\cup \{q\in Q| \text{ $q$ is part of a reachable loop $l$, 
+%                      with $\forall q^\prime \in l, c(q)\geq i$ and}$*)
+%                (*$q^{\prime\prime} \in l, c(q^{\prime\prime})=i,$ and $i$
+%                        is the minimal color of l$\}$ *)
+%        (*$\cup \{s\}$*)
+%    (*$\delta_i=\{ (p,a,q)\in \delta| p,q\in Q_i\}$*)
+%        (*$\cup \{ (p,a,s)\in Q_i\times \Sigma\times \{s\)| (p,a,q)\in \delta,
+%        p\in Q_i, q\net\
+%\end{lstlisting}
+
+\section{DFA representation of deterministic parity automata}
+  \begin{definition}{DFA representation of a DPA}
+    Let $\mathfrak{A}=(Q,\Sigma,q_0,\delta,c),c=Q\rightarrow \{0,\dots,k\}$ be a
+    deterministic parity automaton. $(\mathfrak{A}_0,\dots,\mathfrak{A}_k)$ is
+    a DFA representation of $\mathfrak{A}$ if and only if the following holds:
+    \begin{enumerate}
+      \item $\mathfrak{A}_i=(Q_i,\Sigma, q_0^i, \delta_i, F_i)$ is a DFA,
+              $\forall i\in \{0,\dots,k\}$
+      \item For each priority $i\in \{0,\dots,k\}$ there exists a DFA
+              $\mathfrak{A}_i$
+      \item $\mathfrak{A}_i$ accepts
+            \begin{itemize}
+              \item all $w\in \Sigma^\star$ with $c(\delta^\star(q_0,w))=i \;\;[\leq i]$
+              \item no $w\in \Sigma ^\star$ with $c(\delta^\star(q_0,w))>i$
+            \end{itemize}
+      \item If $(q,a,p)\in \delta$ then there exists some $\mathfrak{A}_i$ with
+              $(q,a,p)\in \delta_i$
+      \item If $p,q,q^\prime \in Q$ and for some
+              $\mathfrak{A}_i,\mathfrak{A}_j$, $(p,a,q)\in \delta_i$ and
+              $(p,a,q^\prime)\in \delta_j$, then $q=q^\prime, \forall a\in
+              \Sigma$
+    \end{enumerate}
+    luul
+  \end{definition}
+
+
+  \begin{lemma}
+    For all $w\in \Sigma^\omega$ if $w$ has priority $i$ on the run on
+    $\mathfrak{A}$ then there exists an $\mathfrak{A}_i$ that accepts $w$ under
+    Büchi condition.
+    \begin{proof}
+      Let $i$ be the minimal priority seen on the word $w\in\Sigma^\omega$
+      infinitly many times on the run $\rho$ on $\mathfrak{A}$. Thus there is a
+      loop $l$ in $\mathfrak{A}$ that is used infinitly often where the minimal 
+      priority is $i$. Thus the state $q\in l$ with $c(q)=i$ is visited infinitly 
+      many times. So $q$ is a reachable state with priority $i$. Since for each
+      priority there is a DFA $\mathfrak{A}_i$ with $w^\prime\in\Sigma$ and $
+      w\prime \in L(\mathfrak{A}_i)$ if and only if $c(\delta^\star(q_0,w^\prime))=i$
+      such $\mathfrak{A}_i$ exists.
+      Since from somepoint onwards in $\mathfrak{A}$ a loop is used infinitly
+      many times the word $w$ can be decomposed into $w=uv^\omega$, where $u$ is
+      responsible for reaching the state $q$ with $c(q)=i$ and the word $v$ is
+      responsible for the loop, $\delta^\star(q,v)=q$. Since both $u,v\in
+      \Sigma^\star$ the DFA $\mathfrak{A}_i$ also must accept the word $uv,
+      uv^2,uv^3,\dots,uv^n$ for all $n\in\mathbb{N}$. Now let
+      $L_{q_0,q}$ the language that accepts all words 
+      $w^{\prime\prime}\in \Sigma^\star$  with 
+      $\delta^\star(q_0,w^{\prime\prime})=q$. Then by definition of
+      $\mathfrak{A}_i$, $L(\mathfrak{A}_i)=L_{q_0,q}$. Thus there exists a
+      regular expression $r_{q_0,q}$ with $r=L(\mathfrak{A}_i)=L_{q_0,q}$. Now let
+      $\mathfrak{A}_i^\prime=(Q_i,\Sigma,q,\delta_i,F_i)$, so instead of
+      starting in $q_0$, $\mathfrak{A}_i^\prime$ starts in $q$.
+      Since $\mathfrak{A}_i^\prime$ is a DFA, the regular expression
+      $r_{q,q}=L(\mathfrak{A}_i^\prime)$ exists. 
+      So for $w=uv^\omega$, $u\in L_{q_0,q}$ if and only if $u\in r_{q_0,q}$ and $v\in
+      L_{q,q}$ if and only if $r_{q,q}$. So a word has priority $i$ if and only
+      if the regular expression $r_i$ with
+      \begin{displaymath}
+        r_i = \bigcup\limits_{q\in F_i} r_{q_0,q} \cdot r_{q,q}^\omega
+      \end{displaymath}
+      is satisfied. $r_i$ is a $\omega$-regular expression and thus
+      Büchi-recongizable. Furthermore $\mathfrak{A}_i$ recognizes $r_i$ under
+      Büchi-condition.
+
+    \end{proof}
+  \end{lemma}
+
+  In the following it is assumed that each
+  $\mathfrak{A}_i=(Q_i,\Sigma,q_0,\delta_i,F_i)$ is minimal and there
+  exists a state $s\in Q_i$ such that from $s$ no final state $q\in F_i$ is
+  reachable. The state $s$ can be considered as a sink since $\mathfrak{A}_i$ is
+  minimal, there only exists on state $s$ from which no final state can be
+  reached. Thus $s$ can be idetified with ease.
+
+  \begin{lemma}
+    Let $\mathfrak{A}=(Q,\Sigma,q_0,\delta,F)$ be a DFA. If $\exists q\in Q$
+    with $\forall w\in \Sigma^\star, \delta^\star(q_0,w)\in F$, then there
+    exists a DFA $\mathfrak{A}^\prime=(Q^\prime,\Sigma,q_0,\delta^\prime,F)$
+    such that $s\in Q^\prime$ is a sink node and has no outgoing edge to another
+    node than $s$ and $L(\mathfrak{A})=L(\mathfrak{A}^\prime)$.
+    
+    \begin{proof}
+      Therefore choose:
+      \begin{itemize}
+        \item \begin{displaymath}
+                Q^\prime=\{q\in Q| \exists w\in \Sigma^\star,
+                  \delta^\star(q,w)\in F\}\cup \{s\}
+              \end{displaymath}
+        \item \begin{displaymath}
+                \begin{array}{l l}
+                  \delta^\prime=&\{(p,a,q)\in\delta|q,p\in Q^\prime\} \\
+                    & \cup \{(p,a,s)\in Q^\prime \times \Sigma \times \{s\} | \forall
+                    (p,a,q)\in \delta, q\in Q^\prime, q\not \in Q^\prime\} \\ &\cup 
+                    \{(s,a,s)\in \{s\}\times\Sigma\times\{s\}|\forall a\in
+                    \Sigma\}
+                  \end{array}
+                \end{displaymath}
+      \end{itemize}
+      First we show that
+      $\mathfrak{A}^\prime=(Q^\prime,\Sigma,q_0,\delta^\prime,F)$ is a DFA.
+      Therefore it is sufficient to show that $Q^\prime$ is a finite statespace
+      and that for each $w\in \Sigma^\star$ there is a unique run $\rho$ on
+      $\mathfrak{A}^\prime$. When this is proven,
+      $L(\mathfrak{A})=L(\mathfrak{A}^\prime)$ will be shown and $\mathfrak{A}^\prime$ fits
+      the conditions of the lemma.
+
+      Since $Q^\prime \leq Q \cup \{s\}, Q^\prime$ is trivially finite. Now let
+      $w\in \Sigma^\star$. By construction there is no $(q,\epsilon,p)\in
+      \delta^\prime,$ with $q\neq p$, since no such transition is part of $\delta$ and all
+      transitions artifically added requiere some $a\in \Sigma$, so there is no
+      transition $(q,\epsilon,p)\in \delta^\prime$.
+      Now assume that there exist the following transitions
+      $(q,a,p),(q,a,p^\prime)\in \delta^\prime$, with $q\neq p$. Because the
+      only node with $q\in Q^\prime$ and $q\not\in Q$ is $s$, either $(q,a,p)\in
+      \delta$ or $(q,a,p^\prime)\in \delta$. Assume $(q,a,p^\prime)\in\delta$,
+      the other case is analogous. Thus, $p=s$ and $(q,a,s)\in\{(p,a,s)\in 
+      Q^\prime \times \Sigma \times \{s\} | \forall (q,a,p)\in \delta, q\in Q^\prime, q\not
+      \in Q^\prime\}=:\delta_1^\prime$. But since $(q,a,p)\in \delta^\prime,p\in
+      Q^\prime$, thus $(q,a,s)\not\in\delta_1^\prime$. It is left to show that
+      for each state $q\in Q^\prime$ and letter $a\in \Sigma$ there is a
+      transition $\delta(q,a)\in Q^\prime$.
+      So let $q\in Q^\prime$ be any state such there is no transition
+      $(q,a,p)\in\delta^\prime$, with $a\in \Sigma$ and $p\in Q^\prime$. Since
+      for the state $s$ there exists a transition $(s,a,s)\in \delta^\prime,
+      \forall a\in \Sigma$, $q\neq s$. So $q\in Q^\prime\setminus\{s\}$. But for
+      all transitions $(q,a,p)\in \delta$ where $q\in Q^\prime$ but $p\not \in
+      Q^\prime$ the transition $(q,a,s)$ is added.
+      
+
+
+%      So now lets assume there exists an $w\in \Sigma^\star$ with $w\in
+%      L(\mathfrak{A}_i)$, thus on $\mathfrak{A}_i$ there exist the unique
+%      transitions such that $\delta_i^\star(q_0,w)=q\in F_i$. Since all paths with $w\in
+%      \Sigma^\prime$ and $\delta_i^\star(q_0,w^\prime)\in F_i$ are also covered
+%      by $\mathfrak{A}_i^\prime$ and so $w\in L(\mathfrak{A}_i^\prime)$.
+%
+%      Now let there be a word $w\in \Sigma^\star$ such that $w\in
+%      L(\mathfrak{A}_i^\prime)$. Since the final states of
+%      $\mathfrak{A}_i^\prime$ are the same like in $\mathfrak{A}_i$ it is
+%      sufficent to show that for all $u,v,w\in \Sigma^\star$ with $w=uv$ the
+%      following allways holds $\delta^\prime$ $\delta^{\prime\star}(q_o,uv)\in
+%      F$ and $\delta^{\prime\star}(q_0,u)=s$. Since $
+      
+    \end{proof}
+  \end{lemma}
+  
+
+
+\section{Reconstruction Algorithm}
+
+  \begin{lemma}
+    Let $(\mathfrak{A}_0,\dots,\mathfrak{A}_k)$ be a DFA representation of a DPA
+    $\mathfrak{A}=(Q,\Sigma,q_0,\delta,c),c(q):Q\rightarrow \{0,\dots, k\}$ and
+    $L_i$ be the set of reachable loops in $\mathfrak{A}_i$ such that for each
+    loop $l\in L_i$ either there exists a state $q\in l$ with $q\in F_i$ or from
+    $l$ there is a reachable loop $l^\prime$ with $q^\prime \in l^\prime$ and 
+    $q^\prime \in F_i$.
+    All states $q\in Q_i$ that are not part of a loop $l\in L_i$ or part of a
+    path to a loop in $L_i$ can be merged and form the new automaton
+    $\mathfrak{A}_i^\prime$ such that $(\mathfrak{A}_0,\dots,\mathfrak{A}_i^\prime,
+    \dots,\mathfrak{A}_k)$ is still a DFA representation of the DPA $\mathfrak{A}$.
+
+    \begin{proof}
+      Since for each priority there is exactly one DFA
+      $\mathfrak{A}_i=(Q_i,\Sigma,q_0,\delta_i,F_i)$ and it was shown that for
+      each $w\in \Sigma^\omega$, where the priority of the word $w$ is $k$,
+      there exists a DFA $\mathfrak{A}_k$ that accepts $w$ under Büchi
+      condition.
+
+    \end{proof}
+  \end{lemma}
+
+
+
+\end{document}
+
