@@ -1,0 +1,40 @@
+\documentclass[10pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\usepackage{blindtext}
+\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,shadows,positioning,shapes}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{subfiles}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{wrapfig}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\theoremstyle{plain}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\begin{document}
+
+\begin{lemma}
+  Let $\mathfrak{A}=(Q,\Sigma,q_0,\delta,c),c:Q\rightarrow \{0,\dots,k\}$ be a DPA and $(\mathfrak{A}_0,\dots,\mathfrak{A}_k)$ be its DFA representation. Let $Q^l\subseteq Q$ be the states of $\mathfrak{A}$ that are part of the loop and $Q_{i}^l$ be that states of $\mathfrak{A}_i$ that are part of a loop.
+  If the automaton $\mathfrak{A}$ is minimal, then the following holds:
+  \begin{displaymath}
+    \bigcup\limits_{i\in\{0,\dots,k\} Q_i^{l}\geq Q^l
+  \end{displaymath}
+\end{lemma}
+
+\end{document}
