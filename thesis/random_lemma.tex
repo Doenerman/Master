@@ -30,11 +30,24 @@
 \begin{document}
 
 \begin{lemma}
-  Let $\mathfrak{A}=(Q,\Sigma,q_0,\delta,c),c:Q\rightarrow \{0,\dots,k\}$ be a DPA and $(\mathfrak{A}_0,\dots,\mathfrak{A}_k)$ be its DFA representation. Let $Q^l\subseteq Q$ be the states of $\mathfrak{A}$ that are part of the loop and $Q_{i}^l$ be that states of $\mathfrak{A}_i$ that are part of a loop.
-  If the automaton $\mathfrak{A}$ is minimal, then the following holds:
-  \begin{displaymath}
-    \bigcup\limits_{i\in\{0,\dots,k\} Q_i^{l}\geq Q^l
-  \end{displaymath}
+  Let $\mathfrak{A}=(Q,\Sigma,q_0,\delta,c),c:Q\rightarrow \{0,\dots,k\}$ be a DPA and $(\mathfrak{A}_0,\dots,\mathfrak{A}_k)$ be its DFA representation. Let $l\subseteq Q$ be a set of states such that for all $q\in l$ there exists a word $w\in\Sigma^+$ and $\delta^+(q,w)=q$.
+  If the DPA $\mathfrak{A}$ is minimal, then each loop $l\subseteq Q$ there exists an automaton $\mathfrak{A}_i$ that has a loop $l_i^\prime\subseteq Q_i$ of the same size as $l$.
+  
+  \begin{proof}
+    In order to show the lemma, it is shown that, for each state in a loop there must exist an automaton $\mathfrak{A}_i$ where both, the state is contained in and the state can not be merged with any other state.
+    So let $q\in Q^l$ be the only state with $c(q)=i$ in a loop $l$. Since $q$ has the color $i$, the automaton $\mathfrak{A}_i$ accepts the words $w\in\Sigma^\star$ with $\delta^\star(q_0,w)=q$. In order to show that $|l_i^\prime|\leq|l|$ the following cases must be handled:
+    \begin{enumertate}
+      \item $q$ is the only node in $l$ that has color $i$
+      \item $q$ is not the only node with color $i$
+    \end{enumate}
+    Assume the first case. In case $|l|=k^\prime$ and there is no other loop $l^\prime$ with $|l^\prime|<k$ the case is trivial. Since there is a shortest word $w\in\Sigma^\+$ such that $|w|=k$ and $\delta^+(q,w)=q$ with $q\in l$. Assume the loop $l_i^\prime$ in $\mathfrak{A}_i$, that is responsible for all words $w^\prime\in\Sigma^\star$ with $u\in\Sigma^\star$ and $v\in\Sigma^+,w=uv$ with $\delta^\star(q_0,u)=q$ and $\delta^+(q,v)=q$, has not as many states as $l$. So in there would be a shortest word $w_s\in\Sigma^+$ such that $\delta^+_i(q,w_s)=q$ but $\delta^+(q,w_s)\neq q$.
+    Now let there be $q_1,\dots,q_j\in l^\prime_i$ with $c(q_1)=\dots=c(q_j)=i$. There meight be two cases that appear. In the first case, some nodes of the loop $l^\prime_i$ can be merge, in the other case no node can be merged.
+    In case nodes can be merged it still must hold if $w\in \Sigma^\star$ and $\delta^\star(q,w)=q$ for $q\in l$ then also $\delta_i^\star(q,w)=q$. Thus if the states $q,q^\prime \in l$ are merged and $w^\prime\in\Sigma^+$ is the shortest word such that $\delta^+(q,w^\prime)=q^\prime$ holds, for $l$ the following must hold:
+    \begin{displaymath}
+    |l| \mod |w^\prime| = 0
+    \end{displaymath}
+    and every $|w|$-th state in $l$ must have the color $i$. If $q$ and $q^\prime$ are merged and the previous mentioned does not hold, there would either be a word $w\in\Sigma^\star$ with $|w| \mod |w^\prime| \neq 0$ and $\delta^\star(q,w)=q$ does not hold, or not every $|w|$-th state in $l$ does not have color $i$. If $|w| \mod |w^\prime| \neq 0$ hold, there exists a state $q_p\in l$ and a word $w\in\Sigma^+$ with $c(q_p)=c(\delta^+(q_p,w))$, in particular this holds for $\delta^+(q_p,w)=q_p$, but not $q_p\in F_i \Leftrightarrow \delta^+_i(q_p,w)=q$. If not every $|w|$-th state in $l$ have color $i$ but $q$ and $q^\prime$ are merged, then there is a word there is a word $w\in\Sigma^+$ such that $c(q)=c(\delta^+(q,w))$ and $\delta^+(q,w)=q^\prime$ and $q_s\in F_i$ but $\delta(q_s,w)\not\in F_i$. One fitting word would be the word that visits every node in $l$ exactly once.
+  \end{proof}
 \end{lemma}
 
 \end{document}
