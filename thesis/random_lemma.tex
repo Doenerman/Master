@@ -42,7 +42,7 @@
 \end{lemma}
 
 \begin{lemma}
-  Let $\mathfrak{A}=(Q,\Sigma,q_0,\delta,c),c:Q\rightarrow \{0,\dots,k\}$ be a DPA and $(\mathfrak{A}_0,\dots,\mathfrak{A}_k)$ be its DFA representation. Let $l\subseteq Q$ be a set of states such that for all $q\in l$ there exists a word $w\in\Sigma^+$ and $\delta^+(q,w)=q$.
+  Let $\mathfrak{A}=(Q,\Sigma,q_0,\delta,c),c:Q\rightarrow \{0,\dots,k\}$ be a minimal DPA and $(\mathfrak{A}_0,\dots,\mathfrak{A}_k)$ be its DFA representation. Let $l\subseteq Q$ be a set of states such that for all $q\in l$ there exists a word $w\in\Sigma^+$ and $\delta^+(q,w)=q$.
   If the DPA $\mathfrak{A}$ is minimal, then each loop $l\subseteq Q$ there exists an automaton $\mathfrak{A}_i$ that has a loop $l_i^\prime\subseteq Q_i$ of the same size as $l$.
   
   \begin{proof}
@@ -54,11 +54,13 @@
     \end{enumate}
     Assume the first case. In case $|l|=k^\prime$ and there is no other loop $l^\prime$ with $|l^\prime|<k$ the case is trivial. Since there is a shortest word $w\in\Sigma^\+$ such that $|w|=k$ and $\delta^+(q,w)=q$ with $q\in l$. Assume the loop $l_i^\prime$ in $\mathfrak{A}_i$, that is responsible for all words $w^\prime\in\Sigma^\star$ with $u\in\Sigma^\star$ and $v\in\Sigma^+,w=uv$ with $\delta^\star(q_0,u)=q$ and $\delta^+(q,v)=q$, has not as many states as $l$. So in there would be a shortest word $w_s\in\Sigma^+$ such that $\delta^+_i(q,w_s)=q$ but $\delta^+(q,w_s)\neq q$.
     Now let there be $q_1,\dots,q_j\in l^\prime_i$ with $c(q_1)=\dots=c(q_j)=i$. There meight be two cases that appear. In the first case, some nodes of the loop $l^\prime_i$ can be merge, in the other case no node can be merged.
-    In case nodes can be merged it still must hold if $w\in \Sigma^\star$ and $\delta^\star(q,w)=q$ for $q\in l$ then also $\delta_i^\star(q,w)=q$. Thus if the states $q,q^\prime \in l$ are merged and $w^\prime\in\Sigma^+$ is the shortest word such that $\delta^+(q,w^\prime)=q^\prime$ holds, for $l$ the following must hold:
-    \begin{displaymath}
-    |l| \mod |w^\prime| = 0
-    \end{displaymath}
-    and every $|w|$-th state in $l$ must have the color $i$. 
+    If the nodes $q,q^\prime\in l$ can be merged, then three conditions hold:
+    \begin{enumerate}
+      \item $|l| \mod |w| = 0$
+      \item every $|w|$-th state of $l$ must have the color $i$
+      \item for all $w\in \Sigma^\star$ must hold $c(q)=i=c(q^\prime)$ then $c(\delta^\star(q,w))i$ if and only if $c(\delta^\star(q^\prime,w))=i$ 
+    \end{enumerate}
+    The first two aspects were shown in the lemma above. In case the third does not hold there exists a word $w\in \Sigma^\star$ such that $\delta_i^\star(q,w)\in F_i$ and $\delta_i^\star(q^\prime,w)\not\in F_i$, which is not possible and contradicts with the definition of the DFA representation.
   \end{proof}
 \end{lemma}
 
