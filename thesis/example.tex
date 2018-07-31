@@ -26,8 +26,31 @@
 \newtheorem{theorem}{Theorem}
 \theoremstyle{remark}
 \newtheorem{remark}{Remark}
+\newtheorem{example}{Example}
+
+
+%variables
+\newcommand{\verDistVert}{3}
+\newcommand{\verDistHorz}{3}
 
 \begin{document}
 
-
+\begin{example}
+  \begin{displaymath}
+    L=\{(a^{i_j}b)^\omega|\forall j: i_j \text{devidable by }j=\Pi\limits_{i^\prime,\dots,m\}p_{i^\prime},\text{ where $p_{i^\prime}$ are prime numbers\}
+  \end{displaymath}
+  \begin{figure}
+    \begin{tikzpicture}
+      \node[state,initial]  at (0,0)     {$3$};
+      \node[state]          at (\veristVert,0) {$2$};
+      \node[state]          at (\verDistVert,\verDistHorz) {$3$};
+      \node[state]          at (\verDistVert,2*\verDistHorz) {$3$};
+      \node[state]          at (0,\verDistHorz) {$1$};
+      \node[state]          at (0,\verDistHorz) {$3$};
+      \node[state]          at (-\verDistVert,0) {$3$};
+      \node[state]          at (-\verDistVert,\verDistHorz) {$3$};
+    \end{tikzpicture}
+  \end{figure}
+\end{example}
+  
 \end{document}
